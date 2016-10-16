@@ -7,19 +7,28 @@ import java.util.ArrayList;
  */
 
 public class ExercisesGroup {
-    private String Name;
-    private ArrayList<ExerciseItem> Items;
+    private String name;
+    public ArrayList<ExercisesGroup> invisibleChildren;
+    public int type;
+    private ExerciseItem exerciseItem;
+
+    public ExercisesGroup(){
+
+    }
+    public ExercisesGroup(int type, String name){
+        this.name = name;
+        this.type = type;
+    }
+
+    public ExercisesGroup(int type, ExerciseItem exerciseItem){
+        this.exerciseItem = exerciseItem;
+        this.type = type;
+    }
 
     public String getName() {
-        return Name;
+        return name;
     }
     public void setName(String name) {
-        this.Name = name;
-    }
-    public ArrayList<ExerciseItem> getItems() {
-        return Items;
-    }
-    public void setItems(ArrayList<ExerciseItem> Items) {
-        this.Items = Items;
+        this.name = name;
     }
 }

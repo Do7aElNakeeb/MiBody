@@ -19,6 +19,7 @@ android:orientation="vertical"
         android:layout_height="wrap_content"
         android:stackFromBottom="false"
         android:layout_weight="1"
+        android:padding="10dp"
     />
 
     <TextView
@@ -31,7 +32,8 @@ android:orientation="vertical"
         android:id="@+id/infoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="If no devices are listed please pair your device in Android settings"
+        android:padding="10dp"
+        android:hint="If no devices are listed please pair your device in Android settings"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout

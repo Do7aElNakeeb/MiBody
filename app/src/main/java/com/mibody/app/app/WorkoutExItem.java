@@ -4,6 +4,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.mibody.app.helper.SQLiteHandler;
+
 /**
  * Created by NakeebMac on 10/5/16.
  */
@@ -17,7 +19,23 @@ public class WorkoutExItem {
     private Button AddEx;
     private EditText RestTime;
     private EditText Reps;
-    private int RestT;
+    public int RestT;
+    public String name;
+    public int RepsT;
+    public String exercise;
+    public String rgb;
+
+    public WorkoutExItem(String name, int ResT, int RepsT, String exercise, String rgb) {
+        this.name = name;
+        this.RestT = ResT;
+        this.RepsT = RepsT;
+        this.exercise = exercise;
+        this.rgb = rgb;
+    }
+
+    public WorkoutExItem(){
+
+    }
 
     public int getRestT(){
         return RestT;

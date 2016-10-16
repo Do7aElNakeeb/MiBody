@@ -79,7 +79,7 @@ public class Register extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn().equals("1")) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(getApplicationContext(), Exercises.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -119,8 +119,19 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                String regID = FirebaseInstanceId.getInstance().getToken();
-                registerUser(name, email, mobile, password, weight, regID);
+                if (name.equals("guest") && password.equals("guest")){
+                    session.insertData(name, email, mobile, password, weight, null, null);
+                    Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
+                    // Launch login activity
+                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    String regID = FirebaseInstanceId.getInstance().getToken();
+                    registerUser(name, email, mobile, password, weight, regID);
+                }
+
 
             }
         });

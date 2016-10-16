@@ -25,12 +25,13 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
         this.imageView = (ImageView) itemView.findViewById(R.id.expandedListItemImg);
 
         itemView.setOnClickListener(this);
+        itemView.setClickable(true);
     }
 
 
     @Override
     public void onClick(View v) {
-
+        v.setBackgroundColor(Color.BLUE);
     }
 
     @Override

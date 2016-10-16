@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import com.mibody.app.R;
+import android.content.SharedPreferences.Editor;
+
 
 /**
  * Created by NakeebMac on 10/9/16.
@@ -42,6 +45,16 @@ public class BTDeviceList extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device_list);
+
+        SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
+        String MacAddress = prefs.getString("BT_MAC", "");
+
+        if (!MacAddress.isEmpty()){
+            // Make an intent to start next activity while taking an extra which is the MAC address.
+            Intent i = new Intent(BTDeviceList.this, WorkoutPlay.class);
+            i.putExtra(EXTRA_DEVICE_ADDRESS, MacAddress);
+            startActivity(i);
+        }
     }
 
     @Override
@@ -90,8 +103,13 @@ public class BTDeviceList extends Activity {
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
 
+            SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
+            Editor editor = prefs.edit();
+            editor.putString("BT_MAC", address);
+            editor.apply();
+
             // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(BTDeviceList.this, Workout.class);
+            Intent i = new Intent(BTDeviceList.this, WorkoutPlay.class);
             i.putExtra(EXTRA_DEVICE_ADDRESS, address);
             startActivity(i);
         }

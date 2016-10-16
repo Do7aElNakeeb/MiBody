@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.helper.AddWorkoutAdapter;
 import com.mibody.app.helper.OnStartDragListener;
 import com.mibody.app.helper.RecyclerViewAdapter;
+import com.mibody.app.helper.SQLiteHandler;
 import com.mibody.app.helper.SimpleItemTouchHelperCallback;
 import com.mibody.app.helper.WorkoutExItemAdapter;
 import com.mibody.app.helper.WorkoutExsAdapter;
@@ -53,6 +55,7 @@ import android.content.SharedPreferences.Editor;
 
 public class AddWorkout extends AppCompatActivity {
 
+    SQLiteHandler sqLiteHandler;
     EditText WorkoutName;
     Button AddExercise;
     Button RemoveExercise;
@@ -80,12 +83,20 @@ public class AddWorkout extends AppCompatActivity {
 
         WorkoutName = (EditText) findViewById(R.id.workout_name);
         AddExercise = (Button) findViewById(R.id.add_exercise);
-        RemoveExercise = (Button) findViewById(R.id.remove_exercise);
+     //   RemoveExercise = (Button) findViewById(R.id.remove_exercise);
         SaveWorkout = (Button) findViewById(R.id.save_btn);
       //  ExercisesGrid = (GridView) findViewById(R.id.exercises_grid);
       //  ExercisesRV = (RecyclerView) findViewById(R.id.exercises_grid);
       //  ExercisesSetGrid = (GridView) findViewById(R.id.exercises_set_grid);
 
+        sqLiteHandler = new SQLiteHandler(this);
+
+        try {
+            sqLiteHandler.open();
+
+        } catch (Exception e) {
+            Log.i("hello", "hello");
+        }
 /*
         SharedPreferences sharedPreferences = getSharedPreferences("Workout", MODE_PRIVATE);
         final Editor editor = sharedPreferences.edit();
@@ -96,7 +107,6 @@ public class AddWorkout extends AppCompatActivity {
  //       initViews();
         initWorkoutViews();
 
-
 /*
         ExercisesRV.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
         ExercisesSetGrid.setAdapter(new WorkoutExItemAdapter(this));
@@ -106,7 +116,9 @@ public class AddWorkout extends AppCompatActivity {
         SaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                for (int i=0; i<workoutExItemArrayList.size(); i++)
+                sqLiteHandler.addWorkout(new WorkoutExItem(workoutExItemArrayList.get(i).name, workoutExItemArrayList.get(i).RestT,
+                        workoutExItemArrayList.get(i).RepsT, workoutExItemArrayList.get(i).exercise, workoutExItemArrayList.get(i).rgb));
             }
         });
 
@@ -158,7 +170,7 @@ public class AddWorkout extends AppCompatActivity {
 
     private void initWorkoutViews(){
         ExercisesSetGrid = (RecyclerView) findViewById(R.id.exercises_set_grid);
-        ExercisesSetGrid.setHasFixedSize(true);
+       // ExercisesSetGrid.setHasFixedSize(true);
         ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
 
         workoutExItemArrayList = new ArrayList<>();
@@ -166,18 +178,17 @@ public class AddWorkout extends AppCompatActivity {
 
         WAdapter = new WorkoutExItemAdapter(this, workoutExItemArrayList);
         ExercisesSetGrid.setAdapter(WAdapter);// set adapter on recyclerview
-        WAdapter.notifyDataSetChanged();// Notify the adapter
+//        WAdapter.notifyDataSetChanged();// Notify the adapter
 
         AddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 workoutExItemArrayList.add(new WorkoutExItem());
-                WAdapter.notifyItemInserted(workoutExItemArrayList.size() - 1);
+                WAdapter.notifyItemInserted(workoutExItemArrayList.size());
             }
         });
 
     }
-
 
     private final class MyTouchListener implements OnTouchListener {
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -227,6 +238,17 @@ public class AddWorkout extends AppCompatActivity {
                     break;
             }
             return true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            sqLiteHandler.open();
+
+        } catch (Exception e) {
+            Log.i("hello", "hello");
         }
     }
 }

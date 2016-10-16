@@ -3,6 +3,7 @@ package com.mibody.app.helper;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,10 +26,13 @@ import com.mibody.app.helper.OnStartDragListener;
  * Created by NakeebMac on 10/11/16.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {// Recyclerview will extend to
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements ItemTouchHelperViewHolder{// Recyclerview will extend to
     // recyclerview adapter
     private ArrayList<ExerciseItem> arrayList;
     private Context context;
+    //Here is current selection position
+    private int mSelectedPosition = 0;
+    private OnMyListItemClick mOnMainMenuClickListener = OnMyListItemClick.NULL;
 
 
     public RecyclerViewAdapter(Context context, ArrayList<ExerciseItem> arrayList) {
@@ -44,7 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     }
     
     @Override
-    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
         final ExerciseItem model = arrayList.get(position);
 
         final RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;// holder
@@ -60,7 +64,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         mainHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mSelectedPosition == position)
+                    mainHolder.itemView.setSelected(true);
 
+                else
+                    mainHolder.itemView.setBackgroundColor(Color.RED);
             }
         });
 
@@ -74,9 +82,43 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
         ViewGroup mainGroup = (ViewGroup) mInflater.inflate(
                 R.layout.exercises_item, viewGroup, false);
-        RecyclerViewHolder listHolder = new RecyclerViewHolder(mainGroup);
+        final RecyclerViewHolder listHolder = new RecyclerViewHolder(mainGroup);
+        mainGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //here you set your current position from holder of clicked view
+                mSelectedPosition = listHolder.getAdapterPosition();
+
+                //here you pass object from your list - item value which you clicked
+                mOnMainMenuClickListener.onMyListItemClick(arrayList.get(mSelectedPosition));
+
+                //here you inform view that something was change - view will be invalidated
+                notifyDataSetChanged();
+            }
+        });
         return listHolder;
 
+    }
+
+    @Override
+    public void onItemSelected() {
+        
+    }
+
+    @Override
+    public void onItemClear() {
+
+    }
+
+    public interface OnMyListItemClick {
+        OnMyListItemClick NULL = new OnMyListItemClick() {
+            @Override
+            public void onMyListItemClick(ExerciseItem item) {
+                item.getName();
+            }
+        };
+
+        void onMyListItemClick(ExerciseItem item);
     }
 
 }

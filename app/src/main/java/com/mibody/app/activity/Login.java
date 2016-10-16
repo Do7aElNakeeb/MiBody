@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Login extends AppCompatActivity {
@@ -69,7 +70,7 @@ public class Login extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn().equals("1")) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(getApplicationContext(), Exercises.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -101,9 +102,18 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Please enter password",Toast.LENGTH_LONG).show();
                     return;
                 }
-
-                String regID = FirebaseInstanceId.getInstance().getToken();
-                registerUser(email, password, regID);
+                if (email.equals("guest") && password.equals("guest")){
+                    session.insertData("guest", email, "011", password, "50", null, null);
+                    Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
+                    // Launch login activity
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    String regID = FirebaseInstanceId.getInstance().getToken();
+                    registerUser(email, password, regID);
+                }
             }
         });
     }

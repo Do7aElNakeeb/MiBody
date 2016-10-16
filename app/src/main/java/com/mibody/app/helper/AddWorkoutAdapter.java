@@ -42,7 +42,6 @@ public class AddWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-
     @Override
     public int getItemViewType(int position) {
        // return super.getItemViewType(position);
@@ -188,7 +187,7 @@ public class AddWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             this.RestTime = (EditText) itemView.findViewById(R.id.rest1_count);
             this.Reps = (EditText) itemView.findViewById(R.id.reps1_count);
             this.AddExercise = (Button) itemView.findViewById(R.id.add_exercise);
-            this.RemoveExercise = (Button) itemView.findViewById(R.id.remove_exercise);
+      //      this.RemoveExercise = (Button) itemView.findViewById(R.id.remove_exercise);
         }
     }
 }
