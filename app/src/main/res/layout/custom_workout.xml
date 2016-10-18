@@ -51,7 +51,7 @@
                     android:text="Set Exercises"/>
 
                 <Button
-                    android:text="+"
+                    android:background="@drawable/circle_plus"
                     android:textSize="10sp"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -77,6 +77,33 @@
 
             </android.support.v7.widget.RecyclerView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/setRepeatLayout"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workoutRepeat"
+                        android:gravity="center"
+                        android:textSize="15sp"
+                        android:layout_alignBaseline="@+id/setRepeatBtn"
+                        android:hint="Workout Repeat"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workoutRepeatBtn"
+                        android:background="@android:drawable/ic_menu_revert"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+
+            </LinearLayout>
             <Button
                 android:text="Save Workout"
                 android:layout_marginTop="20dp"

@@ -35,6 +35,7 @@ import com.mibody.app.R;
 import com.mibody.app.activity.AddWorkout;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
+import com.mibody.app.app.WorkoutItem;
 
 import java.util.ArrayList;
 import android.content.SharedPreferences.Editor;
@@ -98,6 +99,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
             @Override
             public void onClick(View v) {
                 showExerciseSelector(mainHolder.ExerciseImg);
+                model.name = mainHolder.ExerciseImg.toString().substring(0, 11);
             //    arrayList.get(position).exercise = "Ex1";
 
             }
@@ -107,7 +109,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
             @Override
             public void onClick(View v) {
                 showRGBDialog(mainHolder.RGB);
-                arrayList.get(position).rgb = mainHolder.RGB.getText().toString();
+                model.rgb = mainHolder.RGB.getText().toString();
             }
         });
 
@@ -117,7 +119,6 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                 if (model.getRestT() > 0) {
                     model.setRestT(model.getRestT() - 1);
                     mainHolder.RestTime.setText(String.valueOf(model.getRestT()));
-                    arrayList.get(position).RestT = Integer.parseInt(mainHolder.RestTime.getText().toString());
                 }
             }
         });
@@ -128,7 +129,6 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                 if (model.getRestT() < 15) {
                     model.setRestT(model.getRestT() + 1);
                     mainHolder.RestTime.setText(String.valueOf(model.getRestT()));
-                    arrayList.get(position).RestT = Integer.parseInt(mainHolder.RestTime.getText().toString());
                 }
             }
         });
@@ -140,6 +140,14 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,arrayList.size());
 
+            }
+        });
+
+        mainHolder.setRepeatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.setReps++;
+                mainHolder.setRepeat.setText(String.valueOf(model.setReps));
             }
         });
 
@@ -225,6 +233,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
         for (int i = 0; i < exercises_names.length; i++) {
             arrayList.add(new ExerciseItem(Images[i], exercises_names[i]));
         }
+
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, arrayList);
         ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
       //  adapter.notifyDataSetChanged();// Notify the adapter
@@ -237,7 +246,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                dialog.dismiss();
            }
        });
-        Button exerciseSet = (Button) dialog.findViewById(R.id.exercise_set_btn);
+
 
     /*    exerciseSet.setOnClickListener(new View.OnClickListener() {
             @Override

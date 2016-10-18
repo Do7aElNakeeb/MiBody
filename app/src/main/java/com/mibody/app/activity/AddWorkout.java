@@ -18,12 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.ExercisesGroup;
 import com.mibody.app.app.WorkoutExItem;
+import com.mibody.app.app.WorkoutItem;
 import com.mibody.app.helper.AddWorkoutAdapter;
 import com.mibody.app.helper.OnStartDragListener;
 import com.mibody.app.helper.RecyclerViewAdapter;
@@ -57,8 +59,10 @@ public class AddWorkout extends AppCompatActivity {
 
     SQLiteHandler sqLiteHandler;
     EditText WorkoutName;
+    EditText workoutRepeat;
+    int workoutReps = 0;
     Button AddExercise;
-    Button RemoveExercise;
+    ImageButton workoutRepeatBtn;
     Button SaveWorkout;
     GridView ExercisesGrid;
     RecyclerView ExercisesSetGrid;
@@ -73,8 +77,8 @@ public class AddWorkout extends AppCompatActivity {
             R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
             R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
 
-    int workoutExNo = 1;
-     ArrayList<WorkoutExItem> workoutExItemArrayList;
+    ArrayList<WorkoutExItem> workoutExItemArrayList;
+    ArrayList<WorkoutItem> workoutItemArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,8 @@ public class AddWorkout extends AppCompatActivity {
         setContentView(R.layout.custom_workout);
 
         WorkoutName = (EditText) findViewById(R.id.workout_name);
+        workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
+        workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
         AddExercise = (Button) findViewById(R.id.add_exercise);
      //   RemoveExercise = (Button) findViewById(R.id.remove_exercise);
         SaveWorkout = (Button) findViewById(R.id.save_btn);
@@ -107,6 +113,13 @@ public class AddWorkout extends AppCompatActivity {
  //       initViews();
         initWorkoutViews();
 
+        workoutRepeatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                workoutReps++;
+                workoutRepeat.setText(String.valueOf(workoutReps));
+            }
+        });
 /*
         ExercisesRV.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
         ExercisesSetGrid.setAdapter(new WorkoutExItemAdapter(this));
@@ -116,9 +129,7 @@ public class AddWorkout extends AppCompatActivity {
         SaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i=0; i<workoutExItemArrayList.size(); i++)
-                sqLiteHandler.addWorkout(new WorkoutExItem(workoutExItemArrayList.get(i).name, workoutExItemArrayList.get(i).RestT,
-                        workoutExItemArrayList.get(i).RepsT, workoutExItemArrayList.get(i).exercise, workoutExItemArrayList.get(i).rgb));
+                sqLiteHandler.addWorkout(new WorkoutItem(WorkoutName.getText().toString(), workoutExItemArrayList, workoutReps));
             }
         });
 
@@ -172,7 +183,10 @@ public class AddWorkout extends AppCompatActivity {
         ExercisesSetGrid = (RecyclerView) findViewById(R.id.exercises_set_grid);
        // ExercisesSetGrid.setHasFixedSize(true);
         ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
-
+/*
+        workoutItemArrayList = new ArrayList<>();
+        workoutItemArrayList.add(new WorkoutItem());
+*/
         workoutExItemArrayList = new ArrayList<>();
         workoutExItemArrayList.add(new WorkoutExItem());
 

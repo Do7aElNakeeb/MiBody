@@ -3,6 +3,8 @@ package com.mibody.app.activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.ExercisesGroup;
 import com.mibody.app.helper.ExercisesItemAdapter;
+import com.mibody.app.helper.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +44,10 @@ public class Exercises extends Fragment {
             "Iran", "Germany", "United States", "Portugal", "Ghana",
             "Belgium", "Algeria", "Russia", "Korea Republic" };
 
-    int Images[] = { R.drawable.gym1, R.drawable.gym2,
-            R.drawable.gym1, R.drawable.gym2, R.drawable.gym1,
-            R.drawable.gym2, R.drawable.gym1, R.drawable.gym2,
-            R.drawable.gym1, R.drawable.gym2, R.drawable.gym1 };
+    int Images[] = { R.drawable.ex1, R.drawable.ex2,
+            R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
+            R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
+            R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
 
     public Exercises() {
         // Required empty public constructor
@@ -60,10 +63,23 @@ public class Exercises extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_exercises, container, false);
         exercisesRV = (RecyclerView) view.findViewById(R.id.expandableListView);
+        exercisesRV.setHasFixedSize(true);
+        exercisesRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));
+
+        exercisesRV.setItemAnimator(new DefaultItemAnimator());
+        ArrayList<ExerciseItem> arrayList = new ArrayList<>();
+        for (int i = 0; i < exercises_names.length; i++) {
+            arrayList.add(new ExerciseItem(Images[i], exercises_names[i]));
+        }
+
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
+        exercisesRV.setAdapter(adapter);
+/*
         ExercisesItemAdapter adapter = new ExercisesItemAdapter(this.getActivity());
         adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
         exercisesRV.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         exercisesRV.setAdapter(adapter);
+        */
         // Inflate the layout for this fragment
         return view;
     }

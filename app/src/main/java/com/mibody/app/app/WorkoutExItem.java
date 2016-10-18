@@ -19,18 +19,21 @@ public class WorkoutExItem {
     private Button AddEx;
     private EditText RestTime;
     private EditText Reps;
+    private Button setRepsBtn;
     public int RestT;
     public String name;
     public int RepsT;
     public String exercise;
     public String rgb;
+    public int setReps;
 
-    public WorkoutExItem(String name, int ResT, int RepsT, String exercise, String rgb) {
+    public WorkoutExItem(String name, int ResT, int RepsT, String exercise, String rgb, int setReps) {
         this.name = name;
         this.RestT = ResT;
         this.RepsT = RepsT;
         this.exercise = exercise;
         this.rgb = rgb;
+        this.setReps = setReps;
     }
 
     public WorkoutExItem(){

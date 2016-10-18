@@ -10,6 +10,11 @@ import android.util.Log;
 
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
+import com.mibody.app.app.WorkoutItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +60,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public static final String PHONE = "phone";
 */
 
-    String[] cols = {NAME, RESTT, REPS, EXERCISES, RGB};
+    String[] cols = {NAME, EXERCISES, REPS};
 
     public SQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -64,8 +69,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_STATIONS_TABLE = "CREATE TABLE " + TABLE_NAME + "( id integer primary key autoincrement, "
-                + NAME + " TEXT," + RESTT + " TEXT,"
-                + REPS + " TEXT," + EXERCISES + " TEXT" + ")";
+                + NAME + " TEXT," + EXERCISES + " TEXT,"
+                + REPS + " TEXT" + ")";
         db.execSQL(CREATE_STATIONS_TABLE);
 
         Log.d(TAG, "Database tables created");
@@ -92,14 +97,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
      * Storing user details in database
      * */
 
-    public void addWorkout(WorkoutExItem workoutExItem) {
+    public void addWorkout(WorkoutItem workoutItem) {
 
         ContentValues values = new ContentValues();
-        values.put(NAME, workoutExItem.name);
-        values.put(RESTT, workoutExItem.RestT);
-        values.put(REPS, workoutExItem.RepsT);
-        values.put(EXERCISES, workoutExItem.exercise);
-        values.put(RGB, workoutExItem.rgb);
+        values.put(NAME, workoutItem.workoutName);
+        JSONArray jsonArray = new JSONArray(workoutItem.exercisesList);
+        values.put(EXERCISES, jsonArray.toString());
+        values.put(REPS, workoutItem.workoutReps);
 
         Log.d("TAG", "New station inserted into sqlite: ");
 
@@ -109,25 +113,51 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         Log.d("TAG", "New station inserted into sqlite: ");
     }
 
-    public List<WorkoutExItem> getWorkoutsExercises(String args){
-        List<WorkoutExItem> markers = new ArrayList<WorkoutExItem>();
+    public List<WorkoutItem> getWorkouts(String args){
+        List<WorkoutItem> workoutItems = new ArrayList<WorkoutItem>();
 
         Cursor cursor = db.query(SQLiteHandler.TABLE_NAME, cols, args, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            WorkoutExItem m = cursorToMarker(cursor);
-            markers.add(m);
+
+            WorkoutItem workoutItem = cursorToWorkout(cursor);
+            workoutItems.add(workoutItem);
             cursor.moveToNext();
         }
         cursor.close();
 
 
-        return markers;
+        return workoutItems;
     }
 
-    private WorkoutExItem cursorToMarker(Cursor cursor) {
-        return new WorkoutExItem(cursor.getString(0), cursor.getInt(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4));
+    private WorkoutItem cursorToWorkout(Cursor cursor) {
+        ArrayList<WorkoutExItem> workoutExItems = new ArrayList<WorkoutExItem>();
+        try {
+            JSONArray workoutsExArr = new JSONArray(cursor.getString(2));
+
+
+            if(workoutsExArr.length() != 0){
+
+                for(int i = 0; i<workoutsExArr.length(); i++){
+                    // Get JSON object
+                    JSONObject obj = (JSONObject) workoutsExArr.get(i);
+                    String name = obj.get("name").toString();
+                    int ResT = (int) obj.get("RestT");
+                    int RepsT = (int) obj.get("RepsT");
+                    String exercise = obj.get("exercise").toString();
+                    String rgb = obj.get("rgb").toString();
+                    int setReps = (int) obj.get("setReps");
+                    workoutExItems.add(new WorkoutExItem(name,  ResT,  RepsT,  exercise, rgb, setReps));
+                }
+            }
+
+        }
+        catch (JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return new WorkoutItem(cursor.getString(1), workoutExItems, cursor.getInt(3));
     }
 
     /**
