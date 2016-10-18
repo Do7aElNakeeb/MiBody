@@ -18,6 +18,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
     public TextView title;
     public ImageView imageView;
 
+
     public RecyclerViewHolder(View itemView) {
         super(itemView);
 

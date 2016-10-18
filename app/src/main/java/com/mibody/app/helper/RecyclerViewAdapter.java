@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mibody.app.app.ExerciseItem;
 
@@ -26,13 +28,15 @@ import com.mibody.app.helper.OnStartDragListener;
  * Created by NakeebMac on 10/11/16.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements ItemTouchHelperViewHolder{// Recyclerview will extend to
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> { // Recyclerview will extend to
     // recyclerview adapter
     private ArrayList<ExerciseItem> arrayList;
     private Context context;
     //Here is current selection position
     private int mSelectedPosition = 0;
     private OnMyListItemClick mOnMainMenuClickListener = OnMyListItemClick.NULL;
+
+    private ItemClickListener clickListener;
 
 
     public RecyclerViewAdapter(Context context, ArrayList<ExerciseItem> arrayList) {
@@ -48,41 +52,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     }
     
     @Override
-    public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ExerciseItem model = arrayList.get(position);
 
-        final RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;// holder
+    //    final RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;// holder
 
         Bitmap image = BitmapFactory.decodeResource(context.getResources(),model.getImage());// This will convert drawbale image into
         // bitmap
 
         // setting title
-        mainHolder.title.setText(model.getName());
+        holder.title.setText(model.getName());
 
-        mainHolder.imageView.setImageBitmap(image);
-
-        mainHolder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.imageView.setImageBitmap(image);
+/*
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mSelectedPosition == position)
-                    mainHolder.itemView.setSelected(true);
+                    holder.itemView.setSelected(true);
 
                 else
-                    mainHolder.itemView.setBackgroundColor(Color.RED);
+                    holder.itemView.setBackgroundColor(Color.RED);
             }
         });
-
+*/
     }
 
     @Override
-    public RecyclerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
         // This method will inflate the custom layout and return as viewholder
         LayoutInflater mInflater = LayoutInflater.from(viewGroup.getContext());
 
         ViewGroup mainGroup = (ViewGroup) mInflater.inflate(
                 R.layout.exercises_item, viewGroup, false);
-        final RecyclerViewHolder listHolder = new RecyclerViewHolder(mainGroup);
+        final ViewHolder listHolder = new ViewHolder(mainGroup);
+        /*
         mainGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,18 +101,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
                 notifyDataSetChanged();
             }
         });
+        */
         return listHolder;
 
     }
 
-    @Override
-    public void onItemSelected() {
-        
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
     }
 
-    @Override
-    public void onItemClear() {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView title;
+        public ImageView imageView;
 
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            this.title = (TextView) itemView.findViewById(R.id.expandedListItemTxt);
+            this.imageView = (ImageView) itemView.findViewById(R.id.expandedListItemImg);
+
+            itemView.setOnClickListener(this);
+            itemView.setClickable(true);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (clickListener != null) clickListener.onClick(view, getAdapterPosition());
+        }
     }
 
     public interface OnMyListItemClick {

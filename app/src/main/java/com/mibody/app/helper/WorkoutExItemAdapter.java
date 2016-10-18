@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -97,7 +98,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
             @Override
             public void onClick(View v) {
                 showExerciseSelector(mainHolder.ExerciseImg);
-                arrayList.get(position).exercise = "Ex1";
+            //    arrayList.get(position).exercise = "Ex1";
 
             }
         });
@@ -201,12 +202,12 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
         dialog.show();
     }
 
-    private void showExerciseSelector(ImageView imageView){
+    private void showExerciseSelector(final ImageView imageView){
         String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
                 "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
 
 
-        int Images[] = { R.drawable.ex1, R.drawable.ex2,
+        final int Images[] = { R.drawable.ex1, R.drawable.ex2,
                 R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
                 R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
                 R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
@@ -219,40 +220,32 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
         ExercisesRV.setHasFixedSize(true);
         ExercisesRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
+        ExercisesRV.setItemAnimator(new DefaultItemAnimator());
         ArrayList<ExerciseItem> arrayList = new ArrayList<>();
         for (int i = 0; i < exercises_names.length; i++) {
             arrayList.add(new ExerciseItem(Images[i], exercises_names[i]));
         }
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, arrayList);
         ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
-        adapter.notifyDataSetChanged();// Notify the adapter
+      //  adapter.notifyDataSetChanged();// Notify the adapter
 
 
-        ExercisesRV.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
+       adapter.setClickListener(new ItemClickListener() {
+           @Override
+           public void onClick(View view, int position) {
+               imageView.setImageResource(Images[position]);
+               dialog.dismiss();
+           }
+       });
         Button exerciseSet = (Button) dialog.findViewById(R.id.exercise_set_btn);
 
-        exerciseSet.setOnClickListener(new View.OnClickListener() {
+    /*    exerciseSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-
+*/
         dialog.show();
 
     }
