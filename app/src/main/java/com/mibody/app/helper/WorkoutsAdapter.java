@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 
 import com.mibody.app.R;
 import com.mibody.app.activity.AddWorkout;
+import com.mibody.app.activity.BTDeviceList;
+import com.mibody.app.activity.WorkoutPlay;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
@@ -77,10 +80,17 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
             public void onClick(View v) {
 
                 final Dialog dialog = new Dialog(context);
-                dialog.setTitle("Select Exercise");
+                dialog.setTitle("Workout Information");
                 dialog.setContentView(R.layout.custom_workout);
 
-
+                EditText workoutEditTxt = (EditText) dialog.findViewById(R.id.workout_name);
+                EditText workoutRepsET = (EditText) dialog.findViewById(R.id.workoutRepeat);
+                Button playWorkoutBtn = (Button) dialog.findViewById(R.id.save_btn);
+                playWorkoutBtn.setText("Play Workout");
+                workoutEditTxt.setText(model.workoutName);
+                workoutRepsET.setText(String.valueOf(model.workoutReps));
+                workoutEditTxt.setEnabled(false);
+                workoutRepsET.setEnabled(false);
                 final RecyclerView ExercisesSetGrid = (RecyclerView) dialog.findViewById(R.id.exercises_set_grid);
                 // ExercisesSetGrid.setHasFixedSize(true);
                 ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
@@ -90,6 +100,16 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
                 if (arrayList.get(position).exercisesList.size() == 0)
                     Log.d("zeroooo", arrayList.get(position).exercisesList.toString() + "-" + position);
                 ExercisesSetGrid.setAdapter(WAdapter);
+
+                playWorkoutBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, BTDeviceList.class);
+                        // put extras here
+
+                        context.startActivity(i);
+                    }
+                });
 
                 dialog.show();
 

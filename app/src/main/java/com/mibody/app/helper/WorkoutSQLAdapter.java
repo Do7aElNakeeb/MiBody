@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mibody.app.R;
+import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.WorkoutExItem;
 
 import java.util.ArrayList;
@@ -48,11 +49,14 @@ public class WorkoutSQLAdapter extends RecyclerView.Adapter<AddWorkoutRecyclerVi
 
         final AddWorkoutRecyclerViewHolder mainHolder = (AddWorkoutRecyclerViewHolder) holder;// holder
 
-        mainHolder.ExerciseImg.setImageResource(Integer.valueOf(model.name));
+        mainHolder.ExerciseImg.setImageResource(AppConfig.Images[Integer.valueOf(model.name)]);
         mainHolder.Reps.setText(String.valueOf(model.RepsT));
+        mainHolder.Reps.setEnabled(false);
         mainHolder.RestTime.setText(String.valueOf(model.RestT));
+        mainHolder.RestTime.setEnabled(false);
         mainHolder.RGB.setText(model.getRgb());
         mainHolder.setRepeat.setText(String.valueOf(model.setReps));
+        mainHolder.setRepeat.setEnabled(false);
 
     }
 

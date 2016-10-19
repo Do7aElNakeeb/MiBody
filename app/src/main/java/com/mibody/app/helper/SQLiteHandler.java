@@ -140,8 +140,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private WorkoutItem cursorToWorkout(Cursor cursor) {
         List<WorkoutExItem> workoutExItems = new ArrayList<WorkoutExItem>();
         try {
-            JSONArray workoutsExArr = new JSONArray(cursor.getString(2));
-
+            JSONArray workoutsExArr = new JSONArray(cursor.getString(1));
+            System.out.println(workoutsExArr.length());
 
             if(workoutsExArr.length() != 0){
 
@@ -151,11 +151,11 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                     String name = obj.get("name").toString();
                     int ResT = (int) obj.get("RestT");
                     int RepsT = (int) obj.get("RepsT");
-                    String exercise = obj.get("exercise").toString();
+                   // String exercise = obj.get("exercise").toString();
                     String rgb = obj.get("rgb").toString();
                     int setReps = (int) obj.get("setReps");
                     Log.d("checkJSON", name + " " + String.valueOf(RepsT));
-                    workoutExItems.add(new WorkoutExItem(name,  ResT,  RepsT,  exercise, rgb, setReps));
+                    workoutExItems.add(new WorkoutExItem(name,  ResT,  RepsT, rgb, setReps));
                 }
             }
 

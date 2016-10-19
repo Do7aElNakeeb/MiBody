@@ -96,8 +96,9 @@ public class Workout extends Fragment {
 
         workoutItemArrayList = sqLiteHandler.getWorkouts(null);
 
-        Log.d("sizen", String.valueOf(workoutItemArrayList.size()) + String.valueOf(workoutItemArrayList.get(0).exercisesList.size()) );
+
         if (workoutItemArrayList.size() != 0){
+            Log.d("sizen", String.valueOf(workoutItemArrayList.size()) + String.valueOf(workoutItemArrayList.get(0).exercisesList.size()) );
             workoutsRV = (RecyclerView) view1.findViewById(R.id.expandableListView);
             workoutsRV.setHasFixedSize(true);
             workoutsRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));

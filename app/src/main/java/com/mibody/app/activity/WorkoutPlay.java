@@ -16,6 +16,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -27,6 +28,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mibody.app.R;
+
+import static com.mibody.app.activity.BTDeviceList.EXTRA_DEVICE_ADDRESS;
 
 public class WorkoutPlay  extends Activity {
 
@@ -71,6 +74,16 @@ public class WorkoutPlay  extends Activity {
         sensorView3 = (TextView) findViewById(R.id.sensorView3);
 
         */
+
+        SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
+        String MacAddress = prefs.getString("BT_MAC", "");
+
+        if (!MacAddress.isEmpty()){
+            // Make an intent to start next activity while taking an extra which is the MAC address.
+            Intent i = new Intent(WorkoutPlay.this, BTDeviceList.class);
+            startActivity(i);
+        }
+
         calendar = Calendar.getInstance();
         workoutName = (TextView) findViewById(R.id.workout_name);
         processName = (TextView) findViewById(R.id.process_name);
@@ -254,7 +267,7 @@ public class WorkoutPlay  extends Activity {
         Intent intent = getIntent();
 
         //Get the MAC address from the DeviceListActivty via EXTRA
-        address = intent.getStringExtra(BTDeviceList.EXTRA_DEVICE_ADDRESS);
+        address = intent.getStringExtra(EXTRA_DEVICE_ADDRESS);
 
         //create device and set the MAC address
         BluetoothDevice device = btAdapter.getRemoteDevice(address);

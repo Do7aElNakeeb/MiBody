@@ -31,11 +31,10 @@ public class WorkoutExItem {
     private String rgb;
     public int setReps;
 
-    public WorkoutExItem(String name, int ResT, int RepsT, String exercise, String rgb, int setReps) {
+    public WorkoutExItem(String name, int ResT, int RepsT, String rgb, int setReps) {
         this.name = name;
         this.RestT = ResT;
         this.RepsT = RepsT;
-        this.exercise = exercise;
         this.rgb = rgb;
         this.setReps = setReps;
     }
