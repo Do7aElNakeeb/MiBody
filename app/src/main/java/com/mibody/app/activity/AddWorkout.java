@@ -1,46 +1,28 @@
 package com.mibody.app.activity;
 
-import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
-import com.mibody.app.app.ExercisesGroup;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
-import com.mibody.app.helper.AddWorkoutAdapter;
-import com.mibody.app.helper.OnStartDragListener;
 import com.mibody.app.helper.RecyclerViewAdapter;
 import com.mibody.app.helper.SQLiteHandler;
-import com.mibody.app.helper.SimpleItemTouchHelperCallback;
 import com.mibody.app.helper.WorkoutExItemAdapter;
-import com.mibody.app.helper.WorkoutExsAdapter;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
@@ -48,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import android.content.SharedPreferences.Editor;
 
 
 /**
@@ -123,8 +104,8 @@ public class AddWorkout extends AppCompatActivity {
 /*
         ExercisesRV.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
         ExercisesSetGrid.setAdapter(new WorkoutExItemAdapter(this));
-        ExercisesRV.setAdapter(new WorkoutExsAdapter(this, exercises_names));
-        ExercisesRV.setAdapter(new WorkoutExsAdapter(this, exercises_names));
+        ExercisesRV.setAdapter(new WorkoutsAdapter(this, exercises_names));
+        ExercisesRV.setAdapter(new WorkoutsAdapter(this, exercises_names));
 */
         SaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override

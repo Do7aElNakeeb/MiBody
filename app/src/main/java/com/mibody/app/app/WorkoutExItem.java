@@ -1,10 +1,14 @@
 package com.mibody.app.app;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.mibody.app.helper.SQLiteHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by NakeebMac on 10/5/16.
@@ -24,7 +28,7 @@ public class WorkoutExItem {
     public String name;
     public int RepsT;
     public String exercise;
-    public String rgb;
+    private String rgb;
     public int setReps;
 
     public WorkoutExItem(String name, int ResT, int RepsT, String exercise, String rgb, int setReps) {
@@ -40,6 +44,29 @@ public class WorkoutExItem {
 
     }
 
+    public JSONObject getJSONObject() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("name", name);
+            obj.put("RestT", RestT);
+            obj.put("RepsT", RepsT);
+            obj.put("exercise", exercise);
+            obj.put("rgb", rgb);
+            obj.put("setReps", setReps);
+        } catch (JSONException e) {
+            Log.d( "JSONObject", "DefaultListItem.toString JSONException: "+e.getMessage());
+        }
+        return obj;
+    }
+
+
+    public String getRgb (){
+        return rgb;
+    }
+
+    public void setRgb (String rgb){
+        this.rgb = rgb;
+    }
     public int getRestT(){
         return RestT;
     }

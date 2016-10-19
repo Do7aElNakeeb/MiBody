@@ -32,6 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // recyclerview adapter
     private ArrayList<ExerciseItem> arrayList;
     private Context context;
+
     //Here is current selection position
     private int mSelectedPosition = 0;
     private OnMyListItemClick mOnMainMenuClickListener = OnMyListItemClick.NULL;

@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutItem;
+import com.mibody.app.helper.ItemClickListener;
 import com.mibody.app.helper.RecyclerViewAdapter;
 import com.mibody.app.helper.SQLiteHandler;
+import com.mibody.app.helper.WorkoutsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,21 +84,25 @@ public class Workout extends Fragment {
         workoutItemArrayList = sqLiteHandler.getWorkouts(null);
 
         if (workoutItemArrayList.size() != 0){
+            workoutsRV = (RecyclerView) view1.findViewById(R.id.expandableListView);
+            workoutsRV.setHasFixedSize(true);
+            workoutsRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));
 
+            workoutsRV.setItemAnimator(new DefaultItemAnimator());
+
+            WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList);
+            workoutsRV.setAdapter(adapter);
+
+            adapter.setClickListener(new ItemClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+
+                }
+            });
         }
 
-        workoutsRV = (RecyclerView) view1.findViewById(R.id.expandableListView);
-        workoutsRV.setHasFixedSize(true);
-        workoutsRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));
 
-        workoutsRV.setItemAnimator(new DefaultItemAnimator());
-        ArrayList<ExerciseItem> arrayList = new ArrayList<>();
-        for (int i = 0; i < workouts_names.length; i++) {
-            arrayList.add(new ExerciseItem(Images[i], workouts_names[i]));
-        }
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
-        workoutsRV.setAdapter(adapter);
 
         // Inflate the layout for this fragment
         return view1;

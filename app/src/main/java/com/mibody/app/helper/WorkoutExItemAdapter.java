@@ -2,45 +2,25 @@ package com.mibody.app.helper;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
-import android.view.Gravity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.WindowManager.LayoutParams;
 
 import com.mibody.app.R;
-import com.mibody.app.activity.AddWorkout;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
-import com.mibody.app.app.WorkoutItem;
 
 import java.util.ArrayList;
-import android.content.SharedPreferences.Editor;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 /**
@@ -57,6 +37,14 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
     private Context context;
     private int ExercisesNo;
 
+    String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
+            "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
+
+
+    int Images[] = { R.drawable.ex1, R.drawable.ex2,
+            R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
+            R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
+            R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
 
     public WorkoutExItemAdapter(Context context, ArrayList<WorkoutExItem> arrayList) {
         // TODO Auto-generated constructor stub
@@ -91,25 +79,75 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
 
         final AddWorkoutRecyclerViewHolder mainHolder = (AddWorkoutRecyclerViewHolder) holder;// holder
 
-        SharedPreferences prefs = context.getSharedPreferences("Workout", Context.MODE_PRIVATE);
+//        SharedPreferences prefs = context.getSharedPreferences("Workout", Context.MODE_PRIVATE);
 //      ExercisesNo = Integer.valueOf(prefs.getString("WorkoutExNo", ""));
 
 
         mainHolder.ExerciseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showExerciseSelector(mainHolder.ExerciseImg);
-                model.name = mainHolder.ExerciseImg.toString().substring(0, 11);
-            //    arrayList.get(position).exercise = "Ex1";
+            //    showExerciseSelector(mainHolder.ExerciseImg);
+             //   model.name = String.valueOf(mainHolder.ExerciseImg.getId());
 
+                /////////////////
+                final Dialog dialog = new Dialog(context);
+                dialog.setTitle("Select Exercise");
+                dialog.setContentView(R.layout.exercises_recycle_horizontal);
+
+                final RecyclerView ExercisesRV = (RecyclerView) dialog.findViewById(R.id.exercises_grid);
+                ExercisesRV.setHasFixedSize(true);
+                ExercisesRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+
+                ExercisesRV.setItemAnimator(new DefaultItemAnimator());
+                ArrayList<ExerciseItem> arrayList = new ArrayList<>();
+                for (int i = 0; i < exercises_names.length; i++) {
+                    arrayList.add(new ExerciseItem(Images[i], exercises_names[i]));
+                }
+
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, arrayList);
+                ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
+                //  adapter.notifyDataSetChanged();// Notify the adapter
+
+
+                adapter.setClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        mainHolder.ExerciseImg.setImageResource(Images[position]);
+                        mainHolder.ExerciseImg.setTag(Images[position]);
+                        model.name = exercises_names[position];
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
+
+            //    arrayList.get(position).exercise = "Ex1";
             }
         });
+
 
         mainHolder.RGB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showRGBDialog(mainHolder.RGB);
-                model.rgb = mainHolder.RGB.getText().toString();
+                mainHolder.RGB.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        model.setRgb(mainHolder.RGB.getText().toString());
+                    }
+                });
+
             }
         });
 
@@ -133,13 +171,29 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
             }
         });
 
+        mainHolder.Reps.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                model.RepsT = Integer.valueOf(s.toString());
+            }
+        });
+
         mainHolder.RemoveExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 arrayList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,arrayList.size());
-
             }
         });
 
@@ -155,7 +209,6 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
 
     @Override
     public int getItemCount() {
-
         return (null != arrayList ? arrayList.size() : 0);
     }
 
@@ -211,14 +264,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
     }
 
     private void showExerciseSelector(final ImageView imageView){
-        String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
-                "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
 
-
-        final int Images[] = { R.drawable.ex1, R.drawable.ex2,
-                R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
-                R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
-                R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
 
         final Dialog dialog = new Dialog(context);
         dialog.setTitle("Select Exercise");
@@ -243,6 +289,8 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
            @Override
            public void onClick(View view, int position) {
                imageView.setImageResource(Images[position]);
+               imageView.setTag(Images[position]);
+               Log.d("TagOfImageView", String.valueOf(Images[position]));
                dialog.dismiss();
            }
        });

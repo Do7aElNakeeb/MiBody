@@ -1,6 +1,5 @@
 package com.mibody.app.helper;
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;

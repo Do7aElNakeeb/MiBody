@@ -11,6 +11,8 @@ public class WorkoutItem {
     public String workoutName;
     public ArrayList<WorkoutExItem> exercisesList;
     public int workoutReps;
+    public int Image;
+    public String exercisesJSON;
 
     public WorkoutItem(String workoutName, ArrayList<WorkoutExItem> exercisesList, int workoutReps){
         this.workoutName = workoutName;

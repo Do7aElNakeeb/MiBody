@@ -101,7 +101,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(NAME, workoutItem.workoutName);
-        JSONArray jsonArray = new JSONArray(workoutItem.exercisesList);
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i=0; i < workoutItem.exercisesList.size(); i++) {
+            jsonArray.put(workoutItem.exercisesList.get(i).getJSONObject());
+        }
+        Log.d ("JSONObjectSQL", jsonArray.toString());
+
         values.put(EXERCISES, jsonArray.toString());
         values.put(REPS, workoutItem.workoutReps);
 
@@ -134,7 +140,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private WorkoutItem cursorToWorkout(Cursor cursor) {
         ArrayList<WorkoutExItem> workoutExItems = new ArrayList<WorkoutExItem>();
         try {
-            JSONArray workoutsExArr = new JSONArray(cursor.getString(2));
+            JSONArray workoutsExArr = new JSONArray(cursor.getString(1));
 
 
             if(workoutsExArr.length() != 0){
@@ -157,7 +163,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return new WorkoutItem(cursor.getString(1), workoutExItems, cursor.getInt(3));
+        return new WorkoutItem(cursor.getString(0), workoutExItems, Integer.valueOf(cursor.getString(2)));
     }
 
     /**
