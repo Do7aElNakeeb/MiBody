@@ -1,10 +1,14 @@
 package com.mibody.app.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,14 +20,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mibody.app.R;
+import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.ExerciseItem;
+import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
 import com.mibody.app.helper.ItemClickListener;
 import com.mibody.app.helper.RecyclerViewAdapter;
 import com.mibody.app.helper.SQLiteHandler;
+import com.mibody.app.helper.WorkoutExItemAdapter;
+import com.mibody.app.helper.WorkoutSQLAdapter;
 import com.mibody.app.helper.WorkoutsAdapter;
 
 import java.util.ArrayList;
@@ -34,6 +46,7 @@ public class Workout extends Fragment {
     RecyclerView workoutsRV;
     List<WorkoutItem> workoutItemArrayList;
     SQLiteHandler sqLiteHandler;
+
     public Workout() {
         // Required empty public constructor
     }
@@ -83,6 +96,7 @@ public class Workout extends Fragment {
 
         workoutItemArrayList = sqLiteHandler.getWorkouts(null);
 
+        Log.d("sizen", String.valueOf(workoutItemArrayList.size()) + String.valueOf(workoutItemArrayList.get(0).exercisesList.size()) );
         if (workoutItemArrayList.size() != 0){
             workoutsRV = (RecyclerView) view1.findViewById(R.id.expandableListView);
             workoutsRV.setHasFixedSize(true);
@@ -97,6 +111,60 @@ public class Workout extends Fragment {
                 @Override
                 public void onClick(View view, int position) {
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.custom_workout, null);
+                    builder.setView(dialogView);
+
+
+
+/*
+                    final AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setView(getLayoutInflater(getActivity()).inflate(R.layout.content_workout, null)).create();
+                    dialog.setTitle("Workout Information");
+                    dialog.setContentView(R.layout.custom_workout);
+*/
+                    EditText WorkoutName;
+                    TextView exercisesSetText;
+                    EditText workoutRepeat;
+                    int workoutReps = 0;
+                    Button AddExercise;
+                    ImageButton workoutRepeatBtn;
+                    Button SaveWorkout;
+                    GridView ExercisesGrid;
+                    RecyclerView ExercisesSetGrid = (RecyclerView) dialogView.findViewById(R.id.exercises_set_grid);
+                    RecyclerView ExercisesRV;
+                    WorkoutExItemAdapter WAdapter;
+
+                    exercisesSetText = (TextView) dialogView.findViewById(R.id.exercises_set_txt);
+                    WorkoutName = (EditText) dialogView.findViewById(R.id.workout_name);
+                    workoutRepeat = (EditText) dialogView.findViewById(R.id.workoutRepeat);
+                    workoutRepeatBtn = (ImageButton) dialogView.findViewById(R.id.workoutRepeatBtn);
+                    AddExercise = (Button) dialogView.findViewById(R.id.add_exercise);
+                    SaveWorkout = (Button) dialogView.findViewById(R.id.save_btn);
+
+//                    initWorkoutViews(ExercisesSetGrid, workoutItemArrayList.get(position).exercisesList);
+
+                    view.setEnabled(false);
+                    WorkoutName.setText(workoutItemArrayList.get(position).workoutName);
+
+
+                    AddExercise.setVisibility(View.GONE);
+                    exercisesSetText.setText("Exercises");
+
+                    SaveWorkout.setVisibility(View.GONE);
+
+                    builder.setNeutralButton("Play Workout", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    AlertDialog alertDialog =  builder.create();
+                    alertDialog.show();
+
                 }
             });
         }
@@ -106,6 +174,23 @@ public class Workout extends Fragment {
 
         // Inflate the layout for this fragment
         return view1;
+    }
+
+    private void initWorkoutViews(RecyclerView ExercisesSetGrid, ArrayList<WorkoutExItem> workoutExItemArrayList){
+
+        // ExercisesSetGrid.setHasFixedSize(true);
+        ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+/*
+        workoutItemArrayList = new ArrayList<>();
+        workoutItemArrayList.add(new WorkoutItem());
+*/
+
+        workoutExItemArrayList.add(new WorkoutExItem());
+
+        WorkoutSQLAdapter WAdapter = new WorkoutSQLAdapter(getActivity(), workoutExItemArrayList);
+        ExercisesSetGrid.setAdapter(WAdapter);// set adapter on recyclerview
+        WAdapter.notifyDataSetChanged();// Notify the adapter
+
     }
 
 

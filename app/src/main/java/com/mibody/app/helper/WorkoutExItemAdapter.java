@@ -114,7 +114,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                     public void onClick(View view, int position) {
                         mainHolder.ExerciseImg.setImageResource(Images[position]);
                         mainHolder.ExerciseImg.setTag(Images[position]);
-                        model.name = exercises_names[position];
+                        model.name = String.valueOf(position);
                         dialog.dismiss();
                     }
                 });
@@ -264,7 +264,6 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
     }
 
     private void showExerciseSelector(final ImageView imageView){
-
 
         final Dialog dialog = new Dialog(context);
         dialog.setTitle("Select Exercise");

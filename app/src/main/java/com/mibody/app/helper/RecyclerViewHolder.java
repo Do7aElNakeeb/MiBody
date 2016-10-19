@@ -13,7 +13,7 @@ import com.mibody.app.R;
  * Created by NakeebMac on 10/11/16.
  */
 
-public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder{
+public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public TextView title;
     public ImageView imageView;
@@ -25,23 +25,6 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
         this.title = (TextView) itemView.findViewById(R.id.expandedListItemTxt);
         this.imageView = (ImageView) itemView.findViewById(R.id.expandedListItemImg);
 
-        itemView.setOnClickListener(this);
-        itemView.setClickable(true);
     }
 
-
-    @Override
-    public void onClick(View v) {
-        v.setBackgroundColor(Color.BLUE);
-    }
-
-    @Override
-    public void onItemSelected() {
-        itemView.setBackgroundColor(Color.GRAY);
-    }
-
-    @Override
-    public void onItemClear() {
-
-    }
 }
