@@ -38,13 +38,14 @@ import com.mibody.app.helper.WorkoutExItemAdapter;
 import com.mibody.app.helper.WorkoutSQLAdapter;
 import com.mibody.app.helper.WorkoutsAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Workout extends Fragment {
+public class Workout extends Fragment{
 
     RecyclerView workoutsRV;
-    List<WorkoutItem> workoutItemArrayList;
+    ArrayList<WorkoutItem> workoutItemArrayList;
     SQLiteHandler sqLiteHandler;
 
     public Workout() {
@@ -110,9 +111,9 @@ public class Workout extends Fragment {
 
             adapter.setClickListener(new ItemClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(View view, final int position) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                     LayoutInflater inflater = getActivity().getLayoutInflater();
                     View dialogView = inflater.inflate(R.layout.custom_workout, null);
@@ -159,7 +160,12 @@ public class Workout extends Fragment {
                     builder.setNeutralButton("Play Workout", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            Intent intent = new Intent(getActivity(), WorkoutPlay.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("workoutItemKey", new WorkoutItem(workoutItemArrayList.get(position).workoutName,
+                                    workoutItemArrayList.get(position).exercisesList, workoutItemArrayList.get(position).workoutReps));
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                         }
                     });
 

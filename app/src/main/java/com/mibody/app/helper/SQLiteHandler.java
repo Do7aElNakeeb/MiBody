@@ -119,8 +119,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         Log.d("TAG", "New station inserted into sqlite: ");
     }
 
-    public List<WorkoutItem> getWorkouts(String args){
-        List<WorkoutItem> workoutItems = new ArrayList<WorkoutItem>();
+    public ArrayList<WorkoutItem> getWorkouts(String args){
+        ArrayList<WorkoutItem> workoutItems = new ArrayList<WorkoutItem>();
 
         Cursor cursor = db.query(SQLiteHandler.TABLE_NAME, cols, args, null, null, null, null);
 
@@ -138,7 +138,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     }
 
     private WorkoutItem cursorToWorkout(Cursor cursor) {
-        List<WorkoutExItem> workoutExItems = new ArrayList<WorkoutExItem>();
+        ArrayList<WorkoutExItem> workoutExItems = new ArrayList<WorkoutExItem>();
         try {
             JSONArray workoutsExArr = new JSONArray(cursor.getString(1));
             System.out.println(workoutsExArr.length());

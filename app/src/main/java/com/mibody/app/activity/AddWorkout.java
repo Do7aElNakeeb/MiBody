@@ -78,6 +78,7 @@ public class AddWorkout extends AppCompatActivity {
 
         sqLiteHandler = new SQLiteHandler(this);
 
+
         try {
             sqLiteHandler.open();
 

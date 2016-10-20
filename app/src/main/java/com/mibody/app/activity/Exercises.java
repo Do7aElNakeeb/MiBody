@@ -1,7 +1,10 @@
 package com.mibody.app.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,14 +13,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.ExercisesGroup;
+import com.mibody.app.app.WorkoutItem;
 import com.mibody.app.helper.ExercisesItemAdapter;
+import com.mibody.app.helper.ItemClickListener;
 import com.mibody.app.helper.RecyclerViewAdapter;
+import com.mibody.app.helper.WorkoutExItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +86,44 @@ public class Exercises extends Fragment {
 
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
         exercisesRV.setAdapter(adapter);
+
+        adapter.setClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.exercise_details, null);
+                builder.setView(dialogView);
+
+
+
+/*
+                    final AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setView(getLayoutInflater(getActivity()).inflate(R.layout.content_workout, null)).create();
+                    dialog.setTitle("Workout Information");
+                    dialog.setContentView(R.layout.custom_workout);
+*/
+
+                TextView exerciseName;
+                TextView exerciseDescription;
+                ImageView exerciseImg;
+
+
+
+                exerciseName = (TextView) dialogView.findViewById(R.id.exName);
+                exerciseImg = (ImageView) dialogView.findViewById(R.id.exImg);
+                exerciseDescription = (TextView) dialogView.findViewById(R.id.exDescription);
+
+                exerciseName.setText(exercises_names[position]);
+                exerciseImg.setImageResource(Images[position]);
+                exerciseDescription.setText(country_names[position]);
+
+
+                AlertDialog alertDialog =  builder.create();
+                alertDialog.show();
+            }
+        });
 /*
         ExercisesItemAdapter adapter = new ExercisesItemAdapter(this.getActivity());
         adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);

@@ -36,7 +36,7 @@
         <item>@drawable/gym2</item>
         <item>@drawable/gym1</item>
     </string-array>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">MiBody</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 

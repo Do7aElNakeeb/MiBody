@@ -113,6 +113,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
                 dialog.show();
 
+
 /*
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
