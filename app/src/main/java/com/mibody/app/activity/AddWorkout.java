@@ -112,6 +112,7 @@ public class AddWorkout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sqLiteHandler.addWorkout(new WorkoutItem(WorkoutName.getText().toString(), workoutExItemArrayList, workoutReps));
+                finish();
             }
         });
 
