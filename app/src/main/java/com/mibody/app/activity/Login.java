@@ -4,7 +4,6 @@ package com.mibody.app.activity;
  * Created by El Nakeeb on 7/14/2016.
  */
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -145,8 +144,8 @@ public class Login extends AppCompatActivity {
                         String message = jObj.getString("message");
                         String name = jObj.getString("name");
                         String email = jObj.getString("email");
-                        String mobile = jObj.getString("email");
-                        String weight = jObj.getString("carBrand");
+                        String mobile = jObj.getString("mobile");
+                        String weight = jObj.getString("weight");
                         String regID = jObj.getString("regID");
                         String created_at = jObj.getString("created_at");
 

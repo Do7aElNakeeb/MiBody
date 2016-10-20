@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -21,6 +23,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
@@ -35,12 +38,13 @@ import com.mibody.app.app.WorkoutItem;
 
 import static com.mibody.app.activity.BTDeviceList.EXTRA_DEVICE_ADDRESS;
 
-public class WorkoutPlay  extends Activity {
+public class WorkoutPlay extends FragmentActivity {
 
     Button btnOn, btnOff;
     TextView workoutName, processName, counter, status, sensorView1, sensorView2, sensorView3;
     Handler bluetoothIn;
 
+    FragmentManager fm = getSupportFragmentManager();
     WorkoutItem workoutItem;
   //  ArrayList<WorkoutItem> workoutItemArrayList;
   //  ArrayList<WorkoutExItem> workoutExItemArrayList;
@@ -89,9 +93,15 @@ public class WorkoutPlay  extends Activity {
         String MacAddress = prefs.getString("BT_MAC", "");
 
         if (!MacAddress.isEmpty()){
+            /*
             // Make an intent to start next activity while taking an extra which is the MAC address.
             Intent i = new Intent(WorkoutPlay.this, BTDeviceList.class);
             startActivity(i);
+            */
+
+
+            BTDeviceList btDeviceList = new BTDeviceList ();
+            btDeviceList.show(fm, "Sample Fragment");
         }
 
         try{

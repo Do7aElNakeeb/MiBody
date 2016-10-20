@@ -2,13 +2,18 @@ package com.mibody.app.activity;
 
 import java.util.Set;
 import android.app.Activity;
+import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,12 +24,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.mibody.app.R;
 import android.content.SharedPreferences.Editor;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * Created by NakeebMac on 10/9/16.
  */
 
-public class BTDeviceList extends Activity {
+public class BTDeviceList extends DialogFragment {
     // Debugging for LOGCAT
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
@@ -42,21 +49,62 @@ public class BTDeviceList extends Activity {
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.device_list);
+    }
 
-        SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.device_list, container, false);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("BT", MODE_PRIVATE);
         String MacAddress = prefs.getString("BT_MAC", "");
 
         if (!MacAddress.isEmpty()){
             // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(BTDeviceList.this, WorkoutPlay.class);
+            Intent i = new Intent(getActivity(), WorkoutPlay.class);
             i.putExtra(EXTRA_DEVICE_ADDRESS, MacAddress);
             startActivity(i);
         }
+
+        checkBTState();
+
+        textView1 = (TextView) view.findViewById(R.id.connecting);
+        textView1.setTextSize(40);
+        textView1.setText(" ");
+
+        // Initialize array adapter for paired devices
+        mPairedDevicesArrayAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.device_name);
+
+        // Find and set up the ListView for paired devices
+        ListView pairedListView = (ListView) view.findViewById(R.id.paired_devices);
+        pairedListView.setAdapter(mPairedDevicesArrayAdapter);
+        pairedListView.setOnItemClickListener(mDeviceClickListener);
+
+        // Get the local Bluetooth adapter
+        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        // Get a set of currently paired devices and append to 'pairedDevices'
+        Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
+
+        // Add previosuly paired devices to the array
+        if (pairedDevices.size() > 0) {
+            view.findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);//make title viewable
+            for (BluetoothDevice device : pairedDevices) {
+                mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+        } else {
+            String noDevices = getResources().getText(R.string.none_paired).toString();
+            mPairedDevicesArrayAdapter.add(noDevices);
+        }
+
+        return view;
     }
 
+/*
     @Override
     public void onResume()
     {
@@ -93,7 +141,7 @@ public class BTDeviceList extends Activity {
             mPairedDevicesArrayAdapter.add(noDevices);
         }
     }
-
+*/
     // Set up on-click listener for the list (nicked this - unsure)
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
@@ -103,13 +151,13 @@ public class BTDeviceList extends Activity {
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
 
-            SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
+            SharedPreferences prefs = getActivity().getSharedPreferences("BT", MODE_PRIVATE);
             Editor editor = prefs.edit();
             editor.putString("BT_MAC", address);
             editor.apply();
 
             // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(BTDeviceList.this, WorkoutPlay.class);
+            Intent i = new Intent(getActivity(), WorkoutPlay.class);
             i.putExtra(EXTRA_DEVICE_ADDRESS, address);
             startActivity(i);
         }
@@ -119,7 +167,7 @@ public class BTDeviceList extends Activity {
         // Check device has Bluetooth and that it is turned on
         mBtAdapter=BluetoothAdapter.getDefaultAdapter(); // CHECK THIS OUT THAT IT WORKS!!!
         if(mBtAdapter==null) {
-            Toast.makeText(getBaseContext(), "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
         } else {
             if (mBtAdapter.isEnabled()) {
                 Log.d(TAG, "...Bluetooth ON...");
