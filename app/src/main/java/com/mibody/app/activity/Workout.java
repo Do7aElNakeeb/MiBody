@@ -108,7 +108,7 @@ public class Workout extends Fragment{
 
             WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList);
             workoutsRV.setAdapter(adapter);
-
+/*
             adapter.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, final int position) {
@@ -119,14 +119,6 @@ public class Workout extends Fragment{
                     View dialogView = inflater.inflate(R.layout.custom_workout, null);
                     builder.setView(dialogView);
 
-
-
-/*
-                    final AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setView(getLayoutInflater(getActivity()).inflate(R.layout.content_workout, null)).create();
-                    dialog.setTitle("Workout Information");
-                    dialog.setContentView(R.layout.custom_workout);
-*/
                     EditText WorkoutName;
                     TextView exercisesSetText;
                     EditText workoutRepeat;
@@ -160,11 +152,8 @@ public class Workout extends Fragment{
                     builder.setNeutralButton("Play Workout", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getActivity(), WorkoutPlay.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("workoutItemKey", new WorkoutItem(workoutItemArrayList.get(position).workoutName,
-                                    workoutItemArrayList.get(position).exercisesList, workoutItemArrayList.get(position).workoutReps));
-                            intent.putExtras(bundle);
+                            Intent intent = new Intent(getActivity(), WorkoutPlayActivity.class);
+                            intent.putExtra("WorkoutItem", workoutItemArrayList.get(position));
                             startActivity(intent);
                         }
                     });
@@ -174,6 +163,7 @@ public class Workout extends Fragment{
 
                 }
             });
+            */
         }
 
 

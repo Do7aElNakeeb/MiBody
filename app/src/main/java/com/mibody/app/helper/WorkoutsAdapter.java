@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,7 @@ import com.mibody.app.R;
 import com.mibody.app.activity.AddWorkout;
 import com.mibody.app.activity.BTDeviceList;
 import com.mibody.app.activity.WorkoutPlay;
+import com.mibody.app.activity.WorkoutPlayActivity;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
@@ -65,7 +68,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
         final WorkoutItem model = arrayList.get(position);
 
         Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.Image);// This will convert drawbale image into
@@ -104,73 +107,21 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
                 playWorkoutBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(context, BTDeviceList.class);
+                        Intent i = new Intent(context, WorkoutPlayActivity.class);
                         // put extras here
-
+                        i.putExtra("WorkoutItem", arrayList.get(holder.getAdapterPosition()));
+                        i.putParcelableArrayListExtra("WorkoutItemExList", arrayList.get(holder.getAdapterPosition()).exercisesList);
+                        dialog.dismiss();
                         context.startActivity(i);
+
                     }
                 });
 
                 dialog.show();
 
-
-/*
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                LayoutInflater inflater = LayoutInflater.from(context);
-                View dialogView = inflater.inflate(R.layout.custom_workout, null);
-                builder.setView(dialogView);
-                builder.set
-
-                EditText WorkoutName;
-                TextView exercisesSetText;
-                EditText workoutRepeat;
-                int workoutReps = 0;
-                Button AddExercise;
-                ImageButton workoutRepeatBtn;
-                Button SaveWorkout;
-                GridView ExercisesGrid;
-                RecyclerView ExercisesSetGrid = (RecyclerView) dialogView.findViewById(R.id.exercises_set_grid);
-
-                exercisesSetText = (TextView) dialogView.findViewById(R.id.exercises_set_txt);
-                WorkoutName = (EditText) dialogView.findViewById(R.id.workout_name);
-                workoutRepeat = (EditText) dialogView.findViewById(R.id.workoutRepeat);
-                workoutRepeatBtn = (ImageButton) dialogView.findViewById(R.id.workoutRepeatBtn);
-                AddExercise = (Button) dialogView.findViewById(R.id.add_exercise);
-                SaveWorkout = (Button) dialogView.findViewById(R.id.save_btn);
-
-                ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-
-         //       arrayList.get(position).exercisesList.add(new WorkoutExItem());
-
-                WorkoutSQLAdapter WAdapter = new WorkoutSQLAdapter(context, arrayList.get(position).exercisesList);
-                ExercisesSetGrid.setAdapter(WAdapter);// set adapter on recyclerview
-                WAdapter.notifyDataSetChanged();// Notify the adapter
-
-               // initWorkoutViews(ExercisesSetGrid, arrayList.get(position).exercisesList);
-
-                v.setEnabled(false);
-                WorkoutName.setText(arrayList.get(position).workoutName);
-
-
-                AddExercise.setVisibility(View.GONE);
-                exercisesSetText.setText("Exercises");
-
-                SaveWorkout.setVisibility(View.GONE);
-
-                final Dialog alertDialog =  builder.create();
-
-                builder.setNeutralButton("Play Workout", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                alertDialog.show();
-*/
             }
         });
+
     }
 
     @Override

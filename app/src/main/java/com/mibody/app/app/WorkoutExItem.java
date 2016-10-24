@@ -1,5 +1,7 @@
 package com.mibody.app.app;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +16,7 @@ import org.json.JSONObject;
  * Created by NakeebMac on 10/5/16.
  */
 
-public class WorkoutExItem {
+public class WorkoutExItem implements Parcelable{
 
     private ImageView ExerciseImg;
     private Button RGB;
@@ -42,6 +44,27 @@ public class WorkoutExItem {
     public WorkoutExItem(){
 
     }
+
+    protected WorkoutExItem(Parcel in) {
+        RestT = in.readInt();
+        name = in.readString();
+        RepsT = in.readInt();
+        exercise = in.readString();
+        rgb = in.readString();
+        setReps = in.readInt();
+    }
+
+    public static final Creator<WorkoutExItem> CREATOR = new Creator<WorkoutExItem>() {
+        @Override
+        public WorkoutExItem createFromParcel(Parcel in) {
+            return new WorkoutExItem(in);
+        }
+
+        @Override
+        public WorkoutExItem[] newArray(int size) {
+            return new WorkoutExItem[size];
+        }
+    };
 
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
@@ -128,5 +151,20 @@ public class WorkoutExItem {
 
     public void setReps (EditText Reps){
         this.Reps = Reps;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(RestT);
+        dest.writeString(name);
+        dest.writeInt(RepsT);
+        dest.writeString(exercise);
+        dest.writeString(rgb);
+        dest.writeInt(setReps);
     }
 }

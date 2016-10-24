@@ -13,6 +13,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import android.app.Activity;
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
@@ -23,11 +26,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +44,13 @@ import com.mibody.app.app.WorkoutItem;
 
 import static com.mibody.app.activity.BTDeviceList.EXTRA_DEVICE_ADDRESS;
 
-public class WorkoutPlay extends FragmentActivity {
+public class WorkoutPlay extends Fragment {
 
     Button btnOn, btnOff;
     TextView workoutName, processName, counter, status, sensorView1, sensorView2, sensorView3;
     Handler bluetoothIn;
 
-    FragmentManager fm = getSupportFragmentManager();
+    //FragmentManager fm = getSupportFragmentManager();
     WorkoutItem workoutItem;
   //  ArrayList<WorkoutItem> workoutItemArrayList;
   //  ArrayList<WorkoutExItem> workoutExItemArrayList;
@@ -71,25 +77,22 @@ public class WorkoutPlay extends FragmentActivity {
     // String for MAC address
     private static String address;
 
+    public WorkoutPlay(WorkoutItem workoutItem){
+        this.workoutItem = workoutItem;
+    }
+    public void setBTAddress(String Baddress){
+        Log.d("Movie Name4", Baddress);
+        address = Baddress;
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.workout_play);
-
-        //Link the buttons and textViews to respective views
-        /*
-        btnOn = (Button) findViewById(R.id.buttonOn);
-        btnOff = (Button) findViewById(R.id.buttonOff);
-
-        sensorView0 = (TextView) findViewById(R.id.sensorView0);
-        sensorView1 = (TextView) findViewById(R.id.sensorView1);
-        sensorView2 = (TextView) findViewById(R.id.sensorView2);
-        sensorView3 = (TextView) findViewById(R.id.sensorView3);
-
-        */
-
-        SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null){
+            address = savedInstanceState.getString("address");
+        }
+/*
+        SharedPreferences prefs = getActivity().getSharedPreferences("BT", Context.MODE_PRIVATE);
         String MacAddress = prefs.getString("BT_MAC", "");
 
         if (!MacAddress.isEmpty()){
@@ -98,37 +101,19 @@ public class WorkoutPlay extends FragmentActivity {
             Intent i = new Intent(WorkoutPlay.this, BTDeviceList.class);
             startActivity(i);
             */
+/*
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            BTDeviceList btDeviceList = new BTDeviceList();
 
+            fragmentTransaction.replace(R.id.workoutPlayFragment, btDeviceList, "BTList");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
 
-            BTDeviceList btDeviceList = new BTDeviceList ();
-            btDeviceList.show(fm, "Sample Fragment");
         }
+*/
 
-        try{
-            // Get the Bundle Object
-            Bundle bundleObject = getIntent().getExtras();
 
-            workoutItem =  (WorkoutItem) bundleObject.getSerializable("workoutItemKey");
-            // Get ArrayList Bundle
-        //    workoutItemArrayList =  (ArrayList<WorkoutItem>) bundleObject.getSerializable("arrayKey");
-        //    workoutExItemArrayList = workoutItem.exercisesList;
-           // Retrieve Objects from Bundle
-            /*
-            for(int index = 0; index < workoutItem.exercisesList.size(); index++){
-
-                WorkoutItem workoutItem = workoutItemArrayList.get(index);
-                Toast.makeText(getApplicationContext(), "Id is : "+ workoutItem.workoutName, Toast.LENGTH_SHORT).show();
-            }
-            */
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-
-        calendar = Calendar.getInstance();
-        workoutName = (TextView) findViewById(R.id.workout_name);
-        processName = (TextView) findViewById(R.id.process_name);
-        counter = (TextView) findViewById(R.id.counter);
-        status = (TextView) findViewById(R.id.status);
 
         repsCount = workoutItem.exercisesList.get(exerciseCount).RepsT;
         setCount = workoutItem.exercisesList.get(exerciseCount).setReps;
@@ -136,13 +121,16 @@ public class WorkoutPlay extends FragmentActivity {
         ///////
         workoutName.setText(workoutItem.workoutName);
 
-        processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(exerciseCount).name)] + (exerciseCount+1) + " of "
-                + setCount + " Sets of " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises");
-
+        processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(exerciseCount).name)] + "\n"
+                + (processCount) + " / " + repsCount + " Reps\n"
+                + setCount + " / " + workoutItem.exercisesList.get(exerciseCount).setReps + " Sets\n"
+                + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises");
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
                 if (msg.what == handlerState) {										//if message is what we want
                     String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
+
+                    Log.d("received msg", readMessage);
 
                     calendar = Calendar.getInstance();
                     if(!readMessage.isEmpty()){
@@ -174,7 +162,7 @@ public class WorkoutPlay extends FragmentActivity {
                                         exerciseCount++;
                                         status.setText("");
                                         if ((exerciseCount+1) > workoutItem.exercisesList.size()){
-                                            setCount = workoutItem.exercisesList.get(exerciseCount).setReps;
+                                            setCount = workoutItem.exercisesList.get(exerciseCount-1).setReps;
                                             processName.setVisibility(View.GONE);
                                             counter.setTextSize(80);
                                             counter.setText("Done!");
@@ -235,7 +223,7 @@ public class WorkoutPlay extends FragmentActivity {
                                         exerciseCount++;
                                         status.setText("");
                                         if ((exerciseCount+1) > workoutItem.exercisesList.size()){
-                                            setCount = workoutItem.exercisesList.get(exerciseCount).setReps;
+                                            setCount = workoutItem.exercisesList.get(exerciseCount-1).setReps;
                                             processName.setVisibility(View.GONE);
                                             counter.setTextSize(80);
                                             counter.setText("Done!");
@@ -252,7 +240,7 @@ public class WorkoutPlay extends FragmentActivity {
                             }
 
                             processName.setText("Rest Time");
-                          //  oldMsg = "";
+                            //  oldMsg = "";
 
                         }
 
@@ -319,6 +307,34 @@ public class WorkoutPlay extends FragmentActivity {
             }
         });
         */
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("address", address);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        View view = inflater.inflate(R.layout.workout_play, container, false);
+
+        calendar = Calendar.getInstance();
+        workoutName = (TextView) view.findViewById(R.id.workout_name);
+        processName = (TextView) view.findViewById(R.id.process_name);
+        counter = (TextView) view.findViewById(R.id.counter);
+        status = (TextView) view.findViewById(R.id.status);
+
+        return view;
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
@@ -332,10 +348,10 @@ public class WorkoutPlay extends FragmentActivity {
         super.onResume();
 
         //Get MAC address from DeviceListActivity via intent
-        Intent intent = getIntent();
+    //    Intent intent = getActivity().getIntent();
 
         //Get the MAC address from the DeviceListActivty via EXTRA
-        address = intent.getStringExtra(EXTRA_DEVICE_ADDRESS);
+       // address = intent.getStringExtra(EXTRA_DEVICE_ADDRESS);
 
         //create device and set the MAC address
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
@@ -343,7 +359,7 @@ public class WorkoutPlay extends FragmentActivity {
         try {
             btSocket = createBluetoothSocket(device);
         } catch (IOException e) {
-            Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Socket creation failed", Toast.LENGTH_LONG).show();
         }
         // Establish the Bluetooth socket connection.
         try
@@ -383,7 +399,7 @@ public class WorkoutPlay extends FragmentActivity {
     private void checkBTState() {
 
         if(btAdapter==null) {
-            Toast.makeText(getBaseContext(), "Device does not support bluetooth", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Device does not support bluetooth", Toast.LENGTH_LONG).show();
         } else {
             if (btAdapter.isEnabled()) {
 
@@ -438,8 +454,8 @@ public class WorkoutPlay extends FragmentActivity {
                 mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
             } catch (IOException e) {
                 //if you cannot write, close the application
-                Toast.makeText(getBaseContext(), "Connection Failure", Toast.LENGTH_LONG).show();
-                finish();
+                Toast.makeText(getContext(), "Connection Failure", Toast.LENGTH_LONG).show();
+                getActivity().finish();
 
             }
         }
