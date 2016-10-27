@@ -55,10 +55,13 @@ public class WorkoutPlay extends Fragment {
   //  ArrayList<WorkoutItem> workoutItemArrayList;
   //  ArrayList<WorkoutExItem> workoutExItemArrayList;
 
+    int flagT = 0;
     int processCount = 0;
-    int exerciseCount = 0;
-    int setCount = 0;
-    int repsCount = 0;
+    int exerciseCount = 1;
+    int setExCount = 1;
+    int workoutReps = 1;
+    int setCount = 1;
+    int repsCount = 1;
     int settedToleranceTime = 5;
     int toleranceTime1 = 0;
     int toleranceTime2 = 0;
@@ -91,50 +94,36 @@ public class WorkoutPlay extends Fragment {
         if (savedInstanceState != null){
             address = savedInstanceState.getString("address");
         }
-/*
-        SharedPreferences prefs = getActivity().getSharedPreferences("BT", Context.MODE_PRIVATE);
-        String MacAddress = prefs.getString("BT_MAC", "");
-
-        if (!MacAddress.isEmpty()){
-            /*
-            // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(WorkoutPlay.this, BTDeviceList.class);
-            startActivity(i);
-            */
-/*
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            BTDeviceList btDeviceList = new BTDeviceList();
-
-            fragmentTransaction.replace(R.id.workoutPlayFragment, btDeviceList, "BTList");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            fragmentTransaction.commit();
-
-        }
-*/
 
 
+        /**
+         * Exercise A
+         * 1/12 reps
+         * 1/3 sets
+         * 2/4 exercise
+         * 1/2 workout reps
+         */
 
-        repsCount = workoutItem.exercisesList.get(exerciseCount).RepsT;
-        setCount = workoutItem.exercisesList.get(exerciseCount).setReps;
-
-        ///////
-        workoutName.setText(workoutItem.workoutName);
-
-        processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(exerciseCount).name)] + "\n"
-                + (processCount) + " / " + repsCount + " Reps\n"
-                + setCount + " / " + workoutItem.exercisesList.get(exerciseCount).setReps + " Sets\n"
-                + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises");
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
-                if (msg.what == handlerState) {										//if message is what we want
+                if (msg.what == handlerState) {                                             //if message is what we want
                     String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
 
                     Log.d("received msg", readMessage);
 
-                    calendar = Calendar.getInstance();
-                    if(!readMessage.isEmpty()){
+                    if (readMessage.equals("t")){
+                        flagT = 1;
+                        mConnectedThread.write("T");
+                        workoutName.setText(workoutItem.workoutName);
 
+                        processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(setExCount-1).name)] + "\n"
+                                + workoutItem.exercisesList.get(setExCount-1).RepsT + " Reps\n"
+                                + setCount + " / " + workoutItem.exercisesList.get(setExCount-1).setReps + " Sets\n"
+                                + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
+                                + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
+
+                    }
+                    else if (!readMessage.isEmpty()) {
                         processCount = Integer.parseInt(readMessage);
 
                         if(toleranceTime1 == 0){
@@ -149,95 +138,7 @@ public class WorkoutPlay extends Fragment {
                         if (Math.abs(toleranceTime2 - toleranceTime1) > settedToleranceTime && oldMsg.equals(readMessage)){
                             status.setVisibility(View.VISIBLE);
 
-                            if (processCount < workoutItem.exercisesList.get(exerciseCount).RepsT){
-                                status.setText("Failed!");
-                                new CountDownTimer(workoutItem.exercisesList.get(exerciseCount).RestT , 1000) {
-                                    @Override
-                                    public void onTick(long millisUntilFinished) {
-                                        counter.setText(String.valueOf(millisUntilFinished / 1000));
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        exerciseCount++;
-                                        status.setText("");
-                                        if ((exerciseCount+1) > workoutItem.exercisesList.size()){
-                                            setCount = workoutItem.exercisesList.get(exerciseCount-1).setReps;
-                                            processName.setVisibility(View.GONE);
-                                            counter.setTextSize(80);
-                                            counter.setText("Done!");
-                                        }
-                                        else {
-                                            setCount++;
-                                            processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(exerciseCount).name)] + "\n"
-                                                    + (processCount) + " / " + repsCount + " Reps\n"
-                                                    + setCount + " / " + workoutItem.exercisesList.get(exerciseCount).setReps + " Sets\n"
-                                                    + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises");
-                                        }
-                                    }
-                                }.start();
-                            }
-                            else if (processCount == workoutItem.exercisesList.get(exerciseCount).RepsT){
-                                status.setText("Success");
-                                new CountDownTimer(workoutItem.exercisesList.get(exerciseCount).RestT, 1000) {
-                                    @Override
-                                    public void onTick(long millisUntilFinished) {
-                                        counter.setText(String.valueOf(millisUntilFinished / 1000));
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        exerciseCount++;
-                                        status.setText("");
-                                        if ((exerciseCount+1) > workoutItem.exercisesList.size()){
-                                            processName.setVisibility(View.GONE);
-                                            counter.setTextSize(80);
-                                            counter.setText("Done!");
-                                        }
-                                        else {
-                                            setCount++;
-                                            processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(exerciseCount).name)] + "\n"
-                                                    + (processCount) + " / " + repsCount + " Reps\n"
-                                                    + setCount + " / " + workoutItem.exercisesList.get(exerciseCount).setReps + " Sets\n"
-                                                    + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises");
-/**
- * Exercise A
- * 1/12 reps
- * 1/3 sets
- * 2/4 exercise
- */
-                                        }
-                                    }
-                                }.start();
-                            }
-                            else {
-                                status.setText("Great");
-                                new CountDownTimer(10000, 1000) {
-                                    @Override
-                                    public void onTick(long millisUntilFinished) {
-                                        counter.setText(String.valueOf(millisUntilFinished / 1000));
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        exerciseCount++;
-                                        status.setText("");
-                                        if ((exerciseCount+1) > workoutItem.exercisesList.size()){
-                                            setCount = workoutItem.exercisesList.get(exerciseCount-1).setReps;
-                                            processName.setVisibility(View.GONE);
-                                            counter.setTextSize(80);
-                                            counter.setText("Done!");
-                                        }
-                                        else {
-                                            setCount++;
-                                            processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(exerciseCount).name)] + "\n"
-                                                    + (processCount) + " / " + repsCount + " Reps\n"
-                                                    + setCount + " / " + workoutItem.exercisesList.get(exerciseCount).setReps + " Sets\n"
-                                                    + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises");
-                                        }
-                                    }
-                                }.start();
-                            }
+                            processStatus(processCount, workoutItem.exercisesList.get(setExCount-1).RepsT);
 
                             processName.setText("Rest Time");
                             //  oldMsg = "";
@@ -247,6 +148,7 @@ public class WorkoutPlay extends Fragment {
                         else {
                             counter.setText(readMessage);
 
+
                             Log.d("TimeUp", toleranceTime1 + " - " + toleranceTime2 + " - "+ oldMsg + " - " + readMessage);
 
                             if (!oldMsg.equals(readMessage)){
@@ -255,8 +157,9 @@ public class WorkoutPlay extends Fragment {
                             oldMsg = readMessage;
 
                         }
-
                     }
+
+
 
                     /*
                     recDataString.append(readMessage);      								//keep appending to string until ~
@@ -310,6 +213,62 @@ public class WorkoutPlay extends Fragment {
 
     }
 
+
+    private void processStatus(int processCount, int reps){
+
+        if(processCount < reps){
+            status.setText("Failed!");
+
+        }
+        else if(processCount == reps){
+            status.setText("Success!");
+        }
+        else if(processCount > reps){
+            status.setText("Great!");
+        }
+
+        new CountDownTimer(workoutItem.exercisesList.get(setExCount-1).RestT * 1000 , 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                counter.setText(String.valueOf(millisUntilFinished / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                status.setText("");
+                if (setCount >= workoutItem.exercisesList.get(setExCount-1).setReps){
+                    if (exerciseCount >= workoutItem.exercisesList.size()){
+                        if (workoutReps >= workoutItem.workoutReps){
+                            processName.setVisibility(View.GONE);
+                            counter.setTextSize(80);
+                            counter.setText("Done!");
+                        }
+                        else {
+                            setCount = 1;
+                            exerciseCount = 1;
+                            setExCount = 1;
+                            workoutReps++;
+                        }
+                    }
+                    else {
+                        setCount = 1;
+                        setExCount++;
+                        exerciseCount++;
+                    }
+                }
+                else {
+                    setCount++;
+                }
+
+                processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(setExCount - 1).name)] + "\n"
+                        + workoutItem.exercisesList.get(setExCount-1).RepsT + " Reps\n"
+                        + setCount + " / " + workoutItem.exercisesList.get(setExCount - 1).setReps + " Sets\n"
+                        + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
+                        + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
+            }
+        }.start();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -353,6 +312,10 @@ public class WorkoutPlay extends Fragment {
         //Get the MAC address from the DeviceListActivty via EXTRA
        // address = intent.getStringExtra(EXTRA_DEVICE_ADDRESS);
 
+//        Log.d("BTAddress1", address);
+
+
+        Log.d("BTAddress2", address);
         //create device and set the MAC address
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
 
@@ -379,7 +342,9 @@ public class WorkoutPlay extends Fragment {
 
         //I send a character when resuming.beginning transmission to check device is connected
         //If it is not an exception will be thrown in the write method and finish() will be called
-        mConnectedThread.write("Start");
+        while (flagT == 0) {
+            mConnectedThread.write("T");
+        }
     }
 
     @Override
@@ -439,6 +404,9 @@ public class WorkoutPlay extends Fragment {
                 try {
                     bytes = mmInStream.read(buffer);        	//read bytes from input buffer
                     String readMessage = new String(buffer, 0, bytes);
+                    if (readMessage.equals("t")){
+                        flagT = 1;
+                    }
                     // Send the obtained bytes to the UI Activity via handler
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget();
                 } catch (IOException e) {

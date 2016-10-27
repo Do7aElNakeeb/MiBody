@@ -32,12 +32,13 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
         if (workoutItem == null){
             Log.d("WorkoutItem", "nulllll");
         }
-        SharedPreferences sharedPreferences = getSharedPreferences("BT", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("BT3", MODE_PRIVATE);
 
-        if (!sharedPreferences.getString("BTAddress", "").isEmpty()){
+        if (!sharedPreferences.getString("BT_MAC", "").isEmpty()){
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             WorkoutPlay workoutPlay = new WorkoutPlay(workoutItem);
+            workoutPlay.setBTAddress(sharedPreferences.getString("BT_MAC", ""));
 
             fragmentTransaction.add(R.id.workoutPlayFragment, workoutPlay, "Workout Play");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
