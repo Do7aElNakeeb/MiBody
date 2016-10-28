@@ -100,6 +100,8 @@ public class BTDeviceList extends Fragment {
                 editor.apply();
 
                 onDeviceSelected.onDeviceSelected(address);
+             //   getActivity().getSupportFragmentManager().beginTransaction().remove(getParentFragment()).commit();
+
 
             }
         });

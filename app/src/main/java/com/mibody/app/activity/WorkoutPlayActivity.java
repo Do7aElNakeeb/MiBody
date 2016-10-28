@@ -20,15 +20,18 @@ import android.content.SharedPreferences.Editor;
 public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceList.OnDeviceSelected{
 
     WorkoutItem workoutItem;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.workouts_fragment);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         workoutItem = intent.getParcelableExtra("WorkoutItem");
-        workoutItem.exercisesList = intent.getParcelableArrayListExtra("WorkoutItemExList");
+        if (!intent.getStringExtra("weight").equals("weight")) {
+            workoutItem.exercisesList = intent.getParcelableArrayListExtra("WorkoutItemExList");
+        }
         if (workoutItem == null){
             Log.d("WorkoutItem", "nulllll");
         }
@@ -44,6 +47,7 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
         }
+
         else {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -59,12 +63,24 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
     @Override
     public void onDeviceSelected(String address) {
         Log.d("Movie Name1", address);
-        WorkoutPlay workoutPlay = new WorkoutPlay(workoutItem);
-        workoutPlay.setBTAddress(address);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.workoutPlayFragment, workoutPlay, "Movie Details Fragment");
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
-        ft.commit();
+        if (intent.getStringExtra("weight").equals("weight")){
+            Weight weight = new Weight();
+            weight.setBTAddress(address);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.workoutPlayFragment, weight, "Weight");
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+        else {
+            WorkoutPlay workoutPlay = new WorkoutPlay(workoutItem);
+            workoutPlay.setBTAddress(address);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.workoutPlayFragment, workoutPlay, "Movie Details Fragment");
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+
     }
 }

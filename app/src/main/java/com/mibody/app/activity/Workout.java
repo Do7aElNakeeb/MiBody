@@ -166,9 +166,6 @@ public class Workout extends Fragment{
             */
         }
 
-
-
-
         // Inflate the layout for this fragment
         return view1;
     }

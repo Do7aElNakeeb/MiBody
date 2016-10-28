@@ -113,7 +113,7 @@ public class WorkoutPlay extends Fragment {
 
                     if (readMessage.equals("t")){
                         flagT = 1;
-                        mConnectedThread.write("T");
+                        //mConnectedThread.write("T");
                         workoutName.setText(workoutItem.workoutName);
 
                         processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(setExCount-1).name)] + "\n"
@@ -123,7 +123,9 @@ public class WorkoutPlay extends Fragment {
                                 + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
 
                     }
+
                     else if (!readMessage.isEmpty()) {
+                        calendar = Calendar.getInstance();
                         processCount = Integer.parseInt(readMessage);
 
                         if(toleranceTime1 == 0){
@@ -406,6 +408,7 @@ public class WorkoutPlay extends Fragment {
                     String readMessage = new String(buffer, 0, bytes);
                     if (readMessage.equals("t")){
                         flagT = 1;
+                        Log.d("flagValue", String.valueOf(flagT));
                     }
                     // Send the obtained bytes to the UI Activity via handler
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget();

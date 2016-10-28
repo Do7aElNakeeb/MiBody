@@ -110,6 +110,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
                         Intent i = new Intent(context, WorkoutPlayActivity.class);
                         // put extras here
                         i.putExtra("WorkoutItem", arrayList.get(holder.getAdapterPosition()));
+                        i.putExtra("weight", "");
                         i.putParcelableArrayListExtra("WorkoutItemExList", arrayList.get(holder.getAdapterPosition()).exercisesList);
                         dialog.dismiss();
                         context.startActivity(i);

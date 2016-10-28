@@ -3,6 +3,7 @@ package com.mibody.app.activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -66,6 +67,8 @@ public class Register extends AppCompatActivity {
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
     TextView BTState;
 
+    SharedPreferences prefs;
+
 
 
     @Override
@@ -88,6 +91,8 @@ public class Register extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
+
         // Session manager
         session = new SessionManager(getApplicationContext());
 
@@ -103,6 +108,10 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(getApplicationContext(), WorkoutPlayActivity.class);
+                intent.putExtra("weight", "weight");
+                startActivity(intent);
+                /*
                 SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
                 String MacAddress = prefs.getString("BT_MAC", "");
 
@@ -117,6 +126,9 @@ public class Register extends AppCompatActivity {
                 }
                 else {
                     // go to bluetooth dialog
+
+
+                    /*
 
                     View dialogView = inflater.inflate(R.layout.device_list, null);
                     builder.setView(dialogView);
@@ -153,7 +165,9 @@ public class Register extends AppCompatActivity {
                     }
 
 
+
                 }
+            */
 
             }
         });
@@ -303,6 +317,13 @@ public class Register extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        editTextWeight.setText(prefs.getString("weight", ""));
+
+    }
 
     private void showDialog() {
         if (!pDialog.isShowing())
