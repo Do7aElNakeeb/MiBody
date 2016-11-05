@@ -56,6 +56,9 @@ public class WorkoutPlay extends Fragment {
   //  ArrayList<WorkoutExItem> workoutExItemArrayList;
 
     int flagT = 0;
+    int flagF = 0;
+    int flagF0 = 0;
+    int flagF1 = 0;
     int processCount = 0;
     int exerciseCount = 1;
     int setExCount = 1;
@@ -95,7 +98,6 @@ public class WorkoutPlay extends Fragment {
             address = savedInstanceState.getString("address");
         }
 
-
         /**
          * Exercise A
          * 1/12 reps
@@ -123,42 +125,91 @@ public class WorkoutPlay extends Fragment {
                                 + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
 
                     }
-
+                    /*
+                    else if (readMessage.equals("f") && flagF1 == 0){
+                        flagF = 1;
+                        while (flagT == 0){
+                            mConnectedThread.write("t");
+                        }
+                    }
+                    */
+                    else if (readMessage.equals("f")){
+                        flagF = 1;
+                    }
                     else if (!readMessage.isEmpty()) {
-                        calendar = Calendar.getInstance();
-                        processCount = Integer.parseInt(readMessage);
 
-                        if(toleranceTime1 == 0){
-                            toleranceTime1 = calendar.get(Calendar.SECOND);
-                        }
-                        if (oldMsg.isEmpty()){
-                            oldMsg = readMessage;
-                        }
-
-                        toleranceTime2 = calendar.get(Calendar.SECOND);
-
-                        if (Math.abs(toleranceTime2 - toleranceTime1) > settedToleranceTime && oldMsg.equals(readMessage)){
-                            status.setVisibility(View.VISIBLE);
-
-                            processStatus(processCount, workoutItem.exercisesList.get(setExCount-1).RepsT);
-
-                            processName.setText("Rest Time");
-                            //  oldMsg = "";
-
-                        }
-
-                        else {
-                            counter.setText(readMessage);
-
-
-                            Log.d("TimeUp", toleranceTime1 + " - " + toleranceTime2 + " - "+ oldMsg + " - " + readMessage);
-
-                            if (!oldMsg.equals(readMessage)){
-                                toleranceTime1 = toleranceTime2;
+                        int endOfLineIndex = 0;
+                        for (int i = 0; i <readMessage.length(); i++){
+                            /*
+                            if (readMessage.charAt(i) != 't' && readMessage.charAt(i) != 'f'){
+                                recDataString.append(readMessage.charAt(i));
+                                endOfLineIndex = recDataString.indexOf("#");
                             }
-                            oldMsg = readMessage;
-
+                            */
+                            if (readMessage.charAt(i) == '*'){
+                                recDataString.append(readMessage.charAt(i));
+                            }
+                            else if (readMessage.charAt(i) == '#'){
+                                recDataString.append(readMessage.charAt(i));
+                                endOfLineIndex = recDataString.indexOf("#");
+                            }
+                            else {
+                                recDataString.append(readMessage.charAt(i));
+                            }
                         }
+
+                        if(endOfLineIndex > 0){
+                            String strCount = recDataString.substring(1, endOfLineIndex);
+                            Log.d("strCount", strCount);
+
+                            calendar = Calendar.getInstance();
+                            processCount = Integer.parseInt(strCount);
+
+                            if(toleranceTime1 == 59){
+                                toleranceTime1 = calendar.get(Calendar.SECOND);
+                            }
+                            if (oldMsg.equals("~")){
+                                oldMsg = strCount;
+                            }
+
+                            toleranceTime2 = calendar.get(Calendar.SECOND);
+
+                            if (Math.abs(toleranceTime2 - toleranceTime1) >= settedToleranceTime && oldMsg.equals(strCount)){
+                                status.setVisibility(View.VISIBLE);
+
+                                Log.d("processtatus", oldMsg + strCount);
+
+                                processStatus(processCount, workoutItem.exercisesList.get(setExCount-1).RepsT);
+
+                                processName.setText("Rest Time");
+                                oldMsg = "~";
+                                toleranceTime1 = 59;
+
+                            }
+
+                            else {
+                                counter.setText(strCount);
+
+                                Log.d("TimeUp", toleranceTime1 + " - " + toleranceTime2 + " - "+ oldMsg + " - " + strCount);
+
+                                if (!oldMsg.equals(strCount)){
+                                    toleranceTime1 = toleranceTime2;
+                                }
+                                oldMsg = strCount;
+
+                            }
+
+                            recDataString.delete(0, recDataString.length());
+                        }
+                        /*
+                        String strCount = "";
+                        for (int i = 0; i <readMessage.length(); i++){
+                            if (readMessage.charAt(i) != 't'){
+                                strCount += readMessage.charAt(i);
+                            }
+                        }
+                        */
+
                     }
 
 
@@ -220,7 +271,6 @@ public class WorkoutPlay extends Fragment {
 
         if(processCount < reps){
             status.setText("Failed!");
-
         }
         else if(processCount == reps){
             status.setText("Success!");
@@ -229,7 +279,14 @@ public class WorkoutPlay extends Fragment {
             status.setText("Great!");
         }
 
+        mConnectedThread.write("f");
+        /*
+        while (flagF == 0 && flagF0 == 0) {
+            mConnectedThread.write("f");
+        }
+*/
         new CountDownTimer(workoutItem.exercisesList.get(setExCount-1).RestT * 1000 , 1000) {
+
             @Override
             public void onTick(long millisUntilFinished) {
                 counter.setText(String.valueOf(millisUntilFinished / 1000));
@@ -238,28 +295,35 @@ public class WorkoutPlay extends Fragment {
             @Override
             public void onFinish() {
                 status.setText("");
+                counter.setText("0");
+
                 if (setCount >= workoutItem.exercisesList.get(setExCount-1).setReps){
                     if (exerciseCount >= workoutItem.exercisesList.size()){
                         if (workoutReps >= workoutItem.workoutReps){
                             processName.setVisibility(View.GONE);
                             counter.setTextSize(80);
                             counter.setText("Done!");
+                            flagF1 = 1;
+                            flagT = 1;
                         }
                         else {
                             setCount = 1;
                             exerciseCount = 1;
                             setExCount = 1;
                             workoutReps++;
+                            flagT = 0;
                         }
                     }
                     else {
                         setCount = 1;
                         setExCount++;
                         exerciseCount++;
+                        flagT = 0;
                     }
                 }
                 else {
                     setCount++;
+                    flagT = 0;
                 }
 
                 processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(setExCount - 1).name)] + "\n"
@@ -267,8 +331,20 @@ public class WorkoutPlay extends Fragment {
                         + setCount + " / " + workoutItem.exercisesList.get(setExCount - 1).setReps + " Sets\n"
                         + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
                         + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
+
+                if (flagT == 0){
+                    mConnectedThread.write("t");
+                }
+
+                /*
+                while (flagT == 0 && flagF1 == 0) {
+                    mConnectedThread.write("t");
+                    flagF0 = 0;
+                }
+                */
             }
         }.start();
+
     }
 
     @Override
@@ -344,15 +420,20 @@ public class WorkoutPlay extends Fragment {
 
         //I send a character when resuming.beginning transmission to check device is connected
         //If it is not an exception will be thrown in the write method and finish() will be called
+        mConnectedThread.write("t");
+        /*
         while (flagT == 0) {
-            mConnectedThread.write("T");
+            mConnectedThread.write("t");
         }
+        */
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
+        flagF = 0;
+        flagT = 0;
         try
         {
             //Don't leave Bluetooth sockets open when leaving activity
@@ -391,7 +472,9 @@ public class WorkoutPlay extends Fragment {
                 //Create I/O streams for connection
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), "Failed to Connect", Toast.LENGTH_SHORT).show();
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
@@ -408,7 +491,13 @@ public class WorkoutPlay extends Fragment {
                     String readMessage = new String(buffer, 0, bytes);
                     if (readMessage.equals("t")){
                         flagT = 1;
-                        Log.d("flagValue", String.valueOf(flagT));
+                        Log.d("flagTValue", String.valueOf(flagT));
+                    }
+
+                    if (readMessage.equals("f")){
+                        flagF = 1;
+                        flagF0 = 1;
+                        Log.d("flagFValue", String.valueOf(flagF));
                     }
                     // Send the obtained bytes to the UI Activity via handler
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget();
@@ -420,8 +509,10 @@ public class WorkoutPlay extends Fragment {
 
         //write method
         public void write(String input) {
+            Log.d("writeMsg", input);
             byte[] msgBuffer = input.getBytes();           //converts entered String into bytes
             try {
+
                 mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
             } catch (IOException e) {
                 //if you cannot write, close the application

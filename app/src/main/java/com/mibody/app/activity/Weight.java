@@ -44,8 +44,10 @@ public class Weight extends Fragment {
     Editor editor;
     TextView weightStatus, weightValue;
     Button calibrateBtn, weightBtn, weightSave;
+    StringBuilder stringBuilder = new StringBuilder();
     int flagC = 0;
     int flagW = 0;
+    int flag1W = 0;
 
     // SPP UUID service - this should work for most devices
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -74,10 +76,14 @@ public class Weight extends Fragment {
             public void onClick(View v) {
                 flagC = 0;
                 weightValue.setText("0");
+                mConnectedThread.write("c");
+                weightStatus.setText("Calibrating");
+                /*
                 while (flagC == 0) {
-                    mConnectedThread.write("C");
+                    mConnectedThread.write("c");
                     weightStatus.setText("Calibrating");
                 }
+                */
             }
         });
 
@@ -85,10 +91,14 @@ public class Weight extends Fragment {
             @Override
             public void onClick(View v) {
                 flagW = 0;
+                mConnectedThread.write("w");
+                weightStatus.setText("Your Weight");
+                /*
                 while (flagW == 0) {
-                    mConnectedThread.write("W");
+                    mConnectedThread.write("w");
                     weightStatus.setText("Weighting");
                 }
+                */
             }
         });
 
@@ -106,16 +116,41 @@ public class Weight extends Fragment {
                 if (msg.what == handlerState) {                                             //if message is what we want
                     String readMessage = (String) msg.obj;
 
+                    Log.d("readMsg", readMessage);
+
                     if(readMessage.equals("c")){
                         flagC = 1;
                         weightStatus.setText("Calibrated");
                     }
-                    else if (readMessage.equals("w")) {
+                    else if (readMessage.equals("w") && flag1W == 0) {
                         flagW = 1;
+                        flag1W = 1;
                         weightStatus.setText("Your Weight");
                     }
-                    else {
-                        weightValue.setText(readMessage);
+                    else if (!readMessage.equals("w") || !readMessage.equals("c")){
+                        int endOfLineIndex = 0;
+                        for (int i = 0; i <readMessage.length(); i++){
+                            if (readMessage.charAt(i) != 'w'){
+                                stringBuilder.append(readMessage.charAt(i));
+                                endOfLineIndex = stringBuilder.indexOf("#");
+                            }
+                        }
+
+                        if(endOfLineIndex > 0){
+                            String dataInPrint = stringBuilder.substring(0, endOfLineIndex);
+                            weightValue.setText(dataInPrint);
+
+                            stringBuilder.delete(0, stringBuilder.length());
+                        }
+                        /*
+                        String weightVal = "";
+                        for (int i = 0; i <readMessage.length(); i++){
+                            if (readMessage.charAt(i) != 'w'){
+                                weightVal += readMessage.charAt(i);
+                            }
+                        }
+                        weightValue.setText(weightVal);
+                        */
                     }
 
                 }
@@ -207,12 +242,21 @@ public class Weight extends Fragment {
     public void onPause()
     {
         super.onPause();
+
+        flagW = 0;
+        flag1W = 0;
+        flagC = 0;
         try
         {
+            mConnectedThread.mmInStream.close();
+            mConnectedThread.mmOutStream.close();
             //Don't leave Bluetooth sockets open when leaving activity
             btSocket.close();
         } catch (IOException e2) {
             //insert code to deal with this
+        }
+        if(btSocket != null){
+            btSocket = null;
         }
     }
 
@@ -235,6 +279,8 @@ public class Weight extends Fragment {
     private class ConnectedThread extends Thread {
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
+
+
 
         //creation of the connect thread
         public ConnectedThread(BluetoothSocket socket) {

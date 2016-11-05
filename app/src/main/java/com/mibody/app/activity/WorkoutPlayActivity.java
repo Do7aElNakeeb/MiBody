@@ -35,6 +35,7 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
         if (workoutItem == null){
             Log.d("WorkoutItem", "nulllll");
         }
+
         SharedPreferences sharedPreferences = getSharedPreferences("BT3", MODE_PRIVATE);
 
         if (!sharedPreferences.getString("BT_MAC", "").isEmpty()){
@@ -49,6 +50,7 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
         }
 
         else {
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             BTDeviceList btDeviceList = new BTDeviceList();

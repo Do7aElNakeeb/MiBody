@@ -95,19 +95,7 @@ public class Workout extends Fragment{
             }
         });
 
-        workoutItemArrayList = sqLiteHandler.getWorkouts(null);
 
-
-        if (workoutItemArrayList.size() != 0){
-            Log.d("sizen", String.valueOf(workoutItemArrayList.size()) + String.valueOf(workoutItemArrayList.get(0).exercisesList.size()) );
-            workoutsRV = (RecyclerView) view1.findViewById(R.id.expandableListView);
-            workoutsRV.setHasFixedSize(true);
-            workoutsRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));
-
-            workoutsRV.setItemAnimator(new DefaultItemAnimator());
-
-            WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList);
-            workoutsRV.setAdapter(adapter);
 /*
             adapter.setClickListener(new ItemClickListener() {
                 @Override
@@ -164,7 +152,7 @@ public class Workout extends Fragment{
                 }
             });
             */
-        }
+
 
         // Inflate the layout for this fragment
         return view1;
@@ -187,8 +175,28 @@ public class Workout extends Fragment{
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
-   /*
+        workoutItemArrayList = sqLiteHandler.getWorkouts(null);
+
+
+        if (workoutItemArrayList.size() != 0) {
+            Log.d("sizen", String.valueOf(workoutItemArrayList.size()) + String.valueOf(workoutItemArrayList.get(0).exercisesList.size()));
+            workoutsRV = (RecyclerView) getView().findViewById(R.id.expandableListView);
+            workoutsRV.setHasFixedSize(true);
+            workoutsRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));
+
+            workoutsRV.setItemAnimator(new DefaultItemAnimator());
+
+            WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList);
+            workoutsRV.setAdapter(adapter);
+        }
+    }
+
+
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
