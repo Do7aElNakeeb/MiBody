@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/complete_regbg"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:text="About you"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+                <ToggleButton
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/male_on"
+                    android:textOff=" "
+                    android:textOn=" "/>
+                <ToggleButton
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/female_off"
+                    android:textOff=" "
+                    android:textOn=" " />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <EditText
+                    android:layout_width="100dp"
+                    android:hint="your weight"
+                    android:padding="2dp"
+                    android:textSize="8sp"
+                    android:background="@drawable/txtfld_bg"
+                    android:gravity="center"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:layout_width="100dp"
+                    android:hint="your height"
+                    android:padding="2dp"
+                    android:textSize="8sp"
+                    android:background="@drawable/txtfld_bg"
+                    android:gravity="center"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Birthday"
+                    android:textSize="20sp"
+                    android:textColor="#FFFFFF"
+                    android:background="#000"
+                    android:gravity="center"/>
+
+                <com.aigestudio.wheelpicker.widgets.WheelDatePicker
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:id="@+id/DoB_picker">
+
+                </com.aigestudio.wheelpicker.widgets.WheelDatePicker>
+
+                <Button
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:text="Next"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/signinbtn"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

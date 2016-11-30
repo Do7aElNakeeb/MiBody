@@ -56,7 +56,6 @@ public class Login extends AppCompatActivity {
 
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
         buttonLogin = (Button) findViewById(R.id.btnLogin);
 
         // Progress dialog
@@ -69,22 +68,14 @@ public class Login extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn().equals("1")) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), Landing.class);
             startActivity(intent);
             finish();
         }
 
 
 
-        // Link to Register Screen
-        btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), Register.class);
-                startActivity(i);
-                finish();
-            }
-        });
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
