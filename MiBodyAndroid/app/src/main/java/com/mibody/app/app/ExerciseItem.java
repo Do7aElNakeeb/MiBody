@@ -12,17 +12,18 @@ import java.util.List;
 public class ExerciseItem {
 
     private int Image;
-    private TextView Description;
+    private String Description;
     private String name;
-    public int type;
-    public List<ExerciseItem> invisibleChildren;
+    //public int type;
+    //public List<ExerciseItem> invisibleChildren;
 
     public ExerciseItem(){
 
     }
 
-    public ExerciseItem(int image, TextView Description) {
+    public ExerciseItem(int image,String name, String Description) {
         this.Image = image;
+        this.name = name;
         this.Description = Description;
     }
 
@@ -47,11 +48,11 @@ public class ExerciseItem {
         this.Image = Image;
     }
 
-    public TextView getDescription() {
+    public String getDescription() {
         return Description;
     }
 
-    public void setDescription(TextView Description) {
+    public void setDescription(String Description) {
         this.Description = Description;
     }
 }

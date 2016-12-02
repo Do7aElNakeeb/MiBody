@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn().equals("1")) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(getApplicationContext(), Landing.class);
+            Intent intent = new Intent(getApplicationContext(), ExercisesActivity.class);
             startActivity(intent);
             finish();
         }

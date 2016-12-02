@@ -53,6 +53,12 @@
             android:label="HOME">
         </activity>
 
+        <activity
+            android:name=".activity.ExercisesActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="Exercises">
+        </activity>
+
 
 
     </application>
