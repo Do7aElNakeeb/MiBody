@@ -2,26 +2,19 @@ package com.mibody.app.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mibody.app.R;
-import com.mibody.app.fragments.ExercisesFragment;
-import com.mibody.app.fragments.WokoutsFragment;
+import com.mibody.app.fragments.WorkoutFragment;
 import com.mibody.app.helper.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    Toolbar toolbar;
+    TabLayout tabLayout;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new Exercises(), "Exercises");
-        adapter.addFragment(new Workout(), "Workouts");
+        adapter.addFragment(new WorkoutFragment(), "Workouts");
         viewPager.setAdapter(adapter);
     }
 

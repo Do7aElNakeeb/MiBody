@@ -59,6 +59,15 @@
             android:label="Exercises">
         </activity>
 
+        <activity
+            android:name=".activity.WorkoutsActivity"
+            android:label="Workouts">
+        </activity>
+
+        <activity
+            android:name=".activity.WorkoutsItemsActivity"
+            android:label="Workouts">
+        </activity>
 
 
     </application>

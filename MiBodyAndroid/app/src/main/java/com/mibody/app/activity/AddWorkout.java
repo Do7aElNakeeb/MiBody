@@ -86,7 +86,7 @@ public class AddWorkout extends AppCompatActivity {
             Log.i("hello", "hello");
         }
 /*
-        SharedPreferences sharedPreferences = getSharedPreferences("Workout", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("WorkoutFragment", MODE_PRIVATE);
         final Editor editor = sharedPreferences.edit();
         editor.putString("WorkoutExNo", String.valueOf(workoutExNo));
         editor.apply();

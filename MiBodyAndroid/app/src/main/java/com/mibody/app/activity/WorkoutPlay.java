@@ -86,6 +86,7 @@ public class WorkoutPlay extends Fragment {
     public WorkoutPlay(WorkoutItem workoutItem){
         this.workoutItem = workoutItem;
     }
+
     public void setBTAddress(String Baddress){
         Log.d("Movie Name4", Baddress);
         address = Baddress;
@@ -122,7 +123,7 @@ public class WorkoutPlay extends Fragment {
                                 + workoutItem.exercisesList.get(setExCount-1).RepsT + " Reps\n"
                                 + setCount + " / " + workoutItem.exercisesList.get(setExCount-1).setReps + " Sets\n"
                                 + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
-                                + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
+                                + workoutReps + " / " + workoutItem.workoutReps + " WorkoutFragment Reps");
 
                     }
                     /*
@@ -330,7 +331,7 @@ public class WorkoutPlay extends Fragment {
                         + workoutItem.exercisesList.get(setExCount-1).RepsT + " Reps\n"
                         + setCount + " / " + workoutItem.exercisesList.get(setExCount - 1).setReps + " Sets\n"
                         + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
-                        + workoutReps + " / " + workoutItem.workoutReps + " Workout Reps");
+                        + workoutReps + " / " + workoutItem.workoutReps + " WorkoutFragment Reps");
 
                 if (flagT == 0){
                     mConnectedThread.write("t");

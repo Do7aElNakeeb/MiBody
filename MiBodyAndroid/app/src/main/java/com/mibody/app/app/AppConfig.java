@@ -9,7 +9,7 @@ import com.mibody.app.R;
 public class AppConfig {
 
     // Server promotions url
-    public static String URL_SERVER = "http://mibody.do7aelnakeeb.cf/";
+    public static String URL_SERVER = "http://mibody.ch/";
 
     // EXTRA string to send on to mainactivity
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
@@ -33,5 +33,9 @@ public class AppConfig {
             R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
             R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
             R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
+
+
+    // Video Thumbnail Url
+    public static String VideoThumbnail = "http://img.youtube.com/vi/";
 
 }

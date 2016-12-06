@@ -39,7 +39,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ItemClickListener clickListener;
 
-
     public RecyclerViewAdapter(Context context, ArrayList<ExerciseItem> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
@@ -49,16 +48,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return (null != arrayList ? arrayList.size() : 0);
-
     }
     
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final ExerciseItem model = arrayList.get(position);
 
     //    final RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;// holder
 
-        Bitmap image = BitmapFactory.decodeResource(context.getResources(),model.getImage());// This will convert drawbale image into
+        Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.getImage());// This will convert drawbale image into
         // bitmap
 
         // setting title
@@ -78,6 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
 */
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {

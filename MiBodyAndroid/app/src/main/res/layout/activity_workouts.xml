@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/MiBodyOrange"
+    tools:context="com.mibody.app.activity.WorkoutsActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:text="Workouts Routine"
+            android:textColor="#FFF"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Choose your type"
+            android:textColor="#000"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/predefinedCV"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/landing_menu_item_margin"
+            android:layout_marginRight="@dimen/landing_menu_item_margin"
+            android:layout_marginBottom="10dp"
+            card_view:cardCornerRadius="@dimen/landing_menu_item_cornerradius"
+            card_view:cardUseCompatPadding="false"
+            card_view:cardBackgroundColor="#FFF">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:src="@drawable/predefined_icon"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"/>
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:text="Predefined"
+            android:textColor="#000"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/personalisedCV"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/landing_menu_item_margin"
+            android:layout_marginRight="@dimen/landing_menu_item_margin"
+            android:layout_marginBottom="10dp"
+            card_view:cardCornerRadius="@dimen/landing_menu_item_cornerradius"
+            card_view:cardUseCompatPadding="false"
+            card_view:cardBackgroundColor="#FFF">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="25dp"
+                android:src="@drawable/personalised_icon"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"/>
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:text="Personalised"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+    <!--
+    <include layout="@layout/workouts_items_activity" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_input_add" />
+-->
+
+</android.support.design.widget.CoordinatorLayout>

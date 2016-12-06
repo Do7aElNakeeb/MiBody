@@ -83,13 +83,13 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
             public void onClick(View v) {
 
                 final Dialog dialog = new Dialog(context);
-                dialog.setTitle("Workout Information");
+                dialog.setTitle("WorkoutFragment Information");
                 dialog.setContentView(R.layout.custom_workout);
 
                 EditText workoutEditTxt = (EditText) dialog.findViewById(R.id.workout_name);
                 EditText workoutRepsET = (EditText) dialog.findViewById(R.id.workoutRepeat);
                 Button playWorkoutBtn = (Button) dialog.findViewById(R.id.save_btn);
-                playWorkoutBtn.setText("Play Workout");
+                playWorkoutBtn.setText("Play WorkoutFragment");
                 workoutEditTxt.setText(model.workoutName);
                 workoutRepsET.setText(String.valueOf(model.workoutReps));
                 workoutEditTxt.setEnabled(false);

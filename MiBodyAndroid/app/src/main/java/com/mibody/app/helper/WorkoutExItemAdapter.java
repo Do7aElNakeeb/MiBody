@@ -79,7 +79,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
 
         final AddWorkoutRecyclerViewHolder mainHolder = (AddWorkoutRecyclerViewHolder) holder;// holder
 
-//        SharedPreferences prefs = context.getSharedPreferences("Workout", Context.MODE_PRIVATE);
+//        SharedPreferences prefs = context.getSharedPreferences("WorkoutFragment", Context.MODE_PRIVATE);
 //      ExercisesNo = Integer.valueOf(prefs.getString("WorkoutExNo", ""));
 
 

@@ -1,12 +1,9 @@
 package com.mibody.app.activity;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,26 +12,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.ExercisesGroup;
-import com.mibody.app.app.WorkoutItem;
+import com.mibody.app.fragments.ExerciseDetails;
 import com.mibody.app.helper.ExercisesItemAdapter;
 import com.mibody.app.helper.ItemClickListener;
+import com.mibody.app.helper.PlayGifView;
 import com.mibody.app.helper.RecyclerViewAdapter;
-import com.mibody.app.helper.WorkoutExItemAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by NakeebMac on 10/1/16.
@@ -92,12 +83,21 @@ public class Exercises extends Fragment {
         exercisesRV.setItemAnimator(new DefaultItemAnimator());
 
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
+        final RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
         exercisesRV.setAdapter(adapter);
 
         adapter.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position) {
+
+                ExerciseDetails exerciseDetails = new ExerciseDetails();
+                exerciseDetails.setExercise(arrayList.get(position));
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.add(R.id.exercisesFragment, exerciseDetails, "Exercise Details Fragment");
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.addToBackStack(null);
+                ft.commit();
+/*
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -107,28 +107,30 @@ public class Exercises extends Fragment {
                 TextView exerciseName;
                 TextView exerciseDescription;
                 ImageView exerciseImg;
+                PlayGifView playGifView;
 
-
+                playGifView = (PlayGifView) dialogView.findViewById(R.id.viewGif);
 
                 exerciseName = (TextView) dialogView.findViewById(R.id.exName);
                 exerciseImg = (ImageView) dialogView.findViewById(R.id.exImg);
                 exerciseDescription = (TextView) dialogView.findViewById(R.id.exDescription);
 
+                playGifView.setImageResource(R.drawable.seven_seg);
                 exerciseName.setText(arrayList.get(position).getName());
                 exerciseImg.setImageResource(arrayList.get(position).getImage());
                 exerciseDescription.setText(arrayList.get(position).getDescription());
 
-
                 AlertDialog alertDialog =  builder.create();
                 alertDialog.show();
+
+                */
             }
         });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.exercises_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.exercises_page_fragment, container, false);
 
     }
 

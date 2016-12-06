@@ -44,7 +44,7 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
             WorkoutPlay workoutPlay = new WorkoutPlay(workoutItem);
             workoutPlay.setBTAddress(sharedPreferences.getString("BT_MAC", ""));
 
-            fragmentTransaction.add(R.id.workoutPlayFragment, workoutPlay, "Workout Play");
+            fragmentTransaction.add(R.id.workoutPlayFragment, workoutPlay, "WorkoutFragment Play");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
         }
@@ -55,7 +55,7 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             BTDeviceList btDeviceList = new BTDeviceList();
 
-            fragmentTransaction.add(R.id.workoutPlayFragment, btDeviceList, "Workout Play");
+            fragmentTransaction.add(R.id.workoutPlayFragment, btDeviceList, "WorkoutFragment Play");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
         }

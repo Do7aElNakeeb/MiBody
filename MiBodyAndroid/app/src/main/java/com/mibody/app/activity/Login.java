@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
         // Check if user is already logged in or not
         if (session.isLoggedIn().equals("1")) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(getApplicationContext(), ExercisesActivity.class);
+            Intent intent = new Intent(getApplicationContext(), Landing.class);
             startActivity(intent);
             finish();
         }
@@ -96,7 +96,7 @@ public class Login extends AppCompatActivity {
                     session.insertData("guest", email, "011", password, "50", null, null);
                     Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
                     // Launch login activity
-                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    Intent intent = new Intent(Login.this, Landing.class);
                     startActivity(intent);
                     finish();
                 }
@@ -148,7 +148,7 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                         // Launch login activity
-                        Intent intent = new Intent(Login.this, Exercises.class);
+                        Intent intent = new Intent(Login.this, Landing.class);
                         startActivity(intent);
                         finish();
                     } else {

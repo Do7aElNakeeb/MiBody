@@ -24,6 +24,7 @@ public class WorkoutItem implements Parcelable {
         this.exercisesList = exercisesList;
         this.workoutReps = workoutReps;
     }
+
     public WorkoutItem(){
 
     }

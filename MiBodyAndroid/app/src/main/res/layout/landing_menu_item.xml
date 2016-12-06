@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- make custom sliding menu by linear layouts-->
+    <TextView
+        android:id="@+id/expandedListItemTxt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="#fc3d39"
+        card_view:cardCornerRadius="18dp">
+        <ImageView
+            android:id="@+id/expandedListItemImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"/>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

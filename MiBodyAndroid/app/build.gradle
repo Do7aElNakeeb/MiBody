@@ -36,6 +36,7 @@ dependencies {
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     //sliding panel from bottom to top
     compile 'com.sothree.slidinguppanel:library:3.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 }
 
