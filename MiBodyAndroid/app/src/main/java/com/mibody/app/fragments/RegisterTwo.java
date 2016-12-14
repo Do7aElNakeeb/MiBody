@@ -70,7 +70,8 @@ public class RegisterTwo extends Fragment {
         DoBPicker.setOnDateSelectedListener(new WheelDatePicker.OnDateSelectedListener() {
             @Override
             public void onDateSelected(WheelDatePicker picker, Date date) {
-                Toast.makeText(getActivity(), date.toString(), Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getActivity(), String.valueOf(picker.getCurrentDay()) + " " + String.valueOf(picker.getCurrentMonth()) + " " + String.valueOf(picker.getCurrentYear()), Toast.LENGTH_LONG).show();
             }
         });
         return view;

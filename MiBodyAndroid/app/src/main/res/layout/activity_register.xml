@@ -115,41 +115,6 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/weightV">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/weight"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/weight"
-                            android:textColor="#FFFFFF"
-                            android:background="@drawable/txtfld_bg"
-                            android:gravity="center"
-                            android:inputType="numberDecimal"
-                            android:maxLines="1"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <Button
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/ic_launcher"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/weightBtn" />
-
-
-                </RelativeLayout>
-
-
-
                 <Button
                     android:id="@+id/btnRegister"
                     style="?android:textAppearanceSmall"

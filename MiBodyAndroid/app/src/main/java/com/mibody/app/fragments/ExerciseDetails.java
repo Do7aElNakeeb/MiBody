@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mibody.app.R;
+import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.helper.PlayGifView;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by NakeebMac on 10/13/16.
@@ -30,25 +33,26 @@ public class ExerciseDetails extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.exercise_details, null);
 
         TextView exerciseName;
         TextView exerciseDescription;
         ImageView exerciseImg;
-        PlayGifView playGifView;
+        ImageView exerciseGIF;
 
-        playGifView = (PlayGifView) view.findViewById(R.id.viewGif);
+        exerciseGIF = (ImageView) view.findViewById(R.id.exGIF);
 
         exerciseName = (TextView) view.findViewById(R.id.exName);
         exerciseImg = (ImageView) view.findViewById(R.id.exImg);
         exerciseDescription = (TextView) view.findViewById(R.id.exDescription);
 
-        playGifView.setImageResource(R.drawable.seven_seg);
+        Glide.with(getActivity()).load(AppConfig.URL_SERVER + "/ExGif/" + exerciseItem.getGIF()).asGif().into(exerciseGIF);
+        Glide.with(getActivity()).load(AppConfig.URL_SERVER + "/ExImage/" + exerciseItem.getImage()).into(exerciseImg);
+
         exerciseName.setText(exerciseItem.getName());
-        exerciseImg.setImageResource(exerciseItem.getImage());
         exerciseDescription.setText(exerciseItem.getDescription());
 
 

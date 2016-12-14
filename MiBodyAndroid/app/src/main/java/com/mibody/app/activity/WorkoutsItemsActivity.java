@@ -2,6 +2,7 @@ package com.mibody.app.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +31,7 @@ import com.mibody.app.helper.WorkoutsAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +45,12 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
     RecyclerView workoutsRV;
     WorkoutsAdapter workoutsAdapter;
+    Button addWorkoutBtn;
+    TextView workoutTypeTxt;
     private static final String TAG = WorkoutsItemsActivity.class.getSimpleName();
     private ProgressDialog pDialog;
 
+    String user_id = "predefined";
     String workoutsType = "";
     ArrayList<WorkoutItem> workoutItemArrayList;
     SQLiteHandler sqLiteHandler;
@@ -51,25 +60,61 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.workouts_items_activity);
 
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
+        sqLiteHandler = new SQLiteHandler(this);
+
+        try {
+            sqLiteHandler.open();
+
+        } catch (Exception e) {
+            Log.i("hello", "hello");
+        }
+
+        workoutTypeTxt = (TextView) findViewById(R.id.workoutsItemsType);
+        addWorkoutBtn = (Button) findViewById(R.id.add_workout_btn);
         workoutsRV = (RecyclerView) findViewById(R.id.workoutsRV);
         workoutsRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         workoutsRV.setItemAnimator(new DefaultItemAnimator());
 
         Intent intent = getIntent();
         workoutsType = intent.getStringExtra("type");
+        workoutTypeTxt.setText(workoutsType);
+
+        if (workoutsType.equals("predefined")) {
+            addWorkoutBtn.setVisibility(View.GONE);
+        }
+        else {
+            addWorkoutBtn.setVisibility(View.VISIBLE);
+            SharedPreferences sharedPreferences = getSharedPreferences("UserDetailes", MODE_PRIVATE);
+            user_id = sharedPreferences.getString("user_id", "");
+        }
+
+        loadWorkouts(workoutsType);
+
+        addWorkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WorkoutsItemsActivity.this, AddWorkout.class);
+                startActivity(intent);
+            }
+        });
 
 
 
     }
 
 
-    private void loadWorkouts(){
+    private void loadWorkouts(final String workoutsType){
 
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        pDialog.setMessage("Loading Movies ...");
+        pDialog.setMessage("Loading Workouts ...");
         showDialog();
+
 
 
         StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_SERVER + "workouts.php",
@@ -77,7 +122,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "MoviesDB Response: " + response);
+                        Log.d(TAG, "MiBody Workouts Response: " + response);
                         hideDialog();
 
                         workoutItemArrayList = new ArrayList<WorkoutItem>();
@@ -98,13 +143,13 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                                     // DB QueryValues Object to insert into Movies ArrayList
                                     String id = obj.get("id").toString();
-                                    String name = obj.get("original_title").toString();
-                                    String description = obj.get("overview").toString();
-                                    String rating = obj.get("vote_average").toString();
-                                    String image = obj.get("poster_path").toString();
-                                    String release_date = obj.get("release_date").toString().substring(0, 4);
+                                    String WorkoutName = obj.get("workoutName").toString();
+                                    int WorkoutReps = obj.getInt("workoutReps");
+                                    String ExercisesJSON = obj.get("poster_path").toString();
+                                    String WorkoutType = obj.get("type").toString();
 
-                                    workoutItemArrayList.add(new WorkoutItem());
+                                    workoutItemArrayList.add(new WorkoutItem(id , WorkoutName, WorkoutReps, ExercisesJSON, WorkoutType));
+                                    sqLiteHandler.addWorkout(new WorkoutItem(id, WorkoutName, WorkoutReps, ExercisesJSON, WorkoutType));
 
                                 }
 
@@ -124,7 +169,9 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
 
-                workoutItemArrayList = sqLiteHandler.getWorkouts(null);
+                workoutItemArrayList = new ArrayList<WorkoutItem>();
+
+                workoutItemArrayList = sqLiteHandler.getWorkouts("type="+'"'+ workoutsType +'"');
 
 
                 if (workoutItemArrayList.size() != 0) {
@@ -136,7 +183,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
                     workoutsRV.setAdapter(workoutsAdapter);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "There is no personalised workouts", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "There is no " +  workoutsType +  "workouts", Toast.LENGTH_LONG).show();
                 }
 
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
@@ -148,6 +195,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id", user_id);
                 params.put("workoutsType", workoutsType);
                 return params;
             }

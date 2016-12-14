@@ -11,48 +11,82 @@ import java.util.List;
 
 public class ExerciseItem {
 
-    private int Image;
-    private String Description;
+    private String id;
+    private String icon;
+    private String image;
+    private String GIF;
+    private String description;
     private String name;
-    //public int type;
-    //public List<ExerciseItem> invisibleChildren;
+    private String category;
 
     public ExerciseItem(){
 
     }
 
-    public ExerciseItem(int image,String name, String Description) {
-        this.Image = image;
+    public ExerciseItem(String id, String name, String icon, String image, String GIF, String description, String category) {
+        this.id = id;
         this.name = name;
-        this.Description = Description;
+        this.icon = icon;
+        this.image = image;
+        this.GIF = GIF;
+        this.description = description;
+        this.category = category;
     }
 
-    public ExerciseItem(int image, String name) {
-        this.Image = image;
-        this.name = name;
+
+    public String getId() {
+        return id;
     }
 
-    public String getName(){
-        return name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setName (String name){
-        this.name = name;
+    public String getImage() {
+        return image;
     }
 
-    public int getImage() {
-        return Image;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setImage(int Image) {
-        this.Image = Image;
+    public String getGIF() {
+        return GIF;
+    }
+
+    public void setGIF(String GIF) {
+        this.GIF = GIF;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

@@ -1,5 +1,8 @@
 package com.mibody.app.activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +14,12 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.mibody.app.R;
+import com.mibody.app.app.AppConfig;
+import com.mibody.app.app.AppController;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
@@ -28,8 +36,15 @@ import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -37,6 +52,10 @@ import java.util.ArrayList;
  */
 
 public class AddWorkout extends AppCompatActivity {
+
+    private static final String TAG = AddWorkout.class.getSimpleName();
+
+    ProgressDialog pDialog;
 
     SQLiteHandler sqLiteHandler;
     EditText WorkoutName;
@@ -66,16 +85,15 @@ public class AddWorkout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_workout);
 
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
         WorkoutName = (EditText) findViewById(R.id.workout_name);
         workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
         workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
         AddExercise = (Button) findViewById(R.id.add_exercise);
-     //   RemoveExercise = (Button) findViewById(R.id.remove_exercise);
         SaveWorkout = (Button) findViewById(R.id.save_btn);
-      //  ExercisesGrid = (GridView) findViewById(R.id.exercises_grid);
-      //  ExercisesRV = (RecyclerView) findViewById(R.id.exercises_grid);
-      //  ExercisesSetGrid = (GridView) findViewById(R.id.exercises_set_grid);
-
         sqLiteHandler = new SQLiteHandler(this);
 
 
@@ -85,14 +103,7 @@ public class AddWorkout extends AppCompatActivity {
         } catch (Exception e) {
             Log.i("hello", "hello");
         }
-/*
-        SharedPreferences sharedPreferences = getSharedPreferences("WorkoutFragment", MODE_PRIVATE);
-        final Editor editor = sharedPreferences.edit();
-        editor.putString("WorkoutExNo", String.valueOf(workoutExNo));
-        editor.apply();
-        */
 
- //       initViews();
         initWorkoutViews();
 
         workoutRepeatBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,65 +113,25 @@ public class AddWorkout extends AppCompatActivity {
                 workoutRepeat.setText(String.valueOf(workoutReps));
             }
         });
-/*
-        ExercisesRV.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
-        ExercisesSetGrid.setAdapter(new WorkoutExItemAdapter(this));
-        ExercisesRV.setAdapter(new WorkoutsAdapter(this, exercises_names));
-        ExercisesRV.setAdapter(new WorkoutsAdapter(this, exercises_names));
-*/
+
         SaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqLiteHandler.addWorkout(new WorkoutItem(WorkoutName.getText().toString(), workoutExItemArrayList, workoutReps));
+                JSONArray jsonArray = new JSONArray();
+                for (int i=0; i < workoutExItemArrayList.size(); i++) {
+                    jsonArray.put(workoutExItemArrayList.get(i).getJSONObject());
+                }
+                Log.d ("JSONObjectSQL", jsonArray.toString());
+
+                addWorkout(new WorkoutItem("", WorkoutName.getText().toString(), workoutReps, jsonArray.toString(), "personalised"));
+                //sqLiteHandler.addWorkout(new WorkoutItem(WorkoutName.getText().toString(), workoutReps, "pic", jsonArray.toString()));
                 finish();
             }
         });
 
     }
-/*
-    private void initViews2(){
-        ExercisesRV = (RecyclerView) findViewById(R.id.exercises_grid);
-        ExercisesRV.setHasFixedSize(true);
-        ExercisesRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
 
-        ArrayList<ExerciseItem> exerciseItemArrayList = new ArrayList<>();
-        for (int i = 0; i < exercises_names.length; i++) {
-            exerciseItemArrayList.add(new ExerciseItem(Images[i],exercises_names[i]));
-        }
 
-        ExercisesSetGrid = (RecyclerView) findViewById(R.id.exercises_set_grid);
-        ExercisesSetGrid.setHasFixedSize(true);
-        ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
-
-        ArrayList<WorkoutExItem> workoutExItemArrayList = new ArrayList<>();
-        workoutExItemArrayList.add(new WorkoutExItem());
-
-        AddWorkoutAdapter adapter = new AddWorkoutAdapter(this, exerciseItemArrayList, workoutExItemArrayList, this);
-        ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
-        ExercisesSetGrid.setAdapter(adapter);// set adapter on recyclerview
-        adapter.notifyDataSetChanged();// Notify the adapter
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(ExercisesRV);
-
-    }
-    */
-
-    private void initViews(){
-        ExercisesRV = (RecyclerView) findViewById(R.id.exercises_grid);
-        ExercisesRV.setHasFixedSize(true);
-        ExercisesRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
-
-        ArrayList<ExerciseItem> arrayList = new ArrayList<>();
-        for (int i = 0; i < exercises_names.length; i++) {
-            arrayList.add(new ExerciseItem(Images[i],exercises_names[i]));
-        }
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, arrayList);
-        ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
-        adapter.notifyDataSetChanged();// Notify the adapter
-
-    }
 
     private void initWorkoutViews(){
         ExercisesSetGrid = (RecyclerView) findViewById(R.id.exercises_set_grid);
@@ -170,6 +141,7 @@ public class AddWorkout extends AppCompatActivity {
         workoutItemArrayList = new ArrayList<>();
         workoutItemArrayList.add(new WorkoutItem());
 */
+
         workoutExItemArrayList = new ArrayList<>();
         workoutExItemArrayList.add(new WorkoutExItem());
 
@@ -247,5 +219,89 @@ public class AddWorkout extends AppCompatActivity {
         } catch (Exception e) {
             Log.i("hello", "hello");
         }
+    }
+
+    private void addWorkout(final WorkoutItem workoutItem){
+
+        // Tag used to cancel the request
+        String tag_string_req = "req_register";
+
+        //if the email and password are not empty
+        //displaying a progress dialog
+
+        pDialog.setMessage("Signing in please wait ...");
+        showDialog();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        final String user_id = sharedPreferences.getString("user_id", "");
+
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST, AppConfig.URL_SERVER + "addWorkout.php", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    String message = jObj.getString("message");
+                    if (!error) {
+                        // User successfully stored in MySQL
+                        // Now store the user in Shared Preferences
+
+                        String id = jObj.get("name").toString();
+
+                        sqLiteHandler.addWorkout(new WorkoutItem(id, workoutItem.workoutName, workoutItem.workoutReps, workoutItem.exercisesJSON, "personalised"));
+                        // Inserting row in users table
+                        //db.addUser(id, name, email, mobile, carBrand, carModel, carYear, regID, created_at);
+
+                    }
+
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id", user_id);
+                params.put("name", workoutItem.workoutName);
+                params.put("reps", String.valueOf(workoutItem.workoutReps));
+                params.put("exercises", workoutItem.exercisesJSON);
+                params.put("type", "personalised");
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

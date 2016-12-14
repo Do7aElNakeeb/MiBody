@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +34,7 @@ import com.mibody.app.activity.WorkoutPlayActivity;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ import java.util.List;
  * Created by NakeebMac on 10/6/16.
  */
 
-public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHolder> {
 
     private List<WorkoutItem> arrayList;
     private Context context;
@@ -56,28 +58,28 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     }
 
     @Override
-    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         // This method will inflate the custom layout and return as viewholder
         LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
 
-        ViewGroup mainGroup = (ViewGroup) mInflater.inflate(
-                R.layout.exercises_item, parent, false);
+        ViewGroup mainGroup = (ViewGroup) mInflater.inflate(R.layout.workout_rv_item, parent, false);
         final RecyclerViewHolder listHolder = new RecyclerViewHolder(mainGroup);
-        return listHolder;
+        return new ViewHolder(mainGroup);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final WorkoutItem model = arrayList.get(position);
 
-        Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.Image);// This will convert drawbale image into
+        //Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.Image);// This will convert drawbale image into
 
         // setting title
-        holder.title.setText(model.workoutName);
+        holder.workoutTxt.setText(model.workoutName);
 
-        holder.imageView.setImageBitmap(image);
-
+        Picasso.with(context).load("").into(holder.workoutImage);
+        //holder.imageView.setImageBitmap(image);
+/*
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,10 +100,10 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
                 // ExercisesSetGrid.setHasFixedSize(true);
                 ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
-                WorkoutSQLAdapter WAdapter = new WorkoutSQLAdapter(context, arrayList.get(position).exercisesList);
+                WorkoutSQLAdapter WAdapter = new WorkoutSQLAdapter(context, arrayList.get(holder.getAdapterPosition()).exercisesList);
 
-                if (arrayList.get(position).exercisesList.size() == 0)
-                    Log.d("zeroooo", arrayList.get(position).exercisesList.toString() + "-" + position);
+                if (arrayList.get(holder.getAdapterPosition()).exercisesList.size() == 0)
+                    Log.d("zeroooo", arrayList.get(holder.getAdapterPosition()).exercisesList.toString() + "-" + holder.getAdapterPosition());
                 ExercisesSetGrid.setAdapter(WAdapter);
 
                 playWorkoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +124,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
             }
         });
-
+*/
     }
 
     @Override
@@ -132,5 +134,19 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     public void setClickListener(ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        CardView workoutCV;
+        ImageView workoutImage;
+        TextView workoutTxt;
+
+        public ViewHolder(View view) {
+            super(view);
+            workoutCV = (CardView) view.findViewById(R.id.workoutsItemCV);
+            workoutImage = (ImageView) view.findViewById(R.id.workoutsItemImage);
+            workoutTxt = (TextView) view.findViewById(R.id.workoutsItemName);
+
+        }
     }
 }

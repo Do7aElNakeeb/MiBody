@@ -36,6 +36,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
     private ArrayList<WorkoutExItem> arrayList;
     private Context context;
     private int ExercisesNo;
+    SQLiteHandler sqLiteHandler;
 
     String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
             "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
@@ -59,6 +60,15 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
         this.context = context;
         this.arrayList = arrayList;
         this.ExercisesNo = arrayList.size();
+
+        sqLiteHandler = new SQLiteHandler(context);
+
+        try {
+            sqLiteHandler.open();
+
+        } catch (Exception e) {
+            Log.i("hello", "hello");
+        }
 
     }
     @Override
@@ -99,12 +109,11 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                 ExercisesRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
                 ExercisesRV.setItemAnimator(new DefaultItemAnimator());
-                ArrayList<ExerciseItem> arrayList = new ArrayList<>();
-                for (int i = 0; i < exercises_names.length; i++) {
-                    arrayList.add(new ExerciseItem(Images[i], exercises_names[i]));
-                }
+                ArrayList<ExerciseItem> exerciseItemArrayList = new ArrayList<>();
+                exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, arrayList);
+
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, exerciseItemArrayList);
                 ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
                 //  adapter.notifyDataSetChanged();// Notify the adapter
 
@@ -262,7 +271,7 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
 
         dialog.show();
     }
-
+/*
     private void showExerciseSelector(final ImageView imageView){
 
         final Dialog dialog = new Dialog(context);
@@ -301,10 +310,11 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                 dialog.dismiss();
             }
         });
-*/
+
         dialog.show();
 
     }
+*/
 
     public void addItem(){
         ExercisesNo++;

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.ExerciseItem;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import com.mibody.app.R;
 import com.mibody.app.helper.ItemTouchHelperAdapter;
 import com.mibody.app.helper.ItemTouchHelperViewHolder;
 import com.mibody.app.helper.OnStartDragListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by NakeebMac on 10/11/16.
@@ -51,18 +53,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final ExerciseItem model = arrayList.get(position);
 
     //    final RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;// holder
 
-        Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.getImage());// This will convert drawbale image into
+ //       Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.getImage());// This will convert drawbale image into
         // bitmap
 
         // setting title
         holder.title.setText(model.getName());
+        Picasso.with(context).load(AppConfig.URL_SERVER + "/ExIcon/" + model.getIcon()).into(holder.imageView);
 
-        holder.imageView.setImageBitmap(image);
+  //      holder.imageView.setImageBitmap(image);
 /*
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

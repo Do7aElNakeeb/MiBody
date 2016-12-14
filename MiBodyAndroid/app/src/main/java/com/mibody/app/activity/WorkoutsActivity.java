@@ -28,7 +28,7 @@ public class WorkoutsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WorkoutsActivity.this, WorkoutsItemsActivity.class);
-                intent.putExtra("type", "personalised");
+                intent.putExtra("type", "predefined");
                 startActivity(intent);
             }
         });

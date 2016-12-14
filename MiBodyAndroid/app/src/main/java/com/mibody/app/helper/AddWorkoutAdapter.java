@@ -74,13 +74,13 @@ public class AddWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 final ExercisesViewHolder mainHolder = (ExercisesViewHolder) holder;// holder
 
-                Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.getImage());// This will convert drawbale image into
+               // Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.getImage());// This will convert drawbale image into
                 // bitmap
 
                 // setting title
                 mainHolder.title.setText(model.getName());
 
-                mainHolder.imageView.setImageBitmap(image);
+             //   mainHolder.imageView.setImageBitmap(image);
 
                 mainHolder.imageView.setOnTouchListener(new View.OnTouchListener() {
                     @Override

@@ -81,11 +81,11 @@ public class Register extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextMobile = (EditText) findViewById(R.id.mobile);
         editTextPassword = (EditText) findViewById(R.id.password);
-        editTextWeight = (EditText) findViewById(R.id.weight);
+     //   editTextWeight = (EditText) findViewById(R.id.weight);
 
         buttonSignup = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
-        weightBtn = (Button) findViewById(R.id.weightBtn);
+ //       weightBtn = (Button) findViewById(R.id.weightBtn);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -104,6 +104,7 @@ public class Register extends AppCompatActivity {
             finish();
         }
 
+/*
         weightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,66 +112,10 @@ public class Register extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), WorkoutPlayActivity.class);
                 intent.putExtra("weight", "weight");
                 startActivity(intent);
-                /*
-                SharedPreferences prefs = getSharedPreferences("BT", MODE_PRIVATE);
-                String MacAddress = prefs.getString("BT_MAC", "");
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-
-                LayoutInflater inflater = getLayoutInflater();
-
-                if (!MacAddress.isEmpty()){
-                    // go to weight dialog
-                    View dialogView = inflater.inflate(R.layout.device_list, null);
-                    builder.setView(dialogView);
-                }
-                else {
-                    // go to bluetooth dialog
-
-
-                    /*
-
-                    View dialogView = inflater.inflate(R.layout.device_list, null);
-                    builder.setView(dialogView);
-
-                    checkBTState();
-
-                    BTState = (TextView) findViewById(R.id.connecting);
-                    BTState.setTextSize(40);
-                    BTState.setText(" ");
-
-                    // Initialize array adapter for paired devices
-                    mPairedDevicesArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.device_name);
-
-                    // Find and set up the ListView for paired devices
-                    ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
-                    pairedListView.setAdapter(mPairedDevicesArrayAdapter);
-                    pairedListView.setOnItemClickListener(mDeviceClickListener);
-
-                    // Get the local Bluetooth adapter
-                    mBtAdapter = BluetoothAdapter.getDefaultAdapter();
-
-                    // Get a set of currently paired devices and append to 'pairedDevices'
-                    Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-
-                    // Add previosuly paired devices to the array
-                    if (pairedDevices.size() > 0) {
-                        findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);//make title viewable
-                        for (BluetoothDevice device : pairedDevices) {
-                            mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                        }
-                    } else {
-                        String noDevices = getResources().getText(R.string.none_paired).toString();
-                        mPairedDevicesArrayAdapter.add(noDevices);
-                    }
-
-
-
-                }
-            */
 
             }
         });
+        */
 
         //attaching listener to button
         buttonSignup.setOnClickListener(new View.OnClickListener() {
