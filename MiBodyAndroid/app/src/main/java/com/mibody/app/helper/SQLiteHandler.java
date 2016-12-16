@@ -47,7 +47,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public static final String EXERCISE_DESCRIPTION = "description";
     public static final String EXERCISE_CATEGORY = "category";
 
-    private String[] EXERCISES_COLS = {EXERCISE_ID, EXERCISE_NAME, EXERCISE_IMAGE, EXERCISE_GIF, EXERCISE_DESCRIPTION, EXERCISE_CATEGORY};
+    private String[] EXERCISES_COLS = {EXERCISE_ID, EXERCISE_NAME, EXERCISE_ICON, EXERCISE_IMAGE, EXERCISE_GIF, EXERCISE_DESCRIPTION, EXERCISE_CATEGORY};
 
     // Workouts table name
     public static final String WORKOUTS_TABLE = "workouts";

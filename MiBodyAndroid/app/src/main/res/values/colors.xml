@@ -7,4 +7,5 @@
     <color name="navigationBarColor">#000000</color>
     <color name="colorAccent">#c8e8ff</color>
     <color name="MiBodyOrange">#FC3D39</color>
+    <color name="MiBodyWhite">#FFF</color>
 </resources>

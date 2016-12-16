@@ -75,9 +75,18 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
         //Bitmap image = BitmapFactory.decodeResource(context.getResources(), model.Image);// This will convert drawbale image into
 
         // setting title
-        holder.workoutTxt.setText(model.workoutName);
-
-        Picasso.with(context).load("").into(holder.workoutImage);
+        holder.workoutName.setText(model.workoutName);
+        String workoutExercises = "";
+        for (int i =0; i < model.exercisesList.size(); i++) {
+            if (i == model.exercisesList.size()-1){
+                workoutExercises += model.exercisesList.get(i).name;
+            }
+            else {
+                workoutExercises += model.exercisesList.get(i).name + ", ";
+            }
+        }
+        holder.workoutExercises.setText(workoutExercises);
+//        Picasso.with(context).load("").into(holder.workoutImage);
         //holder.imageView.setImageBitmap(image);
 /*
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -139,14 +148,17 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
         CardView workoutCV;
         ImageView workoutImage;
-        TextView workoutTxt;
+        TextView workoutName;
+        TextView workoutExercises;
 
         public ViewHolder(View view) {
             super(view);
+            /*
             workoutCV = (CardView) view.findViewById(R.id.workoutsItemCV);
             workoutImage = (ImageView) view.findViewById(R.id.workoutsItemImage);
-            workoutTxt = (TextView) view.findViewById(R.id.workoutsItemName);
-
+            */
+            workoutName = (TextView) view.findViewById(R.id.workoutsItemName);
+            workoutExercises = (TextView) view.findViewById(R.id.workoutsItemExercises);
         }
     }
 }

@@ -109,7 +109,8 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecycle
                 ExercisesRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
                 ExercisesRV.setItemAnimator(new DefaultItemAnimator());
-                ArrayList<ExerciseItem> exerciseItemArrayList = new ArrayList<>();
+                ArrayList<ExerciseItem> exerciseItemArrayList = new ArrayList<ExerciseItem>();
+
                 exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
 

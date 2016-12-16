@@ -53,7 +53,7 @@ public class ExercisesFragment extends Fragment {
     SQLiteHandler sqLiteHandler;
 
     ArrayList<ExerciseItem> exerciseItemArrayList;
-    String exercisesCategory = "all";
+    String exercisesCategory = "";
 
     ViewPager exerciseViewPager;
 
@@ -132,7 +132,6 @@ public class ExercisesFragment extends Fragment {
         showDialog();
 
 
-
         StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_SERVER + "/exercises.php",
                 new Response.Listener<String>() {
 
@@ -172,14 +171,12 @@ public class ExercisesFragment extends Fragment {
                                     sqLiteHandler.addExercise(exerciseItem);
 
                                 }
-
                                 setupViewPager(exerciseViewPager);
                             }
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
 
@@ -191,7 +188,7 @@ public class ExercisesFragment extends Fragment {
                 exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
                 if (exerciseItemArrayList.size() == 0) {
-                    Toast.makeText(getActivity(), "There is no " +  exercisesCategory +  "Exercises", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "There is no " +  exercisesCategory +  " Exercises", Toast.LENGTH_LONG).show();
                 }
 
                 Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
@@ -203,7 +200,7 @@ public class ExercisesFragment extends Fragment {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                if (!exercisesCategory.equals("all")) {
+                if (!exercisesCategory.isEmpty()) {
                     params.put("category", exercisesCategory);
                 }
                 return params;

@@ -102,21 +102,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_3c5316c8f79f78c03f85550d196102205ea6a121/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/libs/android-async-http-1.4.4.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
         sha1="3bae85a076241828810bf8fbcc12e5891d5fc34c">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/2/android-async-http-1.4.4_34c52f2c02912d78038888f560d2f22e79b8c481/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_3c5316c8f79f78c03f85550d196102205ea6a121/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -151,7 +151,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="96e9ff3bd7232c2784d8633281845b76288a1092">
+        sha1="94d1cb6a112d1d1eb44dff4f193d53a7060f82a6">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b33c7d6e6b2ae6bddbe97d27ae2fa633a218b0f1/classes.dex" />
     </item>
     <item
@@ -241,7 +241,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="e59c39bbeff29f04490a588800817a2c9a016d58">
+        sha1="2c320cc9437d6854666a29f613eac79b51eb6711">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_e4893dc9375ed1afee1157eae780d1cc6e393665/classes.dex" />
     </item>
     <item

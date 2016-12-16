@@ -217,7 +217,7 @@ public class Register extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                         // Launch login activity
-                        Intent intent = new Intent(Register.this, Exercises.class);
+                        Intent intent = new Intent(Register.this, Landing.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -248,9 +248,10 @@ public class Register extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", name);
                 params.put("email", email);
-                params.put("mobile", mobile);
                 params.put("password", password);
+                params.put("mobile", mobile);
                 params.put("weight", weight);
+                params.put("height", password);
                 params.put("regID", regID);
 
                 return params;

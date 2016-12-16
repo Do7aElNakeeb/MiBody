@@ -23,6 +23,7 @@ import com.mibody.app.app.AppController;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
+import com.mibody.app.helper.ExercisesAdapter;
 import com.mibody.app.helper.RecyclerViewAdapter;
 import com.mibody.app.helper.SQLiteHandler;
 import com.mibody.app.helper.WorkoutExItemAdapter;
@@ -66,7 +67,10 @@ public class AddWorkout extends AppCompatActivity {
     Button SaveWorkout;
     GridView ExercisesGrid;
     RecyclerView ExercisesSetGrid;
-    RecyclerView ExercisesRV;
+
+    RecyclerView ExercisesRV, UserExercisesRV;
+    ArrayList<ExerciseItem> exerciseItemArrayList, userExerciseItemArrayList;
+
     WorkoutExItemAdapter WAdapter;
     String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
             "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
@@ -141,6 +145,26 @@ public class AddWorkout extends AppCompatActivity {
         workoutItemArrayList = new ArrayList<>();
         workoutItemArrayList.add(new WorkoutItem());
 */
+        // API exercises
+        ExercisesRV = (RecyclerView) findViewById(R.id.addWorkoutExercisesRV);
+        ExercisesRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
+
+        exerciseItemArrayList = new ArrayList<ExerciseItem>();
+        exerciseItemArrayList = sqLiteHandler.getExercises(null);
+
+        ExercisesAdapter exercisesAdapter = new ExercisesAdapter(this, exerciseItemArrayList, 0);
+        ExercisesRV.setAdapter(exercisesAdapter);
+
+
+        // User selected exercises RV
+        UserExercisesRV = (RecyclerView) findViewById(R.id.addWorkoutUserExercisesRV);
+        UserExercisesRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
+        userExerciseItemArrayList = new ArrayList<ExerciseItem>();
+        userExerciseItemArrayList.add(exerciseItemArrayList.get(0));
+
+        ExercisesAdapter userExercisesAdapter = new ExercisesAdapter(this, userExerciseItemArrayList, 1);
+        UserExercisesRV.setAdapter(userExercisesAdapter);
+
 
         workoutExItemArrayList = new ArrayList<>();
         workoutExItemArrayList.add(new WorkoutExItem());
@@ -156,7 +180,6 @@ public class AddWorkout extends AppCompatActivity {
                 WAdapter.notifyItemInserted(workoutExItemArrayList.size());
             }
         });
-
     }
 
     private final class MyTouchListener implements OnTouchListener {

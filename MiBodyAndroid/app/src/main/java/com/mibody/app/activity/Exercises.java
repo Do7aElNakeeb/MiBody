@@ -83,7 +83,7 @@ public class Exercises extends Fragment {
         exercisesRV.setItemAnimator(new DefaultItemAnimator());
 
 
-        final RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getActivity(), arrayList);
         exercisesRV.setAdapter(adapter);
 
         adapter.setClickListener(new ItemClickListener() {

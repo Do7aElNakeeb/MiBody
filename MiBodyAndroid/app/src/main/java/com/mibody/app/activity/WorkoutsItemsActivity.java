@@ -50,7 +50,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
     private static final String TAG = WorkoutsItemsActivity.class.getSimpleName();
     private ProgressDialog pDialog;
 
-    String user_id = "predefined";
+    String user_id = "NULL";
     String workoutsType = "";
     ArrayList<WorkoutItem> workoutItemArrayList;
     SQLiteHandler sqLiteHandler;
@@ -88,8 +88,8 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         }
         else {
             addWorkoutBtn.setVisibility(View.VISIBLE);
-            SharedPreferences sharedPreferences = getSharedPreferences("UserDetailes", MODE_PRIVATE);
-            user_id = sharedPreferences.getString("user_id", "");
+            SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+            //user_id = sharedPreferences.getString("user_id", "");
         }
 
         loadWorkouts(workoutsType);
@@ -117,7 +117,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
 
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_SERVER + "workouts.php",
+        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_SERVER + "/workouts.php",
                 new Response.Listener<String>() {
 
                     @Override
@@ -129,9 +129,9 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                         try {
                             // Extract JSON array from the response
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray resultsArr = jsonObject.getJSONArray("results");
-                            System.out.println(jsonObject.length());
+                            JSONArray resultsArr = new JSONArray(response);
+
+                            System.out.println(resultsArr.length());
                             // If no of array elements is not zero
                             if(resultsArr.length() != 0){
 
@@ -143,9 +143,9 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                                     // DB QueryValues Object to insert into Movies ArrayList
                                     String id = obj.get("id").toString();
-                                    String WorkoutName = obj.get("workoutName").toString();
-                                    int WorkoutReps = obj.getInt("workoutReps");
-                                    String ExercisesJSON = obj.get("poster_path").toString();
+                                    String WorkoutName = obj.get("name").toString();
+                                    int WorkoutReps = obj.getInt("reps");
+                                    String ExercisesJSON = obj.get("exercises").toString();
                                     String WorkoutType = obj.get("type").toString();
 
                                     workoutItemArrayList.add(new WorkoutItem(id , WorkoutName, WorkoutReps, ExercisesJSON, WorkoutType));
@@ -196,12 +196,14 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("user_id", user_id);
-                params.put("workoutsType", workoutsType);
+                params.put("type", workoutsType);
+                Log.d("params", user_id + " - " + workoutsType);
                 return params;
             }
 
         };
 
+        Log.d("StrReq", strReq.toString());
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
