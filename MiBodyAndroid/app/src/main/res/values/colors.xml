@@ -5,7 +5,9 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
+    <color name="black">#000000</color>
     <color name="colorAccent">#c8e8ff</color>
     <color name="MiBodyOrange">#FC3D39</color>
     <color name="MiBodyWhite">#FFF</color>
+    <color name="MiBodyYellow">#f2e730</color>
 </resources>

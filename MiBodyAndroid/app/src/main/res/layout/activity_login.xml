@@ -28,11 +28,26 @@
             android:layout_marginBottom="8dp"
             android:visibility="gone"/>
 
-        <ImageView
+        <LinearLayout
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:src="@drawable/mibody_logo"/>
+            android:gravity="center">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:layout_gravity="center"
+                android:src="@drawable/mibody_logo"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/tm_txt"/>
+        </LinearLayout>
+
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
@@ -42,43 +57,57 @@
                 android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Email Address"
+                    android:gravity="center"
+                    android:textColor="#fff"/>
 
-                    <AutoCompleteTextView
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_email"
-                        android:inputType="textEmailAddress"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/txtfld_bg"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:singleLine="true"/>
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
+                <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="40dp"
+                    android:id="@+id/email"
+                    android:text="mamdouh@nakeeb.com"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/edittxt_bg"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"/>
 
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:textColor="#FFFFFF"
-                        android:inputType="textPassword"
-                        android:background="@drawable/txtfld_bg"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:singleLine="true"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Password"
+                    android:gravity="center"
+                    android:textColor="#fff"/>
 
-                </android.support.design.widget.TextInputLayout>
+
+                <EditText
+                    android:id="@+id/password"
+                    android:text="000000"
+                    android:textStyle="bold"
+                    android:textColorHint="#87ffffff"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="@string/prompt_password"
+                    android:textColor="#FFFFFF"
+                    android:inputType="textPassword"
+                    android:background="@drawable/edittxt_bg"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+
 
                 <Button
                     android:id="@+id/btnLogin"
@@ -92,32 +121,72 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="#FFFFFF"
                     android:text="or sign up with"/>
-                <Button
-                    android:id="@+id/fbSignUp"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="Facebook"
-                    android:textColor="#FFFFFF"
-                    android:background="@drawable/fbbtn"
-                    android:layout_marginBottom="16dp"
-                    android:textStyle="bold"/>
 
-                <Button
-                    android:id="@+id/emailSignUp"
-                    style="?android:textAppearanceSmall"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:text="Email"
-                    android:background="@drawable/msgbtn"
-                    android:textStyle="bold"/>
+                    android:layout_gravity="center"
+                    android:id="@+id/fbSignUp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/fbbtn">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginStart="40dp"
+                        android:src="@drawable/fb_logo"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Facebook"
+                        android:layout_centerInParent="true"
+                        android:textColor="#fff"
+                        android:textSize="17dp"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/emailSignUp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/msgbtn">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginStart="40dp"
+                        android:src="@drawable/envelop_icon"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:layout_centerInParent="true"
+                        android:textSize="17dp"/>
+
+
+                </RelativeLayout>
+
 
             </LinearLayout>
         </ScrollView>

@@ -9,9 +9,9 @@
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
 
-    <dimen name="landing_menu_item_margin">20dp</dimen>
-    <dimen name="landing_menu_item_cornerradius">25dp</dimen>
-    <dimen name="landing_menu_item_height">80dp</dimen>
+    <dimen name="landing_menu_item_margin">25dp</dimen>
+    <dimen name="landing_menu_item_cornerradius">22dp</dimen>
+    <dimen name="landing_menu_item_height">68dp</dimen>
     <dimen name="landing_menu_item_txtsize">14sp</dimen>
     <dimen name="landing_menu_item_txtmargin">3dp</dimen>
     <dimen name="landing_menu_row_margin">15dp</dimen>

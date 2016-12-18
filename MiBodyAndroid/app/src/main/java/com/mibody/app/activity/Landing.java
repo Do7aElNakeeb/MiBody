@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +39,7 @@ public class Landing extends AppCompatActivity {
     RecyclerView landingVideosRV;
     Button previousBtn, nextBtn;
 
-    LinearLayout landingExerciseBtn, landingWorkoutsBtn;
+    CardView landingExerciseBtn, landingWorkoutsBtn;
     ImageView landingFbBtn, landingInstaBtn, landingUTubeBtn, landingTwitterBtn;
 
     String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D",
@@ -64,8 +65,6 @@ public class Landing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_activity);
 
-        textView = (TextView)findViewById(R.id.text);
-
 
         //set layout slide listener
         slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
@@ -73,8 +72,8 @@ public class Landing extends AppCompatActivity {
         //some "demo" event
         slidingLayout.setPanelSlideListener(onSlideListener());
 
-        landingExerciseBtn = (LinearLayout) slidingLayout.findViewById(R.id.landingExercisesBtn);
-        landingWorkoutsBtn = (LinearLayout) slidingLayout.findViewById(R.id.landingWorkoutsBtn);
+        landingExerciseBtn = (CardView) slidingLayout.findViewById(R.id.landingExercisesBtn);
+        landingWorkoutsBtn = (CardView) slidingLayout.findViewById(R.id.landingWorkoutsBtn);
         landingFbBtn = (ImageView) slidingLayout.findViewById(R.id.landingFbBtn);
         landingInstaBtn = (ImageView) slidingLayout.findViewById(R.id.landingInstaBtn);
         landingTwitterBtn = (ImageView) slidingLayout.findViewById(R.id.landingTwitterBtn);
@@ -189,9 +188,10 @@ public class Landing extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currVidPosition != videosArrayList.size()-1)
-                currVidPosition++;
-                landingVideosRV.scrollToPosition(currVidPosition);
+                if (currVidPosition != videosArrayList.size()-1) {
+                    currVidPosition++;
+                    landingVideosRV.scrollToPosition(currVidPosition);
+                }
             }
         });
     }

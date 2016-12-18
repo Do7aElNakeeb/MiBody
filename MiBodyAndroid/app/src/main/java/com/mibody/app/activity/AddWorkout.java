@@ -1,11 +1,16 @@
 package com.mibody.app.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +61,7 @@ public class AddWorkout extends AppCompatActivity {
 
     private static final String TAG = AddWorkout.class.getSimpleName();
 
+    Context context = this;
     ProgressDialog pDialog;
 
     SQLiteHandler sqLiteHandler;
@@ -157,13 +163,19 @@ public class AddWorkout extends AppCompatActivity {
 
 
         // User selected exercises RV
+        LinearLayoutManager layoutManager = new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false);
         UserExercisesRV = (RecyclerView) findViewById(R.id.addWorkoutUserExercisesRV);
-        UserExercisesRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
+        UserExercisesRV.setLayoutManager(layoutManager);
+
+
         userExerciseItemArrayList = new ArrayList<ExerciseItem>();
         userExerciseItemArrayList.add(exerciseItemArrayList.get(0));
 
-        ExercisesAdapter userExercisesAdapter = new ExercisesAdapter(this, userExerciseItemArrayList, 1);
+        final ExercisesAdapter userExercisesAdapter = new ExercisesAdapter(this, userExerciseItemArrayList, 1);
         UserExercisesRV.setAdapter(userExercisesAdapter);
+
+        LinearSnapHelper snapHelper  = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(UserExercisesRV);
 
 
         workoutExItemArrayList = new ArrayList<>();
@@ -176,20 +188,25 @@ public class AddWorkout extends AppCompatActivity {
         AddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                workoutExItemArrayList.add(new WorkoutExItem());
-                WAdapter.notifyItemInserted(workoutExItemArrayList.size());
+                //workoutExItemArrayList.add(new WorkoutExItem());
+                //WAdapter.notifyItemInserted(workoutExItemArrayList.size());
+                userExerciseItemArrayList.add(exerciseItemArrayList.get(0));
+                userExercisesAdapter.notifyItemInserted(userExerciseItemArrayList.size());
+                UserExercisesRV.scrollToPosition(userExerciseItemArrayList.size());
             }
         });
+
+
     }
 
-    private final class MyTouchListener implements OnTouchListener {
+    public final static class MyTouchListener implements OnTouchListener {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 ClipData data = ClipData.newPlainText("", "");
                 DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
                         view);
                 view.startDrag(data, shadowBuilder, view, 0);
-                view.setVisibility(View.INVISIBLE);
+                view.setVisibility(View.VISIBLE);
                 return true;
             } else {
                 return false;
@@ -197,11 +214,12 @@ public class AddWorkout extends AppCompatActivity {
         }
     }
 
-    class MyDragListener implements OnDragListener {
+    public static class MyDragListener implements OnDragListener {
+        /*
         Drawable enterShape = getResources().getDrawable(
                 R.drawable.gym1);
         Drawable normalShape = getResources().getDrawable(R.drawable.gym1);
-
+*/
         @Override
         public boolean onDrag(View v, DragEvent event) {
             int action = event.getAction();
@@ -210,22 +228,22 @@ public class AddWorkout extends AppCompatActivity {
                     // do nothing
                     break;
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    v.setBackgroundDrawable(enterShape);
+//                    v.setBackgroundDrawable(enterShape);
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
-                    v.setBackgroundDrawable(normalShape);
+//                    v.setBackgroundDrawable(normalShape);
                     break;
                 case DragEvent.ACTION_DROP:
                     // Dropped, reassign View to ViewGroup
-                    View view = (View) event.getLocalState();
+                    CardView view = (CardView) event.getLocalState();
                     ViewGroup owner = (ViewGroup) view.getParent();
-                    owner.removeView(view);
-                    LinearLayout container = (LinearLayout) v;
-                    container.addView(view);
+                    //owner.removeView(view);
+                    CardView container = (CardView) v;
+                    container = view;
                     view.setVisibility(View.VISIBLE);
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
-                    v.setBackgroundDrawable(normalShape);
+//                    v.setBackgroundDrawable(normalShape);
                 default:
                     break;
             }
