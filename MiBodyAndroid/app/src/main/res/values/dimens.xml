@@ -15,4 +15,7 @@
     <dimen name="landing_menu_item_txtsize">14sp</dimen>
     <dimen name="landing_menu_item_txtmargin">3dp</dimen>
     <dimen name="landing_menu_row_margin">15dp</dimen>
+
+    <dimen name="item_width">75dp</dimen>
+    <dimen name="padding_item_width">75dp</dimen>
 </resources>

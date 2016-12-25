@@ -50,12 +50,12 @@ public class WorkoutSQLAdapter extends RecyclerView.Adapter<AddWorkoutRecyclerVi
         final AddWorkoutRecyclerViewHolder mainHolder = (AddWorkoutRecyclerViewHolder) holder;// holder
 
         mainHolder.ExerciseImg.setImageResource(AppConfig.Images[Integer.valueOf(model.name)]);
-        mainHolder.Reps.setText(String.valueOf(model.RepsT));
+        mainHolder.Reps.setText(String.valueOf(model.reps));
         mainHolder.Reps.setEnabled(false);
-        mainHolder.RestTime.setText(String.valueOf(model.RestT));
+        mainHolder.RestTime.setText(String.valueOf(model.restTime));
         mainHolder.RestTime.setEnabled(false);
-        mainHolder.RGB.setText(model.getRgb());
-        mainHolder.setRepeat.setText(String.valueOf(model.setReps));
+        mainHolder.RGB.setText(model.ropes);
+        mainHolder.setRepeat.setText(String.valueOf(model.exReps));
         mainHolder.setRepeat.setEnabled(false);
 
     }

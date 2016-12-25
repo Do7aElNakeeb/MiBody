@@ -3,19 +3,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_gravity="center"
     android:gravity="center"
     android:layout_marginRight="10dp"
     android:layout_marginEnd="10dp"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="0dp"
         android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/exDot1"
+            card_view:cardBackgroundColor="#FF7C7C7C"
+            card_view:cardCornerRadius="2dp">
+
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,13 +35,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/ExerciseTxt1"
+                android:id="@+id/exNumber"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="Pushup"
                 android:layout_marginBottom="5dp"
-                android:visibility="gone"
                 android:textColor="#000"
                 android:gravity="center" />
 
@@ -37,10 +47,11 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:id="@+id/ExerciseCV"
+                android:layout_gravity="center"
                 card_view:cardBackgroundColor="@color/MiBodyOrange"
                 card_view:cardCornerRadius="24dp">
                 <ImageView
-                    android:id="@+id/ExerciseImage"
+                    android:id="@+id/ExerciseIcon"
                     android:tint="#FFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,16 +62,25 @@
             </android.support.v7.widget.CardView>
 
             <TextView
-                android:id="@+id/ExerciseTxt2"
+                android:id="@+id/exName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="Pushup"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"
                 android:textColor="#000"
                 android:gravity="center" />
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:visibility="gone"
+                android:id="@+id/workoutExerciseDetails">
+
+                <include layout="@layout/workout_exercise_details" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -69,10 +89,10 @@
         <android.support.v7.widget.CardView
             android:layout_width="5dp"
             android:layout_height="5dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:visibility="gone"
-            android:id="@+id/exDot"
+            android:id="@+id/exDot2"
             card_view:cardBackgroundColor="#FF7C7C7C"
             card_view:cardCornerRadius="2dp">
 
@@ -81,7 +101,8 @@
     </LinearLayout>
 
 
-    <include layout="@layout/workout_exercise_details" />
+
+
 
 
 

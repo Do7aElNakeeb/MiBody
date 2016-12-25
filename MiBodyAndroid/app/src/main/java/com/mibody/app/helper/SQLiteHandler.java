@@ -196,14 +196,17 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 for(int i = 0; i<workoutsExArr.length(); i++){
                     // Get JSON object
                     JSONObject obj = (JSONObject) workoutsExArr.get(i);
+
                     String name = obj.get("name").toString();
-                    int ResT = (int) obj.get("RestT");
-                    int RepsT = (int) obj.get("RepsT");
-                   // String exercise = obj.get("exercise").toString();
-                    String rgb = obj.get("rgb").toString();
-                    int setReps = (int) obj.get("setReps");
-                    Log.d("checkJSON", name + " " + String.valueOf(RepsT));
-                    workoutExItems.add(new WorkoutExItem(name,  ResT,  RepsT, rgb, setReps));
+                    String image = obj.get("image").toString();
+                    String ropes = obj.get("ropes").toString();
+                    int reps = obj.getInt("reps");
+                    int restTime = obj.getInt("restTime");
+                    int exReps = obj.getInt("exReps");
+
+                    Log.d("checkJSON", name + " " + String.valueOf(restTime));
+
+                    workoutExItems.add(new WorkoutExItem(name, image, ropes, reps, restTime, exReps));
                 }
             }
 

@@ -11,7 +11,7 @@ public class AppConfig {
     // Server promotions url
 //    public static String URL_SERVER = "http://api.mibody.ch/";
 
-    public static String URL_SERVER = "http://192.168.1.10/MiBodyServer";
+    public static String URL_SERVER = "http://192.168.1.10/MiBodyServer/";
 
     // EXTRA string to send on to mainactivity
     public static String EXTRA_DEVICE_ADDRESS = "device_address";

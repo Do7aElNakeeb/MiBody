@@ -18,7 +18,7 @@ import java.util.List;
  * Created by nakeebimac on 10/18/16.
  */
 
-public class WorkoutItem implements Parcelable {
+public class WorkoutItem implements Parcelable{
 
     public String workoutID;
     public String workoutName;
@@ -57,13 +57,14 @@ public class WorkoutItem implements Parcelable {
                     JSONObject obj = (JSONObject) resultsArr.get(i);
 
                     // DB QueryValues Object to insert into Movies ArrayList
-                    int RestT = obj.getInt("workoutName");
-                    String name = obj.get("workoutName").toString();
-                    int RepsT = obj.getInt("workoutName");
-                    String rgb = obj.get("workoutName").toString();
-                    int setReps = obj.getInt("workoutName");
+                    String name = obj.get("name").toString();
+                    String image = obj.get("image").toString();
+                    String ropes = obj.get("ropes").toString();
+                    int reps = obj.getInt("reps");
+                    int restTime = obj.getInt("restTime");
+                    int exReps = obj.getInt("exReps");
 
-                    exercisesList.add(new WorkoutExItem(name, RestT, RepsT, rgb, setReps));
+                    exercisesList.add(new WorkoutExItem(name, image, ropes, reps, restTime, exReps));
 
                 }
 
@@ -76,7 +77,7 @@ public class WorkoutItem implements Parcelable {
 
     }
 
-    private WorkoutItem(Parcel in) {
+    protected WorkoutItem(Parcel in) {
         workoutID = in.readString();
         workoutName = in.readString();
         workoutReps = in.readInt();
@@ -102,11 +103,11 @@ public class WorkoutItem implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(workoutID);
-        dest.writeString(workoutName);
-        dest.writeInt(workoutReps);
-        dest.writeString(exercisesJSON);
-        dest.writeString(workoutType);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(workoutID);
+        parcel.writeString(workoutName);
+        parcel.writeInt(workoutReps);
+        parcel.writeString(exercisesJSON);
+        parcel.writeString(workoutType);
     }
 }

@@ -63,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         // setting title
         holder.title.setText(model.getName());
-        Picasso.with(context).load(AppConfig.URL_SERVER + "/ExIcon/" + model.getIcon()).into(holder.imageView);
+        Picasso.with(context).load(AppConfig.URL_SERVER + "ExIcon/" + model.getIcon()).into(holder.imageView);
 
   //      holder.imageView.setImageBitmap(image);
 /*

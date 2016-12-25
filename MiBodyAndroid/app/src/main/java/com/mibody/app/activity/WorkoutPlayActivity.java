@@ -30,7 +30,7 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
         intent = getIntent();
         workoutItem = intent.getParcelableExtra("WorkoutItem");
         if (!intent.getStringExtra("weight").equals("weight")) {
-            workoutItem.exercisesList = intent.getParcelableArrayListExtra("WorkoutItemExList");
+            workoutItem.exercisesJSON = intent.getStringExtra("WorkoutItemExJSON");
         }
         if (workoutItem == null){
             Log.d("WorkoutItem", "nulllll");

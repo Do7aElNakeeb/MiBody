@@ -117,7 +117,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
 
 
-        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_SERVER + "/workouts.php",
+        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_SERVER + "workouts.php",
                 new Response.Listener<String>() {
 
                     @Override

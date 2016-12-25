@@ -49,8 +49,8 @@ public class ExerciseDetails extends Fragment {
         exerciseImg = (ImageView) view.findViewById(R.id.exImg);
         exerciseDescription = (TextView) view.findViewById(R.id.exDescription);
 
-        Glide.with(getActivity()).load(AppConfig.URL_SERVER + "/ExGif/" + exerciseItem.getGIF()).asGif().into(exerciseGIF);
-        Glide.with(getActivity()).load(AppConfig.URL_SERVER + "/ExImage/" + exerciseItem.getImage()).into(exerciseImg);
+        Glide.with(getActivity()).load(AppConfig.URL_SERVER + "ExGif/" + exerciseItem.getGIF()).asGif().into(exerciseGIF);
+        Glide.with(getActivity()).load(AppConfig.URL_SERVER + "ExImage/" + exerciseItem.getImage()).into(exerciseImg);
 
         exerciseName.setText(exerciseItem.getName());
         exerciseDescription.setText(exerciseItem.getDescription());

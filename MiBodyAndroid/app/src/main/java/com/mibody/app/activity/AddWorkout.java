@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -13,7 +14,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -29,7 +32,6 @@ import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
 import com.mibody.app.helper.ExercisesAdapter;
-import com.mibody.app.helper.RecyclerViewAdapter;
 import com.mibody.app.helper.SQLiteHandler;
 import com.mibody.app.helper.WorkoutExItemAdapter;
 
@@ -71,24 +73,25 @@ public class AddWorkout extends AppCompatActivity {
     Button AddExercise;
     ImageButton workoutRepeatBtn;
     Button SaveWorkout;
-    GridView ExercisesGrid;
-    RecyclerView ExercisesSetGrid;
-
-    RecyclerView ExercisesRV, UserExercisesRV;
-    ArrayList<ExerciseItem> exerciseItemArrayList, userExerciseItemArrayList;
-
-    WorkoutExItemAdapter WAdapter;
-    String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
-            "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
 
 
-    int Images[] = { R.drawable.ex1, R.drawable.ex2,
-            R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
-            R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
-            R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
+    RecyclerView ExercisesRV, WorkoutExItemsRV;
+    ArrayList<ExerciseItem> exerciseItemArrayList;
 
     ArrayList<WorkoutExItem> workoutExItemArrayList;
-    ArrayList<WorkoutItem> workoutItemArrayList;
+
+    ExercisesAdapter exercisesAdapter;
+    WorkoutExItemAdapter workoutExItemAdapter;
+
+    private float itemWidth;
+    private float padding;
+    private float firstItemWidth;
+    private float allPixels;
+    private int mLastPosition;
+
+    private static final int NUM_ITEMS = 5;
+    private static final String BUNDLE_LIST_PIXELS = "allPixels";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,39 @@ public class AddWorkout extends AppCompatActivity {
 
         initWorkoutViews();
 
+/*
+        WorkoutExItemsRV.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                synchronized (this) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        calculatePositionAndScroll(recyclerView);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                allPixels += dx;
+            }
+
+        });
+        */
+
+        AddExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //workoutExItemArrayList.add(new WorkoutExItem());
+                //WAdapter.notifyItemInserted(workoutExItemArrayList.size());
+                workoutExItemArrayList.add(new WorkoutExItem());
+                workoutExItemAdapter.notifyItemInserted(workoutExItemArrayList.size()-2);
+                WorkoutExItemsRV.scrollToPosition(workoutExItemArrayList.size()-2);
+            }
+        });
+
+
         workoutRepeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,63 +177,148 @@ public class AddWorkout extends AppCompatActivity {
 
     }
 
-
-
     private void initWorkoutViews(){
-        ExercisesSetGrid = (RecyclerView) findViewById(R.id.exercises_set_grid);
-       // ExercisesSetGrid.setHasFixedSize(true);
-        ExercisesSetGrid.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
-/*
-        workoutItemArrayList = new ArrayList<>();
-        workoutItemArrayList.add(new WorkoutItem());
-*/
-        // API exercises
+
+        // API Exercises
         ExercisesRV = (RecyclerView) findViewById(R.id.addWorkoutExercisesRV);
         ExercisesRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
 
         exerciseItemArrayList = new ArrayList<ExerciseItem>();
         exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
-        ExercisesAdapter exercisesAdapter = new ExercisesAdapter(this, exerciseItemArrayList, 0);
+        exercisesAdapter = new ExercisesAdapter(this, exerciseItemArrayList, 0);
         ExercisesRV.setAdapter(exercisesAdapter);
 
+        // Workout Exercises RV
+        getWorkoutExItemsRV();
+        /*
+        WorkoutExItemsRV = (RecyclerView) findViewById(R.id.addWorkoutUserExercisesRV);
+        WorkoutExItemsRV.setLayoutManager(new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false));
 
-        // User selected exercises RV
-        LinearLayoutManager layoutManager = new LinearLayoutManager(AddWorkout.this, LinearLayoutManager.HORIZONTAL, false);
-        UserExercisesRV = (RecyclerView) findViewById(R.id.addWorkoutUserExercisesRV);
-        UserExercisesRV.setLayoutManager(layoutManager);
-
-
-        userExerciseItemArrayList = new ArrayList<ExerciseItem>();
-        userExerciseItemArrayList.add(exerciseItemArrayList.get(0));
-
-        final ExercisesAdapter userExercisesAdapter = new ExercisesAdapter(this, userExerciseItemArrayList, 1);
-        UserExercisesRV.setAdapter(userExercisesAdapter);
-
-        LinearSnapHelper snapHelper  = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(UserExercisesRV);
-
-
-        workoutExItemArrayList = new ArrayList<>();
+        workoutExItemArrayList = new ArrayList<WorkoutExItem>();
         workoutExItemArrayList.add(new WorkoutExItem());
 
-        WAdapter = new WorkoutExItemAdapter(this, workoutExItemArrayList);
-        ExercisesSetGrid.setAdapter(WAdapter);// set adapter on recyclerview
-//        WAdapter.notifyDataSetChanged();// Notify the adapter
+        workoutExItemAdapter = new WorkoutExItemAdapter(context, workoutExItemArrayList);
+        WorkoutExItemsRV.setAdapter(workoutExItemAdapter);
+*/
+    }
 
-        AddExercise.setOnClickListener(new View.OnClickListener() {
+    public void getWorkoutExItemsRV() {
+        WorkoutExItemsRV = (RecyclerView) findViewById(R.id.addWorkoutUserExercisesRV);
+
+        if (WorkoutExItemsRV != null) {
+            WorkoutExItemsRV.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setFocustedItem();
+                }
+            }, 300);
+            WorkoutExItemsRV.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    WorkoutExItemsRV.smoothScrollToPosition(workoutExItemAdapter.getItemCount()-1);
+                    setFocustedItem();
+                }
+            }, 5000);
+        }
+
+        ViewTreeObserver vto = WorkoutExItemsRV.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
-            public void onClick(View v) {
-                //workoutExItemArrayList.add(new WorkoutExItem());
-                //WAdapter.notifyItemInserted(workoutExItemArrayList.size());
-                userExerciseItemArrayList.add(exerciseItemArrayList.get(0));
-                userExercisesAdapter.notifyItemInserted(userExerciseItemArrayList.size());
-                UserExercisesRV.scrollToPosition(userExerciseItemArrayList.size());
+            public boolean onPreDraw() {
+                WorkoutExItemsRV.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalWidth = WorkoutExItemsRV.getMeasuredWidth();
+                itemWidth = getResources().getDimension(R.dimen.item_width);
+                padding = (finalWidth - itemWidth) / 2;
+                firstItemWidth = padding ;
+                allPixels = 0;
+
+                final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                WorkoutExItemsRV.setLayoutManager(linearLayoutManager);
+                WorkoutExItemsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        synchronized (this) {
+                            if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                                calculatePositionAndScroll(recyclerView);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        allPixels += dx;
+                    }
+                });
+
+                workoutExItemArrayList = new ArrayList<WorkoutExItem>();
+                workoutExItemArrayList.add(new WorkoutExItem());
+
+                workoutExItemAdapter = new WorkoutExItemAdapter(context, workoutExItemArrayList, (int) firstItemWidth);
+                WorkoutExItemsRV.setAdapter(workoutExItemAdapter);
+                workoutExItemAdapter.setFocusedItem(workoutExItemAdapter.getItemCount() - 2);
+
+                return true;
             }
         });
-
-
     }
+
+    /* this if most important, if expectedPositionDate < 0 recyclerView will return to nearest item*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            sqLiteHandler.open();
+
+        } catch (Exception e) {
+            Log.i("hello", "hello");
+        }
+    }
+
+    private void calculatePositionAndScroll(RecyclerView recyclerView) {
+        int expectedPosition = Math.round((allPixels + padding - firstItemWidth) / itemWidth);
+        // Special cases for the padding items
+        if (expectedPosition == -1) {
+            expectedPosition = 0;
+        } else if (expectedPosition >= recyclerView.getAdapter().getItemCount() - 2) {
+            expectedPosition--;
+        }
+        scrollListToPosition(recyclerView, expectedPosition);
+    }
+
+    private void scrollListToPosition(RecyclerView recyclerView, int expectedPosition) {
+        float targetScrollPos = expectedPosition * itemWidth + firstItemWidth - padding;
+        float missingPx = targetScrollPos - allPixels;
+        if (missingPx != 0) {
+            recyclerView.smoothScrollBy((int) missingPx, 0);
+        }
+    }
+
+    private void setFocustedItem() {
+        int expectedPosition = Math.round((allPixels + padding - firstItemWidth) / itemWidth);
+        int setPosition = expectedPosition + 1;
+//        set color here
+        workoutExItemAdapter.setFocusedItem(setPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        allPixels = savedInstanceState.getFloat(BUNDLE_LIST_PIXELS);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putFloat(BUNDLE_LIST_PIXELS, allPixels);
+    }
+
 
     public final static class MyTouchListener implements OnTouchListener {
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -251,17 +372,6 @@ public class AddWorkout extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            sqLiteHandler.open();
-
-        } catch (Exception e) {
-            Log.i("hello", "hello");
-        }
-    }
-
     private void addWorkout(final WorkoutItem workoutItem){
 
         // Tag used to cancel the request
@@ -270,7 +380,7 @@ public class AddWorkout extends AppCompatActivity {
         //if the email and password are not empty
         //displaying a progress dialog
 
-        pDialog.setMessage("Signing in please wait ...");
+        pDialog.setMessage("Saving Workout ...");
         showDialog();
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
@@ -288,15 +398,9 @@ public class AddWorkout extends AppCompatActivity {
                     boolean error = jObj.getBoolean("error");
                     String message = jObj.getString("message");
                     if (!error) {
-                        // User successfully stored in MySQL
-                        // Now store the user in Shared Preferences
-
-                        String id = jObj.get("name").toString();
-
+                        // Workout successfully stored in MySQL
+                        String id = jObj.get("id").toString();
                         sqLiteHandler.addWorkout(new WorkoutItem(id, workoutItem.workoutName, workoutItem.workoutReps, workoutItem.exercisesJSON, "personalised"));
-                        // Inserting row in users table
-                        //db.addUser(id, name, email, mobile, carBrand, carModel, carYear, regID, created_at);
-
                     }
 
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();

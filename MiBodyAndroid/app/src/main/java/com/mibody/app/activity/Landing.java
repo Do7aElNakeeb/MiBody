@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.helper.LandingVideosAdapter;
-import com.mibody.app.helper.RecyclerViewAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;

@@ -120,8 +120,8 @@ public class WorkoutPlay extends Fragment {
                         workoutName.setText(workoutItem.workoutName);
 
                         processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(setExCount-1).name)] + "\n"
-                                + workoutItem.exercisesList.get(setExCount-1).RepsT + " Reps\n"
-                                + setCount + " / " + workoutItem.exercisesList.get(setExCount-1).setReps + " Sets\n"
+                                + workoutItem.exercisesList.get(setExCount-1).restTime + " Reps\n"
+                                + setCount + " / " + workoutItem.exercisesList.get(setExCount-1).exReps + " Sets\n"
                                 + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
                                 + workoutReps + " / " + workoutItem.workoutReps + " WorkoutFragment Reps");
 
@@ -180,7 +180,7 @@ public class WorkoutPlay extends Fragment {
 
                                 Log.d("processtatus", oldMsg + strCount);
 
-                                processStatus(processCount, workoutItem.exercisesList.get(setExCount-1).RepsT);
+                                processStatus(processCount, workoutItem.exercisesList.get(setExCount-1).restTime);
 
                                 processName.setText("Rest Time");
                                 oldMsg = "~";
@@ -286,7 +286,7 @@ public class WorkoutPlay extends Fragment {
             mConnectedThread.write("f");
         }
 */
-        new CountDownTimer(workoutItem.exercisesList.get(setExCount-1).RestT * 1000 , 1000) {
+        new CountDownTimer(workoutItem.exercisesList.get(setExCount-1).restTime * 1000 , 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -298,7 +298,7 @@ public class WorkoutPlay extends Fragment {
                 status.setText("");
                 counter.setText("0");
 
-                if (setCount >= workoutItem.exercisesList.get(setExCount-1).setReps){
+                if (setCount >= workoutItem.exercisesList.get(setExCount-1).exReps){
                     if (exerciseCount >= workoutItem.exercisesList.size()){
                         if (workoutReps >= workoutItem.workoutReps){
                             processName.setVisibility(View.GONE);
@@ -328,8 +328,8 @@ public class WorkoutPlay extends Fragment {
                 }
 
                 processName.setText(AppConfig.exercises_names[Integer.valueOf(workoutItem.exercisesList.get(setExCount - 1).name)] + "\n"
-                        + workoutItem.exercisesList.get(setExCount-1).RepsT + " Reps\n"
-                        + setCount + " / " + workoutItem.exercisesList.get(setExCount - 1).setReps + " Sets\n"
+                        + workoutItem.exercisesList.get(setExCount-1).restTime + " Reps\n"
+                        + setCount + " / " + workoutItem.exercisesList.get(setExCount - 1).exReps + " Sets\n"
                         + (exerciseCount) + " / " + String.valueOf(workoutItem.exercisesList.size()) + " Exercises\n"
                         + workoutReps + " / " + workoutItem.workoutReps + " WorkoutFragment Reps");
 

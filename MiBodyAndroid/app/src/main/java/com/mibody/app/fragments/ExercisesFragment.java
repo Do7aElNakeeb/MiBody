@@ -132,7 +132,7 @@ public class ExercisesFragment extends Fragment {
         showDialog();
 
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_SERVER + "/exercises.php",
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_SERVER + "exercises.php",
                 new Response.Listener<String>() {
 
                     @Override

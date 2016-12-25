@@ -1,24 +1,38 @@
 package com.mibody.app.helper;
 
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mibody.app.R;
+import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.app.WorkoutExItem;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -27,362 +41,267 @@ import java.util.ArrayList;
  * Created by NakeebMac on 10/5/16.
  */
 
-public class WorkoutExItemAdapter extends RecyclerView.Adapter<AddWorkoutRecyclerViewHolder> {
+public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdapter.ViewHolder> {
 
-/*   Context context;
-    private int ExercisesNo = 1;
-    private static LayoutInflater inflater = null;
-*/
-    private ArrayList<WorkoutExItem> arrayList;
+    private ArrayList<WorkoutExItem> workoutExItemArrayList;
     private Context context;
-    private int ExercisesNo;
-    SQLiteHandler sqLiteHandler;
 
-    String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D", "Exercise E",
-            "Exercise F", "Exercise G", "Exercise H", "Exercise I", "Exercise J", "Exercise K" };
+    private int paddingWidth = 0;
+    private int focusedItem = -1;
+    private int selectedItem = -1;
+
+    private static final int VIEW_TYPE_PADDING = 1;
+    private static final int VIEW_TYPE_ITEM = 2;
 
 
-    int Images[] = { R.drawable.ex1, R.drawable.ex2,
-            R.drawable.ex3, R.drawable.ex4, R.drawable.ex5,
-            R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
-            R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
-
-    public WorkoutExItemAdapter(Context context, ArrayList<WorkoutExItem> arrayList) {
-        // TODO Auto-generated constructor stub
-
-        /*
-        //      result=prgmNameList;
-        context = addWorkout;
-//        imageId=prgmImages;
-        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        */
-
+    public WorkoutExItemAdapter(Context context, ArrayList<WorkoutExItem> workoutExItemArrayList, int paddingWidth){
+        this.workoutExItemArrayList = workoutExItemArrayList;
         this.context = context;
-        this.arrayList = arrayList;
-        this.ExercisesNo = arrayList.size();
+        this.paddingWidth = paddingWidth;
+    }
 
-        sqLiteHandler = new SQLiteHandler(context);
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        try {
-            sqLiteHandler.open();
+        if (viewType == VIEW_TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_workout_exercises_item, parent, false);
+            return new ViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_workout_exercises_item, parent, false);
 
-        } catch (Exception e) {
-            Log.i("hello", "hello");
+            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
+            layoutParams.width = paddingWidth;
+            view.setLayoutParams(layoutParams);
+
+            return new ViewHolder(view);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+
+
+        if (getItemViewType(position) == VIEW_TYPE_ITEM) {
+
+            final WorkoutExItem workoutExItem = workoutExItemArrayList.get(position -1);
+
+            holder.exNumber.setText(String.valueOf(position));
+
+            if (position == focusedItem) {
+                holder.exDot1.setVisibility(View.VISIBLE);
+                holder.exDot2.setVisibility(View.VISIBLE);
+
+                // run scale animation and make it bigger
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_in_ex);
+                Log.d("animation", "hhasFocus");
+                //holder.cardView.startAnimation(anim);
+                anim.setFillAfter(true);
+            }
+            else if (position < focusedItem){
+                holder.exDot1.setVisibility(View.VISIBLE);
+                holder.exDot2.setVisibility(View.GONE);
+
+                // run scale animation and make it bigger
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_out_ex);
+                Log.d("animation", "hhasFocus");
+                //holder.cardView.startAnimation(anim);
+                anim.setFillAfter(true);
+            }
+            else if (position > focusedItem){
+                holder.exDot1.setVisibility(View.GONE);
+                holder.exDot2.setVisibility(View.VISIBLE);
+
+                // run scale animation and make it bigger
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_out_ex);
+                Log.d("animation", "hhasFocus");
+                //holder.cardView.startAnimation(anim);
+                anim.setFillAfter(true);
+            }
+
+
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (workoutExItem.name == null){
+                        holder.workoutExDetailsLayout.setVisibility(View.GONE);
+                        Toast.makeText(context, "Drag Exercise and Drop Here Firstly", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        holder.workoutExDetailsLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            holder.cardView.setOnDragListener(new View.OnDragListener() {
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    int action = event.getAction();
+                    switch (event.getAction()) {
+                        case DragEvent.ACTION_DRAG_STARTED:
+                            // do nothing
+                            break;
+                        case DragEvent.ACTION_DRAG_ENTERED:
+//                    v.setBackgroundDrawable(enterShape);
+                            break;
+                        case DragEvent.ACTION_DRAG_EXITED:
+//                    v.setBackgroundDrawable(normalShape);
+                            break;
+                        case DragEvent.ACTION_DROP:
+                            // Dropped, reassign View to ViewGroup
+                            //CardView view = (CardView) event.getLocalState();
+                            //ViewGroup owner = (ViewGroup) view.getParent();
+                            //owner.removeView(view);
+                            // CardView container = (CardView) v;
+                            //container = tempVH.cardView;
+                            //view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
+                            //view.setVisibility(View.VISIBLE);
+                            notifyDataSetChanged();
+                            break;
+                        case DragEvent.ACTION_DRAG_ENDED:
+//                    v.setBackgroundDrawable(normalShape);
+                        default:
+                            break;
+                    }
+                    return true;
+                }
+            });
+        }
+        else {
+            holder.itemView.setVisibility(View.INVISIBLE);
         }
 
     }
-    @Override
-    public AddWorkoutRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // This method will inflate the custom layout and return as viewholder
-        LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
 
-        ViewGroup mainGroup = (ViewGroup) mInflater.inflate(
-                R.layout.exercises_set_grid_item, parent, false);
-        AddWorkoutRecyclerViewHolder listHolder = new AddWorkoutRecyclerViewHolder(mainGroup);
-        return listHolder;
-
+    public void setFocusedItem(int focusedItem) {
+        this.focusedItem = focusedItem;
+        notifyDataSetChanged();
     }
 
-    @Override
-    public void onBindViewHolder(AddWorkoutRecyclerViewHolder holder, final int position) {
-        final WorkoutExItem model = arrayList.get(position);
-
-        final AddWorkoutRecyclerViewHolder mainHolder = (AddWorkoutRecyclerViewHolder) holder;// holder
-
-//        SharedPreferences prefs = context.getSharedPreferences("WorkoutFragment", Context.MODE_PRIVATE);
-//      ExercisesNo = Integer.valueOf(prefs.getString("WorkoutExNo", ""));
-
-
-        mainHolder.ExerciseImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            //    showExerciseSelector(mainHolder.ExerciseImg);
-             //   model.name = String.valueOf(mainHolder.ExerciseImg.getId());
-
-                /////////////////
-                final Dialog dialog = new Dialog(context);
-                dialog.setTitle("Select Exercise");
-                dialog.setContentView(R.layout.exercises_recycle_horizontal);
-
-                final RecyclerView ExercisesRV = (RecyclerView) dialog.findViewById(R.id.exercises_grid);
-                ExercisesRV.setHasFixedSize(true);
-                ExercisesRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-
-                ExercisesRV.setItemAnimator(new DefaultItemAnimator());
-                ArrayList<ExerciseItem> exerciseItemArrayList = new ArrayList<ExerciseItem>();
-
-                exerciseItemArrayList = sqLiteHandler.getExercises(null);
-
-
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, exerciseItemArrayList);
-                ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
-                //  adapter.notifyDataSetChanged();// Notify the adapter
-
-
-                adapter.setClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position) {
-                        mainHolder.ExerciseImg.setImageResource(Images[position]);
-                        mainHolder.ExerciseImg.setTag(Images[position]);
-                        model.name = String.valueOf(position);
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-
-
-            //    arrayList.get(position).exercise = "Ex1";
-            }
-        });
-
-
-        mainHolder.RGB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRGBDialog(mainHolder.RGB);
-                mainHolder.RGB.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        model.setRgb(mainHolder.RGB.getText().toString());
-                    }
-                });
-
-            }
-        });
-
-        mainHolder.RestMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (model.getRestT() > 0) {
-                    model.setRestT(model.getRestT() - 1);
-                    mainHolder.RestTime.setText(String.valueOf(model.getRestT()));
-                }
-            }
-        });
-
-        mainHolder.RestPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (model.getRestT() < 15) {
-                    model.setRestT(model.getRestT() + 1);
-                    mainHolder.RestTime.setText(String.valueOf(model.getRestT()));
-                }
-            }
-        });
-
-        mainHolder.Reps.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                model.RepsT = Integer.valueOf(s.toString());
-            }
-        });
-
-        mainHolder.RemoveExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                arrayList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position,arrayList.size());
-            }
-        });
-
-        mainHolder.setRepeatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                model.setReps++;
-                mainHolder.setRepeat.setText(String.valueOf(model.setReps));
-            }
-        });
-
+    public void setSelectedItem(int selectedItem){
+        this.selectedItem = selectedItem;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return (null != arrayList ? arrayList.size() : 0);
+        return workoutExItemArrayList.size();
     }
 
-
-    private void showRGBDialog(final Button RGB){
-        final Dialog dialog = new Dialog(context);
-        //dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        dialog.setTitle("Select the load");
-        dialog.setContentView(R.layout.rgb);
-
-        final String[] rgb = new String[3];
-        final RadioGroup rgb1 = (RadioGroup) dialog.findViewById(R.id.rgb1);
-        final RadioGroup rgb2 = (RadioGroup) dialog.findViewById(R.id.rgb2);
-        final RadioGroup rgb3 = (RadioGroup) dialog.findViewById(R.id.rgb3);
-
-        rgb1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rgb_btn = (RadioButton) group.findViewById(checkedId);
-                rgb[0] = rgb_btn.getText().toString();
-            }
-        });
-
-        rgb2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rgb_btn = (RadioButton) group.findViewById(checkedId);
-                rgb[1] = rgb_btn.getText().toString();
-            }
-        });
-
-        rgb3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rgb_btn = (RadioButton) group.findViewById(checkedId);
-                rgb[2] = rgb_btn.getText().toString();
-            }
-        });
-
-
-        Button rgbSet = (Button) dialog.findViewById(R.id.rgb_btn);
-
-        rgbSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                RGB.setText(rgb[0] + rgb[1] + rgb[2]);
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0 || position == getItemCount()-1) {
+            return VIEW_TYPE_PADDING;
+        }
+        return VIEW_TYPE_ITEM;
     }
-/*
-    private void showExerciseSelector(final ImageView imageView){
 
-        final Dialog dialog = new Dialog(context);
-        dialog.setTitle("Select Exercise");
-        dialog.setContentView(R.layout.exercises_recycle_horizontal);
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        final RecyclerView ExercisesRV = (RecyclerView) dialog.findViewById(R.id.exercises_grid);
-        ExercisesRV.setHasFixedSize(true);
-        ExercisesRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        CardView cardView, exDot1, exDot2;
+        ImageView icon;
+        TextView exName, exNumber;
 
-        ExercisesRV.setItemAnimator(new DefaultItemAnimator());
-        ArrayList<ExerciseItem> arrayList = new ArrayList<>();
-        for (int i = 0; i < exercises_names.length; i++) {
-            arrayList.add(new ExerciseItem(Images[i], exercises_names[i]));
+        LinearLayout workoutExDetailsLayout;
+        ImageView b1, b2, b3, r1, r2, r3, y1, y2, y3;
+        TextView repsTxtView, restTxtView, exRepsTxtView;
+        EditText repsEdtTxt, restEdtTxt;
+        Button repsMinusBtn, repsPlusBtn, restMinusBtn, restPlusBtn, exRepsPlusBtn;
+
+
+        public ViewHolder(final View itemView) {
+            super(itemView);
+
+            cardView = (CardView) itemView.findViewById(R.id.ExerciseCV);
+            icon = (ImageView) itemView.findViewById(R.id.ExerciseIcon);
+            exNumber = (TextView) itemView.findViewById(R.id.exNumber);
+            exName = (TextView) itemView.findViewById(R.id.exName);
+            exDot1 = (CardView) itemView.findViewById(R.id.exDot1);
+            exDot2 = (CardView) itemView.findViewById(R.id.exDot2);
+
+            workoutExDetailsLayout = (LinearLayout) itemView.findViewById(R.id.workoutExerciseDetails);
+//             workoutExDetailsLayout.setVisibility(View.GONE);
+
+            // Ropes
+            b1 = (ImageView) itemView.findViewById(R.id.ropes_black1);
+            b2 = (ImageView) itemView.findViewById(R.id.ropes_black2);
+            b3 = (ImageView) itemView.findViewById(R.id.ropes_black3);
+            r1 = (ImageView) itemView.findViewById(R.id.ropes_red1);
+            r2 = (ImageView) itemView.findViewById(R.id.ropes_red2);
+            r3 = (ImageView) itemView.findViewById(R.id.ropes_red3);
+            y1 = (ImageView) itemView.findViewById(R.id.ropes_yellow1);
+            y2 = (ImageView) itemView.findViewById(R.id.ropes_yellow2);
+            y3 = (ImageView) itemView.findViewById(R.id.ropes_yellow3);
+
+            // Reps
+            repsTxtView = (TextView) itemView.findViewById(R.id.reps_txtview);
+            repsEdtTxt = (EditText) itemView.findViewById(R.id.reps_edttxt);
+            repsMinusBtn = (Button) itemView.findViewById(R.id.reps_minus_btn);
+            repsPlusBtn = (Button) itemView.findViewById(R.id.reps_plus_btn);
+
+            // Rest
+            restTxtView = (TextView) itemView.findViewById(R.id.rest_time_txtview);
+            restEdtTxt = (EditText) itemView.findViewById(R.id.rest_time_edttxt);
+            restMinusBtn = (Button) itemView.findViewById(R.id.rest_minus_btn);
+            restPlusBtn = (Button) itemView.findViewById(R.id.rest_plus_btn);
+
+            // Exercise Reps
+            exRepsTxtView = (TextView) itemView.findViewById(R.id.exercise_reps_txtview);
+            exRepsPlusBtn = (Button) itemView.findViewById(R.id.exercise_reps_circle_btn);
+
+        }
+    }
+
+    private class MyTouchListener implements View.OnTouchListener {
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
+                        view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                view.setVisibility(View.VISIBLE);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private class MyDragListener implements View.OnDragListener {
+        /*
+        Drawable enterShape = getResources().getDrawable(
+                R.drawable.gym1);
+        Drawable normalShape = getResources().getDrawable(R.drawable.gym1);
+*/
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int action = event.getAction();
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    // do nothing
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+//                    v.setBackgroundDrawable(enterShape);
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+//                    v.setBackgroundDrawable(normalShape);
+                    break;
+                case DragEvent.ACTION_DROP:
+                    // Dropped, reassign View to ViewGroup
+                    CardView view = (CardView) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    //owner.removeView(view);
+                    CardView container = (CardView) v;
+                    container.addView(view);
+                    //view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
+                    view.setVisibility(View.VISIBLE);
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+//                    v.setBackgroundDrawable(normalShape);
+                default:
+                    break;
+            }
+            return true;
         }
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(context, arrayList);
-        ExercisesRV.setAdapter(adapter);// set adapter on recyclerview
-      //  adapter.notifyDataSetChanged();// Notify the adapter
-
-
-       adapter.setClickListener(new ItemClickListener() {
-           @Override
-           public void onClick(View view, int position) {
-               imageView.setImageResource(Images[position]);
-               imageView.setTag(Images[position]);
-               Log.d("TagOfImageView", String.valueOf(Images[position]));
-               dialog.dismiss();
-           }
-       });
-
-
-    /*    exerciseSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-
     }
-*/
-
-    public void addItem(){
-        ExercisesNo++;
-    }
-
-    /*
-
-
-    @Override
-    public int getCount() {
-        return ExercisesNo;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        final WorkoutExItem workoutExItem = new WorkoutExItem();
-        View rowView;
-
-        rowView = inflater.inflate(R.layout.exercises_set_grid_item, null);
-        workoutExItem.setExerciseImg((ImageView) rowView.findViewById(R.id.exercise1_img));
-        workoutExItem.setAddEx((Button) rowView.findViewById(R.id.add_exercise2));
-        workoutExItem.setRestMinus((Button) rowView.findViewById(R.id.rest1_minus));
-        workoutExItem.setRestPlus((Button) rowView.findViewById(R.id.rest1_plus));
-        workoutExItem.setRGB((Button) rowView.findViewById(R.id.rgb_btn));
-        workoutExItem.setReps((EditText) rowView.findViewById(R.id.reps1_count));
-        workoutExItem.setRestTime((EditText) rowView.findViewById(R.id.rest1_count));
-//        workoutExItem.setRestT(0);
-
-        workoutExItem.getAddEx().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                workoutExItem.getAddEx().setVisibility(View.GONE);
-                ExercisesNo++;
-
-            }
-        });
-
-        workoutExItem.getRestPlus().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                workoutExItem.getRestTime().setText(workoutExItem.getRestT() + 1);
-            }
-        });
-
-        workoutExItem.getRestMinus().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (workoutExItem.getRestT() != 0){
-                    workoutExItem.getRestTime().setText(workoutExItem.getRestT() - 1);
-                }
-            }
-        });
-
-        
-        return rowView;
-    }
-    */
 }

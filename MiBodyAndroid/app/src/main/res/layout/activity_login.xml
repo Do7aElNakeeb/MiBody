@@ -73,8 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:id="@+id/email"
-                    android:text="mamdouh@nakeeb.com"
                     android:hint="@string/prompt_email"
+                    android:textColorHint="#7fffffff"
                     android:inputType="textEmailAddress"
                     android:textColor="#FFFFFF"
                     android:background="@drawable/edittxt_bg"
@@ -93,9 +93,8 @@
 
                 <EditText
                     android:id="@+id/password"
-                    android:text="000000"
                     android:textStyle="bold"
-                    android:textColorHint="#87ffffff"
+                    android:textColorHint="#7fffffff"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:hint="@string/prompt_password"

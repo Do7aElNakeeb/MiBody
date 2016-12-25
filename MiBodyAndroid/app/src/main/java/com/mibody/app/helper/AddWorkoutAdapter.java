@@ -101,9 +101,9 @@ public class AddWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 mainHolder2.RestMinus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (model.getRestT() > 0) {
-                            model.setRestT(model.getRestT() - 1);
-                            mainHolder2.RestTime.setText(String.valueOf(model.getRestT()));
+                        if (model.restTime > 0) {
+                            model.restTime--;
+                            mainHolder2.RestTime.setText(String.valueOf(model.restTime));
                         }
                     }
                 });
@@ -111,9 +111,9 @@ public class AddWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 mainHolder2.RestPlus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (model.getRestT() < 15) {
-                            model.setRestT(model.getRestT() + 1);
-                            mainHolder2.RestTime.setText(String.valueOf(model.getRestT()));
+                        if (model.restTime < 15) {
+                            model.restTime++;
+                            mainHolder2.RestTime.setText(String.valueOf(model.restTime));
                         }
                     }
                 });

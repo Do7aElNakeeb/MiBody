@@ -70,7 +70,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="f990877062ef3e958fe1bb1431f05f3a1214fe8c">
+        sha1="75ed953f283f21cca5c4e1147462d895554272f8">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b33c7d6e6b2ae6bddbe97d27ae2fa633a218b0f1/classes.dex" />
     </item>
     <item
@@ -250,7 +250,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="5e18892e42fd35f974f015afb7f0113f3ac6b911">
+        sha1="0671f95403f6fa36911101d07549c3ea633935c6">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_e4893dc9375ed1afee1157eae780d1cc6e393665/classes.dex" />
     </item>
     <item
@@ -300,21 +300,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-multidex-1.0.1_7b93ad8fe7600861f282b3062eab6c6345a6eb70/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.6.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="1ef72e72bc0d05602c366582afa9439f58bb31d6">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-common-9.6.1_7ff7234675d0f654846dcca0461447e91e597c50/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-multidex-1.0.1_7b93ad8fe7600861f282b3062eab6c6345a6eb70/classes.dex" />
     </item>
 
 </items>

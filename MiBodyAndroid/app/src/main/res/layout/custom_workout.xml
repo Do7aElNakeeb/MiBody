@@ -21,8 +21,9 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:layout_weight="4">
                 <TextView
                     android:layout_width="match_parent"
@@ -94,9 +95,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:foregroundGravity="center"
+            android:layout_height="wrap_content"
             android:id="@+id/addWorkoutUserExercisesRV"
             android:padding="10dp">
 
@@ -170,9 +169,8 @@
             android:paddingTop="0.5dp">
 
             <android.support.v7.widget.RecyclerView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="#FFF"
                 android:id="@+id/addWorkoutExercisesRV"
                 android:padding="10dp">
