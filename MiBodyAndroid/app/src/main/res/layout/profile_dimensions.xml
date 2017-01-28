@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/profileDimen"
+    android:layout_width="match_parent"
+    android:background="@drawable/exercises_details_bg"
+    android:layout_height="match_parent">
+
+    <!-- Statistics Button Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/statisticsBkBtn"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_up"
+            android:rotation="-90"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Statistics"
+            android:textColor="@color/MiBodyOrange"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/profile_title"
+        android:layout_below="@id/statisticsBkBtn"
+        android:text="Profile"
+        android:textSize="17sp"
+        android:textColor="@color/MiBodyOrange"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Dimensions"
+        android:id="@+id/dimensions_title"
+        android:textSize="30sp"
+        android:layout_below="@id/profile_title"
+        android:textColor="@color/black"/>
+
+    <!-- Home Button Layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/homeBtn"
+        android:layout_below="@id/statisticsBkBtn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/MiBodyOrange">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/home_icon"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/description_txt"
+        android:layout_marginBottom="20dp"
+        android:textSize="12sp"
+        android:text="Click on the black dots to set your dimensions"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_alignParentBottom="true"/>
+
+<!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingLeft="@dimen/body_dimen"
+        android:paddingStart="@dimen/body_dimen"
+        android:paddingRight="@dimen/body_dimen"
+        android:paddingEnd="@dimen/body_dimen"
+        android:layout_below="@id/dimensions_title"
+        android:layout_above="@id/description_txt">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen1"
+            android:cropToPadding="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen1"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen2"
+            android:layout_below="@id/body_dimen1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen2"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen3"
+            android:layout_below="@id/body_dimen2"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen3"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen4"
+            android:layout_below="@id/body_dimen3"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen4"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen5"
+            android:layout_below="@id/body_dimen4"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen5"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_below="@id/body_dimen5"
+            android:id="@+id/body_dimen6"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen6"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen7"
+            android:layout_below="@id/body_dimen6"
+            android:scaleType="fitCenter"
+            android:src="@drawable/body_dimen7"/>
+
+    </LinearLayout>
+-->
+
+    <!-- Body Muscles Parts Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:foregroundGravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/dimensions_title"
+        android:layout_above="@id/description_txt">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:id="@+id/body_dimen1"
+            android:src="@drawable/bodyv_1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:id="@+id/body_dimen2"
+            android:src="@drawable/bodyv_2"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:id="@+id/body_dimen3"
+            android:src="@drawable/bodyv_3"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:id="@+id/body_dimen4"
+            android:src="@drawable/bodyv_4"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:id="@+id/body_dimen5"
+            android:src="@drawable/bodyv_5"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:id="@+id/body_dimen6"
+            android:src="@drawable/bodyv_6"/>
+
+    </LinearLayout>
+
+    <!-- Body Image -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bodyImgView"
+        android:src="@drawable/body_dimen"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/dimensions_title"
+        android:layout_above="@id/description_txt"/>
+
+
+    <!-- Muscle Details Layout -->
+
+    <LinearLayout
+        android:layout_width="@dimen/body_dimen_width"
+        android:layout_height="@dimen/body_dimen_height"
+        android:gravity="center"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:visibility="gone"
+        android:id="@+id/dimenLayoutToFlip"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:id="@+id/dimenLayoutDetailsToFlip"
+            android:orientation="vertical"
+            android:background="@drawable/details_shape_all">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:id="@+id/muscleName"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:text="Biceps"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/muscleET"
+                    android:padding="0dp"/>
+
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/muscleET"
+                    android:background="@color/black">
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:text="Cm"
+                    android:textColor="@color/MiBodyOrange"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:scaleY="-1"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/triangle90"
+                android:scaleType="fitXY"
+                android:layout_weight="1"
+                android:scaleX="-1"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_weight="1"
+                android:src="@drawable/triangle90"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

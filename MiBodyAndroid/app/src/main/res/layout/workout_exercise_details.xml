@@ -3,13 +3,13 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:showIn="@layout/add_workout_exercises_item">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
@@ -29,7 +29,7 @@
             <FrameLayout
                 android:layout_width="0.1dp"
                 android:layout_height="match_parent"
-                android:alpha="0.5"
+                android:alpha="0.3"
                 android:background="@color/black">
             </FrameLayout>
 
@@ -42,17 +42,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -65,12 +65,13 @@
                         android:background="@drawable/details_shape_tl">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:textColor="@color/black"
+                            android:textSize="10sp"
                             android:text="Ropes"/>
 
                         <LinearLayout
@@ -96,7 +97,7 @@
 
                                     <ImageView
                                         android:layout_width="5dp"
-                                        android:layout_height="60dp"
+                                        android:layout_height="50dp"
                                         android:alpha="0.6"
                                         android:layout_centerInParent="true"
                                         android:src="@drawable/details_rgb_bg"/>
@@ -112,14 +113,14 @@
                                             android:layout_height="10dp"
                                             android:id="@+id/ropes_black1"
                                             android:layout_gravity="center"
-                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginBottom="5dp"
                                             android:src="@drawable/ropes_dot_black"/>
 
                                         <ImageView
                                             android:layout_width="10dp"
                                             android:layout_height="10dp"
                                             android:id="@+id/ropes_red1"
-                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginBottom="5dp"
                                             android:layout_gravity="center"
                                             android:src="@drawable/ropes_dot_red"/>
 
@@ -151,7 +152,7 @@
 
                                     <ImageView
                                         android:layout_width="5dp"
-                                        android:layout_height="60dp"
+                                        android:layout_height="50dp"
                                         android:alpha="0.6"
                                         android:layout_centerInParent="true"
                                         android:src="@drawable/details_rgb_bg"/>
@@ -167,14 +168,14 @@
                                             android:layout_height="10dp"
                                             android:id="@+id/ropes_black2"
                                             android:layout_gravity="center"
-                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginBottom="5dp"
                                             android:src="@drawable/ropes_dot_black"/>
 
                                         <ImageView
                                             android:layout_width="10dp"
                                             android:layout_height="10dp"
                                             android:id="@+id/ropes_red2"
-                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginBottom="5dp"
                                             android:layout_gravity="center"
                                             android:src="@drawable/ropes_dot_red"/>
 
@@ -206,7 +207,7 @@
 
                                     <ImageView
                                         android:layout_width="5dp"
-                                        android:layout_height="60dp"
+                                        android:layout_height="50dp"
                                         android:alpha="0.6"
                                         android:layout_centerInParent="true"
                                         android:src="@drawable/details_rgb_bg"/>
@@ -222,14 +223,14 @@
                                             android:layout_height="10dp"
                                             android:id="@+id/ropes_black3"
                                             android:layout_gravity="center"
-                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginBottom="5dp"
                                             android:src="@drawable/ropes_dot_black"/>
 
                                         <ImageView
                                             android:layout_width="10dp"
                                             android:layout_height="10dp"
                                             android:id="@+id/ropes_red3"
-                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginBottom="5dp"
                                             android:layout_gravity="center"
                                             android:src="@drawable/ropes_dot_red"/>
 
@@ -253,7 +254,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:orientation="horizontal"
-                            android:layout_marginTop="-10dp"
+                            android:layout_marginTop="0dp"
                             android:layout_weight="1">
 
                             <TextView
@@ -289,7 +290,7 @@
                     <FrameLayout
                         android:layout_width="0.1dp"
                         android:layout_height="match_parent"
-                        android:alpha="0.5"
+                        android:alpha="0.3"
                         android:background="@color/black">
 
                     </FrameLayout>
@@ -303,22 +304,23 @@
                         android:background="@drawable/details_shape_tr">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:textColor="@color/black"
                             android:gravity="center"
+                            android:textSize="10sp"
                             android:text="Reps."/>
 
                         <RelativeLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
                             android:layout_weight="5">
                             <ImageView
                                 android:layout_width="100dp"
-                                android:layout_height="60dp"
+                                android:layout_height="50dp"
                                 android:layout_centerInParent="true"
                                 android:id="@+id/reps_counter_arrow"
                                 android:src="@drawable/reps_counter_arrow"/>
@@ -330,7 +332,7 @@
                                 android:text="10"
                                 android:textColor="@color/MiBodyOrange"
                                 android:layout_centerInParent="true"
-                                android:textSize="40sp"/>
+                                android:textSize="30sp"/>
 
                             <EditText
                                 android:layout_width="wrap_content"
@@ -340,40 +342,38 @@
                                 android:visibility="gone"
                                 android:textColor="@color/MiBodyOrange"
                                 android:layout_centerInParent="true"
-                                android:textSize="40sp"/>
+                                android:textSize="30sp"/>
 
                         </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_marginTop="-15dp"
+                            android:layout_marginTop="-10dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:layout_gravity="center"
                             android:orientation="horizontal">
 
-                            <Button
+                            <ImageView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:id="@+id/reps_minus_btn"
+                                android:padding="5dp"
                                 android:layout_weight="1"
-                                android:text="-"
-                                android:textAlignment="center"
-                                android:background="#00000000"
+                                android:src="@drawable/workout_wx_minus_btn"
                                 android:textColor="@color/MiBodyOrange"
                                 android:textStyle="bold"
                                 android:textSize="20sp"/>
 
-                            <Button
+                            <ImageView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:id="@+id/reps_plus_btn"
                                 android:layout_weight="1"
                                 android:textAlignment="center"
                                 android:gravity="center"
-                                android:text="+"
-                                android:background="#00000000"
+                                android:src="@drawable/workout_ex_plus_btn"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:textSize="20sp"/>
@@ -387,7 +387,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:alpha="0.5"
+                    android:alpha="0.3"
                     android:background="@color/black">
 
                 </FrameLayout>
@@ -419,12 +419,13 @@
                             android:layout_marginBottom="3dp">
 
 
-                            <Button
+                            <ImageView
                                 android:layout_width="0dp"
                                 android:layout_height="20dp"
                                 android:id="@+id/rest_minus_btn"
                                 android:layout_weight="1"
-                                android:background="#00000000"
+                                android:src="@drawable/workout_wx_minus_btn"
+                                android:padding="6dp"
                                 android:text="-"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
@@ -467,15 +468,16 @@
 
                             </RelativeLayout>
 
-                            <Button
+                            <ImageView
                                 android:layout_width="0dp"
                                 android:layout_height="20dp"
                                 android:id="@+id/rest_plus_btn"
+                                android:padding="5dp"
                                 android:layout_weight="1"
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
                                 android:layout_marginBottom="1dp"
-                                android:background="#00000000"
+                                android:src="@drawable/workout_ex_plus_btn"
                                 android:text="+"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"
@@ -488,7 +490,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="0.1dp"
-                        android:alpha="0.5"
+                        android:alpha="0.3"
                         android:background="@color/black">
 
                     </FrameLayout>
@@ -520,12 +522,13 @@
                             android:text="1"
                             android:gravity="center"/>
 
-                        <Button
+                        <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:scaleType="fitCenter"
                             android:id="@+id/exercise_reps_circle_btn"
-                            android:background="@drawable/reps_counter_arrow"/>
+                            android:src="@drawable/reps_counter_arrow"/>
                     </LinearLayout>
 
                 </LinearLayout>

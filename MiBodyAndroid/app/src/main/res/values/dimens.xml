@@ -16,6 +16,15 @@
     <dimen name="landing_menu_item_txtmargin">3dp</dimen>
     <dimen name="landing_menu_row_margin">15dp</dimen>
 
-    <dimen name="item_width">75dp</dimen>
-    <dimen name="padding_item_width">75dp</dimen>
+    <dimen name="item_width">105dp</dimen>
+    <dimen name="item_width_bigger">125dp</dimen>
+    <dimen name="padding_item_width">200dp</dimen>
+
+    <dimen name="exercise_item_margin">10dp</dimen>
+
+    <dimen name="body_dimen_width">80dp</dimen>
+    <dimen name="body_dimen_height">110dp</dimen>
+
+    <dimen name="focused_item">60dp</dimen>
+    <dimen name="selected_item">0dp</dimen>
 </resources>

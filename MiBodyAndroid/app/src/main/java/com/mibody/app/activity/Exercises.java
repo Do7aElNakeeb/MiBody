@@ -58,6 +58,7 @@ public class Exercises extends Fragment {
         ExercisesAdapter exercisesAdapter = new ExercisesAdapter(this.getActivity(), arrayList, 1);
         exercisesRV.setAdapter(exercisesAdapter);
 
+        /*
         exercisesAdapter.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -71,6 +72,7 @@ public class Exercises extends Fragment {
                 ft.commit();
             }
         });
+        */
     }
 
     @Override

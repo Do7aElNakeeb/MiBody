@@ -1,8 +1,14 @@
 package com.mibody.app.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +20,10 @@ import android.widget.ToggleButton;
 
 import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
 import com.mibody.app.R;
+import com.mibody.app.activity.Landing;
+import com.mibody.app.listener.OnBtnClickListener;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -28,6 +37,11 @@ public class RegisterTwo extends Fragment {
     Button regTwoBtn;
     WheelDatePicker DoBPicker;
 
+    OnBtnClickListener onBtnClickListener;
+
+    public void initListener(OnBtnClickListener onBtnClickListener){
+        this.onBtnClickListener = onBtnClickListener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +88,34 @@ public class RegisterTwo extends Fragment {
                 Toast.makeText(getActivity(), String.valueOf(picker.getCurrentDay()) + " " + String.valueOf(picker.getCurrentMonth()) + " " + String.valueOf(picker.getCurrentYear()), Toast.LENGTH_LONG).show();
             }
         });
+
+        regTwoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String weight = weightET.getText().toString().trim();
+                String height = heightET.getText().toString().trim();
+
+                //checking if email and passwords are empty
+                if(TextUtils.isEmpty(weight)){
+                    Toast.makeText(getActivity(),"Please enter weight",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(height)){
+                    Toast.makeText(getActivity(),"Please enter height",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                SharedPreferences prefs = getActivity().getSharedPreferences("UserDetails", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("weight", weight);
+                editor.putString("height", height);
+                editor.apply();
+
+                onBtnClickListener.onBtnClick();
+            }
+        });
+
         return view;
     }
 }

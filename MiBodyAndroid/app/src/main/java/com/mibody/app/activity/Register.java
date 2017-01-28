@@ -1,5 +1,6 @@
 package com.mibody.app.activity;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -28,7 +32,14 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.mibody.app.R;
 import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.AppController;
+import com.mibody.app.fragments.ExercisesFragment;
+import com.mibody.app.fragments.RegisterOne;
+import com.mibody.app.fragments.RegisterThree;
+import com.mibody.app.fragments.RegisterTwo;
+import com.mibody.app.fragments.WorkoutFragment;
 import com.mibody.app.helper.SessionManager;
+import com.mibody.app.helper.ViewPagerAdapter;
+import com.mibody.app.listener.OnBtnClickListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,14 +55,8 @@ import java.util.Set;
 public class Register extends AppCompatActivity {
     private static final String TAG = Register.class.getSimpleName();
 
-    //defining view objects
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText editTextMobile;
-    private EditText editTextName;
-    private EditText editTextWeight;
-    private Button buttonSignup;
-    private Button weightBtn;
+    ViewPager viewPager;
+
     String name;
     String email;
     String mobile;
@@ -68,117 +73,52 @@ public class Register extends AppCompatActivity {
     TextView BTState;
 
     SharedPreferences prefs;
-
+    SharedPreferences.Editor editor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.register_activity);
 
-        //initializing views
-        editTextName = (EditText) findViewById(R.id.name);
-        editTextEmail = (EditText) findViewById(R.id.email);
-        editTextMobile = (EditText) findViewById(R.id.mobile);
-        editTextPassword = (EditText) findViewById(R.id.password);
-     //   editTextWeight = (EditText) findViewById(R.id.weight);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager();
 
-        buttonSignup = (Button) findViewById(R.id.btnRegister);
-        btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
- //       weightBtn = (Button) findViewById(R.id.weightBtn);
-
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
-        prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
-
-        // Session manager
-        session = new SessionManager(getApplicationContext());
-
-        // Check if user is already logged in or not
-        if (session.isLoggedIn().equals("1")) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-/*
-        weightBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getApplicationContext(), WorkoutPlayActivity.class);
-                intent.putExtra("weight", "weight");
-                startActivity(intent);
-
-            }
-        });
-        */
-
-        //attaching listener to button
-        buttonSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //getting email and password from edit texts
-                name = editTextName.getText().toString().trim();
-                email = editTextEmail.getText().toString().trim();
-                mobile = editTextMobile.getText().toString().trim();
-                password  = editTextPassword.getText().toString().trim();
-                weight  = editTextWeight.getText().toString().trim();
-
-                //checking if email and passwords are empty
-                if(TextUtils.isEmpty(name)){
-                    Toast.makeText(getApplicationContext(),"Please enter name",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(email)){
-                    Toast.makeText(getApplicationContext(),"Please enter email",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(mobile)){
-                    Toast.makeText(getApplicationContext(),"Please enter mobile",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    Toast.makeText(getApplicationContext(),"Please enter password",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(weight)){
-                    Toast.makeText(getApplicationContext(),"Please enter your weight",Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (name.equals("guest") && password.equals("guest")){
-                    session.insertData(name, email, mobile, password, weight, null, null);
-                    Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
-                    // Launch login activity
-                    Intent intent = new Intent(Register.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    String regID = FirebaseInstanceId.getInstance().getToken();
-                    registerUser(name, email, mobile, password, weight, regID);
-                }
-
-
-            }
-        });
-
-
-
-        // Link to Register Screen
-        btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), Login.class);
-                startActivity(i);
-                finish();
-            }
-        });
     }
+
+    private void setupViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        RegisterOne registerOne = new RegisterOne();
+        registerOne.initListener(new OnBtnClickListener() {
+            @Override
+            public void onBtnClick() {
+                viewPager.setCurrentItem(1);
+            }
+        });
+
+        RegisterTwo registerTwo = new RegisterTwo();
+        registerTwo.initListener(new OnBtnClickListener() {
+            @Override
+            public void onBtnClick() {
+                viewPager.setCurrentItem(2);
+            }
+        });
+
+        RegisterThree registerThree = new RegisterThree();
+        registerThree.initListener(new OnBtnClickListener() {
+            @Override
+            public void onBtnClick() {
+                Toast.makeText(Register.this, "submit", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        adapter.addFragment(registerOne, "1");
+        adapter.addFragment(registerTwo, "2");
+        adapter.addFragment(registerThree, "3");
+        viewPager.setAdapter(adapter);
+    }
+
 
     private void registerUser(final String name, final String email, final String mobile, final String password, final String weight, final String regID){
 
@@ -212,7 +152,7 @@ public class Register extends AppCompatActivity {
                         String regID = jObj.getString("regID");
                         String created_at = jObj.getString("created_at");
 
-                        session.insertData(name, email, mobile, password, weight, regID, created_at);
+                        //session.insertData(name, email, mobile, password, weight, regID, created_at);
 
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
@@ -263,14 +203,6 @@ public class Register extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        editTextWeight.setText(prefs.getString("weight", ""));
-
-    }
-
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -318,4 +250,5 @@ public class Register extends AppCompatActivity {
             startActivity(i);
         }
     };
+
 }

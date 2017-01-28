@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.mibody.app.app.ExerciseItem;
+import com.mibody.app.app.Muscles;
 import com.mibody.app.app.WorkoutExItem;
 import com.mibody.app.app.WorkoutItem;
 
@@ -58,6 +59,22 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public static final String WORKOUT_EXERCISES = "exercises";
     public static final String WORKOUT_TYPE = "type";
 
+    // Muscles table name
+    public static final String MUSCLES_TABLE = "muscles";
+    // Muscle Table Columns names
+    public static final String MUSCLE_ENTRY_ID = "id";
+    public static final String MUSCLE_TRICEPS = "Triceps";
+    public static final String MUSCLE_QUADRICEPS = "Quadriceps";
+    public static final String MUSCLE_CHEST = "Chest";
+    public static final String MUSCLE_WAIST = "Waist";
+    public static final String MUSCLE_CALF = "Calf";
+    public static final String MUSCLE_BICEPS = "Biceps";
+    public static final String MUSCLE_UPDATE = "OnCreate";
+
+    private String[] MUSCLES_COLS = {MUSCLE_ENTRY_ID, MUSCLE_TRICEPS, MUSCLE_QUADRICEPS, MUSCLE_CHEST, MUSCLE_WAIST, MUSCLE_CALF, MUSCLE_BICEPS, MUSCLE_UPDATE};
+    // Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+
+
     private String[] WORKOUTS_COLS = {WORKOUT_ID, WORKOUT_NAME, WORKOUT_REPS, WORKOUT_EXERCISES, WORKOUT_TYPE};
 
     public SQLiteHandler(Context context) {
@@ -74,8 +91,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 + EXERCISE_NAME + " TEXT," + EXERCISE_ICON + " TEXT," + EXERCISE_IMAGE + " TEXT,"
                 + EXERCISE_GIF + " TEXT," + EXERCISE_DESCRIPTION + " TEXT," + EXERCISE_CATEGORY + " TEXT" + ")";
 
+        String CREATE_MUSCLE_TABLE = "CREATE TABLE " + MUSCLES_TABLE + "( " + MUSCLE_ENTRY_ID + " integer primary key autoincrement, "
+                + MUSCLE_TRICEPS + " FLOAT," + MUSCLE_QUADRICEPS + " FLOAT," + MUSCLE_CHEST + " FLOAT,"
+                + MUSCLE_WAIST + " FLOAT," + MUSCLE_CALF + " FLOAT," + MUSCLE_BICEPS + " FLOAT," + MUSCLE_UPDATE + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ")";
+
         db.execSQL(CREATE_EXERCISES_TABLE);
         db.execSQL(CREATE_WORKOUTS_TABLE);
+        db.execSQL(CREATE_MUSCLE_TABLE);
 
         Log.d(TAG, "Database tables created");
     }
@@ -93,6 +115,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + EXERCISES_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + WORKOUTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MUSCLES_TABLE);
 
         // Create tables again
         onCreate(db);
@@ -178,11 +201,39 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         }
         cursor.close();
 
-
         return exerciseItemArrayList;
     }
 
+    /**
+     * Muscles Functions
+     * */
 
+    public void updateMuscle(ContentValues values) {
+
+        Log.d("TAG", "New muscle update inserted into sqlite: ");
+
+        // Inserting Row
+        db.insert(SQLiteHandler.MUSCLES_TABLE, null, values);
+
+    }
+
+    public ArrayList<Muscles> getMusclesUpdates(String args){
+        ArrayList<Muscles> musclesArrayList = new ArrayList<Muscles>();
+
+        Cursor cursor = db.query(SQLiteHandler.MUSCLES_TABLE, MUSCLES_COLS, args, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+
+            Muscles muscles = new Muscles(cursor.getInt(0), cursor.getFloat(1),
+                    cursor.getFloat(2), cursor.getFloat(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6), cursor.getString(7));
+            musclesArrayList.add(muscles);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return musclesArrayList;
+    }
 
 
     private WorkoutItem cursorToWorkout(Cursor cursor) {

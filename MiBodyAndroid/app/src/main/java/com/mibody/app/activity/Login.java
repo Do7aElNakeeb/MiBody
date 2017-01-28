@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -44,7 +45,7 @@ public class Login extends AppCompatActivity {
 
     EditText editTextEmail;
     EditText editTextPassword;
-    Button btnLinkToRegister;
+    RelativeLayout btnLinkToRegister;
     private Button buttonLogin;
     private SessionManager session;
     private ProgressDialog pDialog;
@@ -57,6 +58,7 @@ public class Login extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
         buttonLogin = (Button) findViewById(R.id.btnLogin);
+        btnLinkToRegister = (RelativeLayout) findViewById(R.id.emailSignUp);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -73,6 +75,13 @@ public class Login extends AppCompatActivity {
             finish();
         }
 
+        btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -93,7 +102,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
                 if (email.equals("guest") && password.equals("guest")){
-                    session.insertData("guest", email, "011", password, "50", null, null);
+                    //session.insertData("guest", email, "011", password, "50", null, null);
                     Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
                     // Launch login activity
                     Intent intent = new Intent(Login.this, Landing.class);
@@ -140,7 +149,7 @@ public class Login extends AppCompatActivity {
                         String regID = jObj.getString("regID");
                         String created_at = jObj.getString("created_at");
 
-                        session.insertData(name, email, mobile, password, weight, regID, created_at);
+                        //session.insertData(name, email, mobile, password, weight, regID, created_at);
 
                         // Inserting row in users table
                         //db.addUser(id, name, email, mobile, carBrand, carModel, carYear, regID, created_at);

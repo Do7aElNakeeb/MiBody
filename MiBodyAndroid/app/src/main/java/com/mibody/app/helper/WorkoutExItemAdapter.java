@@ -47,17 +47,34 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
     private Context context;
 
     private int paddingWidth = 0;
-    private int focusedItem = -1;
+    private int focusedItem = 2;
     private int selectedItem = -1;
 
     private static final int VIEW_TYPE_PADDING = 1;
     private static final int VIEW_TYPE_ITEM = 2;
 
+    private static final int VIEW_TYPE_BEFORE_FOCUSED = 10;
+    private static final int VIEW_TYPE_FOCUSED = 11;
+    private static final int VIEW_TYPE_AFTER_FOCUSED = 12;
 
-    public WorkoutExItemAdapter(Context context, ArrayList<WorkoutExItem> workoutExItemArrayList, int paddingWidth){
+    public interface OnItemClickListener {
+        void onItemClick(WorkoutExItem workoutExItem, int position, ViewHolder viewHolder);
+    }
+
+    public interface OnItemFocusListener {
+        void onItemFocus(ViewHolder viewHolder, int position);
+    }
+
+
+    private final OnItemClickListener onItemClickListener;
+
+
+
+    public WorkoutExItemAdapter(Context context, ArrayList<WorkoutExItem> workoutExItemArrayList, OnItemClickListener onItemClickListener){
         this.workoutExItemArrayList = workoutExItemArrayList;
         this.context = context;
-        this.paddingWidth = paddingWidth;
+        this.onItemClickListener = onItemClickListener;
+
     }
 
     @Override
@@ -68,70 +85,100 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
             return new ViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_workout_exercises_item, parent, false);
-
-            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
-            layoutParams.width = paddingWidth;
-            view.setLayoutParams(layoutParams);
-
+            view.setVisibility(View.VISIBLE);
             return new ViewHolder(view);
         }
+
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
 
             final WorkoutExItem workoutExItem = workoutExItemArrayList.get(position -1);
 
+            final LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.LLtoMove.getLayoutParams();
+
             holder.exNumber.setText(String.valueOf(position));
 
-            if (position == focusedItem) {
-                holder.exDot1.setVisibility(View.VISIBLE);
-                holder.exDot2.setVisibility(View.VISIBLE);
-
-                // run scale animation and make it bigger
-                Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_in_ex);
-                Log.d("animation", "hhasFocus");
-                //holder.cardView.startAnimation(anim);
-                anim.setFillAfter(true);
-            }
-            else if (position < focusedItem){
-                holder.exDot1.setVisibility(View.VISIBLE);
-                holder.exDot2.setVisibility(View.GONE);
-
-                // run scale animation and make it bigger
-                Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_out_ex);
-                Log.d("animation", "hhasFocus");
-                //holder.cardView.startAnimation(anim);
-                anim.setFillAfter(true);
-            }
-            else if (position > focusedItem){
-                holder.exDot1.setVisibility(View.GONE);
-                holder.exDot2.setVisibility(View.VISIBLE);
-
-                // run scale animation and make it bigger
-                Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_out_ex);
-                Log.d("animation", "hhasFocus");
-                //holder.cardView.startAnimation(anim);
-                anim.setFillAfter(true);
-            }
-
-
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (workoutExItem.name == null){
-                        holder.workoutExDetailsLayout.setVisibility(View.GONE);
-                        Toast.makeText(context, "Drag Exercise and Drop Here Firstly", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        holder.workoutExDetailsLayout.setVisibility(View.VISIBLE);
-                    }
+                    params.topMargin = 0;
+                    holder.LLtoMove.setLayoutParams(params);
+                    onItemClickListener.onItemClick(workoutExItem, holder.getAdapterPosition(), holder);
                 }
             });
 
+
+            if (position == focusedItem) {
+
+                if (position == selectedItem){
+                    holder.exName.setVisibility(View.GONE);
+                }
+                else {
+                    params.topMargin = (int) context.getResources().getDimension(R.dimen.focused_item);
+                    holder.exName.setVisibility(View.VISIBLE);
+                    holder.LLtoMove.setLayoutParams(params);
+                }
+                holder.exDot1.setVisibility(View.VISIBLE);
+                holder.exDot2.setVisibility(View.VISIBLE);
+//                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyWhite));
+//                holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyOrange));
+
+                holder.itemView.setScaleY(1);
+                holder.itemView.setScaleX(1);
+
+                //holder.itemView.setPadding(0, 0, 0, 0);
+                // run scale animation and make it bigger
+                //Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_in_ex);
+                //Log.d("animation", "hasFocus");
+                //holder.itemView.startAnimation(anim);
+                //anim.setFillAfter(true);
+            }
+            else {
+                params.topMargin = (int) context.getResources().getDimension(R.dimen.focused_item);
+                holder.LLtoMove.setLayoutParams(params);
+                holder.exDot1.setVisibility(View.GONE);
+                holder.exDot2.setVisibility(View.GONE);
+                holder.itemView.setScaleY((float) 0.75);
+                holder.itemView.setScaleX((float) 0.75);
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
+                holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
+            }
+            /*
+            else if (position < focusedItem){
+                holder.exDot1.setVisibility(View.VISIBLE);
+                holder.exDot2.setVisibility(View.GONE);
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
+                holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
+
+                holder.exName.setVisibility(View.VISIBLE);
+                //holder.itemView.setPadding(0, 0, 0, 0);
+
+                // run scale animation and make it bigger
+                //Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_out_ex);
+                //Log.d("animation", "smallerFocus");
+                //holder.itemView.startAnimation(anim);
+                //anim.setFillAfter(true);
+            }
+            else if (position > focusedItem){
+                holder.exDot1.setVisibility(View.VISIBLE);
+                holder.exDot2.setVisibility(View.VISIBLE);
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
+                holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
+
+                holder.exName.setVisibility(View.VISIBLE);
+                //holder.itemView.setPadding(0, 0, 0, 0);
+
+                // run scale animation and make it bigger
+                //Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_out_ex);
+                //Log.d("animation", "biggerFocus");
+                //holder.itemView.startAnimation(anim);
+                //anim.setFillAfter(true);
+            }
+*/
             holder.cardView.setOnDragListener(new View.OnDragListener() {
                 @Override
                 public boolean onDrag(View v, DragEvent event) {
@@ -168,12 +215,17 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
         }
         else {
             holder.itemView.setVisibility(View.INVISIBLE);
+            holder.exDot1.setVisibility(View.INVISIBLE);
+            holder.exDot2.setVisibility(View.INVISIBLE);
         }
 
     }
 
     public void setFocusedItem(int focusedItem) {
         this.focusedItem = focusedItem;
+    //    notifyItemChanged(focusedItem);
+  //      notifyItemChanged(focusedItem-1);
+//        notifyItemChanged(focusedItem+1);
         notifyDataSetChanged();
     }
 
@@ -184,8 +236,9 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
 
     @Override
     public int getItemCount() {
-        return workoutExItemArrayList.size();
+        return workoutExItemArrayList.size() + 2;
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -201,15 +254,12 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
         ImageView icon;
         TextView exName, exNumber;
 
-        LinearLayout workoutExDetailsLayout;
-        ImageView b1, b2, b3, r1, r2, r3, y1, y2, y3;
-        TextView repsTxtView, restTxtView, exRepsTxtView;
-        EditText repsEdtTxt, restEdtTxt;
-        Button repsMinusBtn, repsPlusBtn, restMinusBtn, restPlusBtn, exRepsPlusBtn;
-
+        public LinearLayout LLtoMove;
 
         public ViewHolder(final View itemView) {
             super(itemView);
+
+            LLtoMove = (LinearLayout) itemView.findViewById(R.id.LLtoMove);
 
             cardView = (CardView) itemView.findViewById(R.id.ExerciseCV);
             icon = (ImageView) itemView.findViewById(R.id.ExerciseIcon);
@@ -218,45 +268,16 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
             exDot1 = (CardView) itemView.findViewById(R.id.exDot1);
             exDot2 = (CardView) itemView.findViewById(R.id.exDot2);
 
-            workoutExDetailsLayout = (LinearLayout) itemView.findViewById(R.id.workoutExerciseDetails);
-//             workoutExDetailsLayout.setVisibility(View.GONE);
-
-            // Ropes
-            b1 = (ImageView) itemView.findViewById(R.id.ropes_black1);
-            b2 = (ImageView) itemView.findViewById(R.id.ropes_black2);
-            b3 = (ImageView) itemView.findViewById(R.id.ropes_black3);
-            r1 = (ImageView) itemView.findViewById(R.id.ropes_red1);
-            r2 = (ImageView) itemView.findViewById(R.id.ropes_red2);
-            r3 = (ImageView) itemView.findViewById(R.id.ropes_red3);
-            y1 = (ImageView) itemView.findViewById(R.id.ropes_yellow1);
-            y2 = (ImageView) itemView.findViewById(R.id.ropes_yellow2);
-            y3 = (ImageView) itemView.findViewById(R.id.ropes_yellow3);
-
-            // Reps
-            repsTxtView = (TextView) itemView.findViewById(R.id.reps_txtview);
-            repsEdtTxt = (EditText) itemView.findViewById(R.id.reps_edttxt);
-            repsMinusBtn = (Button) itemView.findViewById(R.id.reps_minus_btn);
-            repsPlusBtn = (Button) itemView.findViewById(R.id.reps_plus_btn);
-
-            // Rest
-            restTxtView = (TextView) itemView.findViewById(R.id.rest_time_txtview);
-            restEdtTxt = (EditText) itemView.findViewById(R.id.rest_time_edttxt);
-            restMinusBtn = (Button) itemView.findViewById(R.id.rest_minus_btn);
-            restPlusBtn = (Button) itemView.findViewById(R.id.rest_plus_btn);
-
-            // Exercise Reps
-            exRepsTxtView = (TextView) itemView.findViewById(R.id.exercise_reps_txtview);
-            exRepsPlusBtn = (Button) itemView.findViewById(R.id.exercise_reps_circle_btn);
 
         }
+
     }
 
     private class MyTouchListener implements View.OnTouchListener {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
-                        view);
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 view.startDrag(data, shadowBuilder, view, 0);
                 view.setVisibility(View.VISIBLE);
                 return true;

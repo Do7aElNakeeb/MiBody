@@ -46,12 +46,13 @@ public class SessionManager {
         return pref.getString(KEY_IS_LOGGED_IN, "");
     }
 
-    public void insertData(String name, String email, String mobile, String password, String weight, String regID, String created_at){
+    public void insertData(String name, String email, String mobile, String password, String weight, String height, String regID, String created_at){
         editor.putString("name", name);
         editor.putString("email", email);
         editor.putString("mobile", mobile);
         editor.putString("password", password);
         editor.putString("weight", weight);
+        editor.putString("height", height);
         editor.putString("regID", regID);
         editor.putString("created_at", created_at);
         editor.commit();

@@ -57,7 +57,7 @@ public class Landing extends AppCompatActivity {
             R.drawable.ex6, R.drawable.ex7, R.drawable.ex8,
             R.drawable.ex9, R.drawable.ex10, R.drawable.ex11 };
 
-    String videoKeys[] = {"BPhvUwyNHaY", "6fBZBntjEOA", "sKZ6h0yHAwE"};
+    String videoKeys[] = {"BPhvUwyNHaY", "6fBZBntjEOA"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

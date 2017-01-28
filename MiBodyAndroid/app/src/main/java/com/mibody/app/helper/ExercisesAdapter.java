@@ -3,6 +3,8 @@ package com.mibody.app.helper;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,8 @@ import com.mibody.app.R;
 import com.mibody.app.activity.AddWorkout;
 import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.ExerciseItem;
+import com.mibody.app.app.WorkoutExItem;
+import com.mibody.app.fragments.ExerciseDetails;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -49,10 +54,16 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
 
     private ItemClickListener clickListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(ExerciseItem exerciseItem, int position);
+    }
+    //private final OnItemClickListener onItemClickListener;
+
     public ExercisesAdapter(Context context, ArrayList<ExerciseItem> exerciseItemArrayList, int type){
         this.exerciseItemArrayList = exerciseItemArrayList;
         this.context = context;
         this.type = type;
+        //this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -69,12 +80,16 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        ExerciseItem exerciseItem = exerciseItemArrayList.get(position);
+        final ExerciseItem exerciseItem = exerciseItemArrayList.get(position);
 
         new Picasso.Builder(context).downloader(new OkHttpDownloader(context, Integer.MAX_VALUE)).build().load(AppConfig.URL_SERVER + "ExIcon/" + exerciseItem.getIcon()).into(holder.icon);
         holder.name.setVisibility(View.VISIBLE);
 
         if(type == 0){
+
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.ExItemLL.getLayoutParams();
+            params.rightMargin = (int) context.getResources().getDimension(R.dimen.exercise_item_margin);
+            holder.ExItemLL.setLayoutParams(params);
 
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
             holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
@@ -103,9 +118,24 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
 
         }
         else if (type == 1){
+
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyWhite));
             holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyOrange));
             holder.name.setText(exerciseItem.getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ExerciseDetails exerciseDetails = new ExerciseDetails();
+                    exerciseDetails.setExercise(exerciseItem);
+                    FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                    ft.add(R.id.exercisesFragment, exerciseDetails, "Exercise Details Fragment");
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+            //onItemClickListener.onItemClick(exerciseItem, holder.getAdapterPosition());
+
         }
 
     }
@@ -115,11 +145,12 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
         return (null != exerciseItemArrayList ? exerciseItemArrayList.size() : 0);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CardView cardView;
         ImageView icon;
         TextView name;
+        LinearLayout ExItemLL;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -128,12 +159,17 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
             icon = (ImageView) itemView.findViewById(R.id.exerciseIcon);
             if (type == 0) {
                 name = (TextView) itemView.findViewById(R.id.exerciseName1);
+                ExItemLL = (LinearLayout) itemView.findViewById(R.id.ExerciseItemLL);
             } else if (type == 1) {
                 name = (TextView) itemView.findViewById(R.id.exerciseName2);
             }
 
         }
 
+        @Override
+        public void onClick(View view) {
+            if (clickListener != null) clickListener.onClick(view, getAdapterPosition());
+        }
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {

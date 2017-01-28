@@ -15,19 +15,18 @@
         android:icon="@mipmap/ic_launcher"
         android:name=".app.AppController"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".activity.Login"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.Register"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
 
         </activity>
@@ -41,35 +40,51 @@
 
         <activity
             android:name=".activity.AddWorkout"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_workout">
 
         </activity>
         <activity
             android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main">
 
         </activity>
         <activity
             android:name=".activity.Landing"
+            android:screenOrientation="portrait"
             android:label="HOME">
         </activity>
 
         <activity
             android:name=".activity.ExercisesActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="Exercises">
         </activity>
 
         <activity
             android:name=".activity.WorkoutsActivity"
+            android:screenOrientation="portrait"
             android:label="Workouts">
         </activity>
 
         <activity
             android:name=".activity.WorkoutsItemsActivity"
+            android:screenOrientation="portrait"
             android:label="Workouts">
         </activity>
 
+        <activity
+            android:name=".activity.Dimensions"
+            android:screenOrientation="portrait"
+            android:label="Dimensions">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 

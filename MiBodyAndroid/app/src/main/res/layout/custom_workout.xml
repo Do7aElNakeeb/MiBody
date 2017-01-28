@@ -12,38 +12,61 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingTop="10dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_weight="4">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/next_btn"
+                android:id="@+id/save_btn_arrow"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Let's go"
+                android:layout_toLeftOf="@id/save_btn_arrow"
+                android:textAllCaps="false"
+                android:textColor="#000"
+                android:visibility="visible"
+                android:id="@+id/save_btn"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/save_btn"
+                    android:gravity="center"
+                    android:id="@+id/WorkoutType"
+                    android:textSize="13dp"
+                    android:textColor="@color/MiBodyOrange"
+                    android:text="Personalised"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/WorkoutType"
+                    android:textSize="18dp"
+                    android:textColor="@color/black"
                     android:gravity="center"
                     android:text="Workout Name"/>
                 <EditText
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/WorkoutType"
                     android:id="@+id/workout_name"
                     android:visibility="gone"/>
-            </LinearLayout>
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Done"
-                android:id="@+id/save_btn"
-                android:layout_weight="1"/>
-        </LinearLayout>
+
+        </RelativeLayout>
 
 
         <!--
@@ -64,42 +87,36 @@
                     </android.support.v7.widget.RecyclerView>
                     -->
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/exercises_set_txt"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Set Exercises"/>
+                android:layout_gravity="center"
+                android:id="@+id/addWorkoutUserExercisesRV">
 
-            <Button
-                android:background="@drawable/circle_plus"
-                android:textSize="10sp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="5dp"
-                android:id="@+id/add_exercise" />
-            <!--
-            <Button
-                android:text="-"
-                android:textSize="10sp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/remove_exercise" />
+            </android.support.v7.widget.RecyclerView>
 
--->
-        </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="visible"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/workoutExerciseDetails">
+
+                <include
+                    layout="@layout/workout_exercise_details" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/addWorkoutUserExercisesRV"
-            android:padding="10dp">
-
-        </android.support.v7.widget.RecyclerView>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="fill_parent"
@@ -147,12 +164,30 @@
         android:orientation="vertical"
         android:layout_weight="1.3">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Drag your exercises"
-            android:gravity="center_horizontal"/>
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/exercises_set_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Drag your exercises"/>
+
+            <ImageView
+                android:src="@drawable/circle_plus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:id="@+id/add_exercise" />
+
+        </RelativeLayout>
+
 
         <ImageView
             android:layout_width="match_parent"
@@ -165,7 +200,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
-            android:background="#918383"
+            android:background="#3c000000"
             android:paddingTop="0.5dp">
 
             <android.support.v7.widget.RecyclerView
