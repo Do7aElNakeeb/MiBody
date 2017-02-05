@@ -94,6 +94,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
             holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
             holder.name.setText(exerciseItem.getName());
+            holder.cardView.setTag(exerciseItem);
             holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -102,8 +103,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
                         public boolean onTouch(View view, MotionEvent motionEvent) {
                             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                                 ClipData data = ClipData.newPlainText("", "");
-                                DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
-                                        view);
+                                DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                                 view.startDrag(data, shadowBuilder, view, 0);
                                 view.setVisibility(View.VISIBLE);
                                 return true;

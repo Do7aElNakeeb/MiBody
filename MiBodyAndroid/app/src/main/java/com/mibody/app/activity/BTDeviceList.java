@@ -69,7 +69,7 @@ public class BTDeviceList extends Fragment {
 
         if (!MacAddress.isEmpty()){
             // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(getActivity(), WorkoutPlay.class);
+            Intent i = new Intent(getActivity(), WorkoutPlayAuto.class);
             i.putExtra(EXTRA_DEVICE_ADDRESS, MacAddress);
             startActivity(i);
         }
@@ -197,7 +197,7 @@ public class BTDeviceList extends Fragment {
             editor.apply();
 
             // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(getActivity(), WorkoutPlay.class);
+            Intent i = new Intent(getActivity(), WorkoutPlayAuto.class);
             i.putExtra(EXTRA_DEVICE_ADDRESS, address);
             startActivity(i);
         }

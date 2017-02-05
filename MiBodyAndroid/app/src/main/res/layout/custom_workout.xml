@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/addWorkoutRL"
     android:background="@drawable/exercises_details_bg">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:paddingTop="10dp"
+            android:id="@+id/personalisedWorkoutHeader"
             android:orientation="horizontal">
 
 
@@ -40,181 +42,122 @@
                 android:visibility="visible"
                 android:id="@+id/save_btn"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/save_btn"
-                    android:gravity="center"
-                    android:id="@+id/WorkoutType"
-                    android:textSize="13dp"
-                    android:textColor="@color/MiBodyOrange"
-                    android:text="Personalised"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/WorkoutType"
-                    android:textSize="18dp"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:text="Workout Name"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/WorkoutType"
-                    android:id="@+id/workout_name"
-                    android:visibility="gone"/>
-
-
-        </RelativeLayout>
-
-
-        <!--
-                    <TextView
-                        android:id="@+id/exercises_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Exercises"/>
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:numColumns="11"
-                        android:layout_marginBottom="10dp"
-                        android:id="@+id/exercises_grid">
-
-                    </android.support.v7.widget.RecyclerView>
-                    -->
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/addWorkoutUserExercisesRV">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_below="@id/save_btn"
                 android:gravity="center"
-                android:visibility="visible"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/workoutExerciseDetails">
+                android:id="@+id/WorkoutType"
+                android:textSize="13dp"
+                android:textColor="@color/MiBodyOrange"
+                android:text="Personalised"/>
 
-                <include
-                    layout="@layout/workout_exercise_details" />
-
-            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/WorkoutType"
+                android:id="@+id/workoutNameTxtView"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="Workout Name"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/WorkoutType"
+                android:id="@+id/workoutNameET"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:visibility="gone"/>
 
         </RelativeLayout>
-
-
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:id="@+id/exercises_set_grid">
-
-        </android.support.v7.widget.RecyclerView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/setRepeatLayout"
-            android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/workoutRepeat"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:layout_alignBaseline="@+id/setRepeatBtn"
-                    android:hint="Workout Repeat"/>
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_weight="1.1">
 
-                <ImageButton
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/exercises_set_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/workoutRepeatBtn"
-                    android:background="@android:drawable/ic_menu_revert"
-                    android:layout_alignParentRight="true" />
+                    android:layout_centerInParent="true"
+                    android:text="Drag your exercises"/>
+
+                <ImageView
+                    android:src="@drawable/circle_plus"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:id="@+id/add_exercise" />
+
             </RelativeLayout>
 
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:src="@drawable/arrow_up"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:background="#3c000000"
+                android:paddingTop="0.5dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFF"
+                    android:id="@+id/addWorkoutExercisesRV"
+                    android:padding="10dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1.3">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/workoutExerciseDetails">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+        <include
+            layout="@layout/workout_exercise_details" />
 
-            <TextView
-                android:id="@+id/exercises_set_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Drag your exercises"/>
+    </RelativeLayout>
 
-            <ImageView
-                android:src="@drawable/circle_plus"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:id="@+id/add_exercise" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/workoutExerciseDetails"
+        android:layout_below="@id/workoutNameTxtView"
+        android:id="@+id/addWorkoutUserExercisesRV">
 
-        </RelativeLayout>
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="5dp"
-            android:src="@drawable/arrow_up"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6"
-            android:background="#3c000000"
-            android:paddingTop="0.5dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFF"
-                android:id="@+id/addWorkoutExercisesRV"
-                android:padding="10dp">
-
-            </android.support.v7.widget.RecyclerView>
-
-            </LinearLayout>
-    </LinearLayout>
-
+    </android.support.v7.widget.RecyclerView>
 
     <!--
     <ScrollView
@@ -455,4 +398,4 @@
 -->
 
 
-</LinearLayout>
+</RelativeLayout>

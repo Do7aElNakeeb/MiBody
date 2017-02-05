@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/personalisedWorkoutHeader"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/next_btn"
+            android:id="@+id/save_btn_arrow"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finish"
+            android:layout_toLeftOf="@id/save_btn_arrow"
+            android:layout_toStartOf="@id/save_btn_arrow"
+            android:layout_alignBaseline="@id/save_btn_arrow"
+            android:textAllCaps="false"
+            android:textColor="@color/MiBodyOrange"
+            android:visibility="visible"
+            android:id="@+id/save_btn"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/save_btn"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/workoutName"
+                android:textSize="15sp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/MiBodyOrange"
+                android:text="Workout name"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/exerciseName"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="Exercise Name"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/exerciseReps"
+                android:textSize="14sp"
+                android:textColor="#81000000"
+                android:gravity="center"
+                android:text="20 Reps."/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/workoutPlayItemsRV">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_alignParentBottom="true"
+        android:background="#3c000000"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="1dp"
+            android:background="@color/MiBodyWhite"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/restTitle"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/MiBodyGreen"
+                    android:textSize="20sp"
+                    android:text="Rest : "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/exerciseRestTime"
+                    android:textColor="@color/MiBodyGreen"
+                    android:textSize="20sp"
+                    android:text="90"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/MiBodyGreen"
+                    android:textSize="20sp"
+                    android:text=" Sec"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/restTitle"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/MiBodyOrange"
+                    android:textSize="20sp"
+                    android:text="Next"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nextExerciseName"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="8dp"
+                    android:textSize="25sp"
+                    android:text="Pull up"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/nextExerciseBtn"
+                android:src="@drawable/arrow_up"
+                android:rotation="90"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:scaleType="fitCenter"
+                android:scaleX="0.5"
+                android:scaleY="0.5"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

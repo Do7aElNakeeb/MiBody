@@ -104,6 +104,7 @@ public class Login extends AppCompatActivity {
                 if (email.equals("guest") && password.equals("guest")){
                     //session.insertData("guest", email, "011", password, "50", null, null);
                     Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
+                    session.setLogin("1");
                     // Launch login activity
                     Intent intent = new Intent(Login.this, Landing.class);
                     startActivity(intent);

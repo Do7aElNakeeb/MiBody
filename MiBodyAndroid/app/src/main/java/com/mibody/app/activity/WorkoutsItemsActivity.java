@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -45,7 +46,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
     RecyclerView workoutsRV;
     WorkoutsAdapter workoutsAdapter;
-    Button addWorkoutBtn;
+    FloatingActionButton addWorkoutBtn;
     TextView workoutTypeTxt;
     private static final String TAG = WorkoutsItemsActivity.class.getSimpleName();
     private ProgressDialog pDialog;
@@ -74,7 +75,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         }
 
         workoutTypeTxt = (TextView) findViewById(R.id.workoutsItemsType);
-        addWorkoutBtn = (Button) findViewById(R.id.add_workout_btn);
+        addWorkoutBtn = (FloatingActionButton) findViewById(R.id.add_workout_btn);
         workoutsRV = (RecyclerView) findViewById(R.id.workoutsRV);
         workoutsRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         workoutsRV.setItemAnimator(new DefaultItemAnimator());
@@ -183,7 +184,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
                     workoutsRV.setAdapter(workoutsAdapter);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "There is no " +  workoutsType +  "workouts", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "There is no " +  workoutsType +  " workouts", Toast.LENGTH_LONG).show();
                 }
 
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();

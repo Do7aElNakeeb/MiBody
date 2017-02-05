@@ -10,4 +10,5 @@
     <color name="MiBodyOrange">#FC3D39</color>
     <color name="MiBodyWhite">#FFF</color>
     <color name="MiBodyYellow">#f2e730</color>
+    <color name="MiBodyGreen">#03c200</color>
 </resources>

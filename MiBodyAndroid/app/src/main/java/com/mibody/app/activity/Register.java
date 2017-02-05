@@ -1,42 +1,30 @@
 package com.mibody.app.activity;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.mibody.app.R;
 import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.AppController;
-import com.mibody.app.fragments.ExercisesFragment;
 import com.mibody.app.fragments.RegisterOne;
 import com.mibody.app.fragments.RegisterThree;
 import com.mibody.app.fragments.RegisterTwo;
-import com.mibody.app.fragments.WorkoutFragment;
+import com.mibody.app.fragments.WorkoutPlayAuto;
 import com.mibody.app.helper.SessionManager;
 import com.mibody.app.helper.ViewPagerAdapter;
 import com.mibody.app.listener.OnBtnClickListener;
@@ -46,7 +34,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by NakeebMac on 10/1/16.
@@ -245,7 +232,7 @@ public class Register extends AppCompatActivity {
             editor.apply();
 
             // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(Register.this, WorkoutPlay.class);
+            Intent i = new Intent(Register.this, WorkoutPlayAuto.class);
             i.putExtra(AppConfig.EXTRA_DEVICE_ADDRESS, address);
             startActivity(i);
         }

@@ -22,9 +22,11 @@
 
     <dimen name="exercise_item_margin">10dp</dimen>
 
+    <dimen name="rope_circle_diameter">20dp</dimen>
+
     <dimen name="body_dimen_width">80dp</dimen>
     <dimen name="body_dimen_height">110dp</dimen>
 
-    <dimen name="focused_item">60dp</dimen>
-    <dimen name="selected_item">0dp</dimen>
+    <dimen name="focused_item">0dp</dimen>
+    <dimen name="unselected_item">20dp</dimen>
 </resources>

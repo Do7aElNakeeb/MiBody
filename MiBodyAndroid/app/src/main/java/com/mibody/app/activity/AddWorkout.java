@@ -18,6 +18,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -79,11 +82,13 @@ public class AddWorkout extends AppCompatActivity {
     TextView SaveWorkout;
 
 
-    RelativeLayout workoutExDetailsLayout;
+    int WorkoutExItemsRVHeight;
+    RelativeLayout workoutExDetailsLayout, addWorkoutRL;
     ImageView b1, b2, b3, r1, r2, r3, y1, y2, y3;
     TextView repsTxtView, restTxtView, exRepsTxtView;
     EditText repsEdtTxt, restEdtTxt;
-    ImageView repsMinusBtn, repsPlusBtn, restMinusBtn, restPlusBtn, exRepsPlusBtn;
+    ImageView repsMinusBtn, repsPlusBtn, restMinusBtn, restPlusBtn;
+    CardView exRepsPlusBtn;
 
     RecyclerView ExercisesRV, WorkoutExItemsRV;
     ArrayList<ExerciseItem> exerciseItemArrayList;
@@ -111,9 +116,12 @@ public class AddWorkout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_workout);
 
+        addWorkoutRL = (RelativeLayout) findViewById(R.id.addWorkoutRL);
+
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
+
         itemWidth = getResources().getDimension(R.dimen.item_width);
         padding = (size.x - itemWidth) / 2;
         firstItemWidth = getResources().getDimension(R.dimen.padding_item_width);
@@ -124,14 +132,13 @@ public class AddWorkout extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        WorkoutName = (EditText) findViewById(R.id.workout_name);
-        workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
-        workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
+        WorkoutName = (EditText) findViewById(R.id.workoutNameET);
+        //workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
+        //workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
         AddExercise = (ImageView) findViewById(R.id.add_exercise);
         SaveWorkout = (TextView) findViewById(R.id.save_btn);
 
         sqLiteHandler = new SQLiteHandler(this);
-
 
         try {
             sqLiteHandler.open();
@@ -141,7 +148,9 @@ public class AddWorkout extends AppCompatActivity {
         }
 
         initWorkoutExDetails();
-        initWorkoutViews();
+        initWorkoutViews(size.x);
+
+        WorkoutExItemsRVHeight = linearLayoutManager.getHeight();
 
         AddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,22 +165,42 @@ public class AddWorkout extends AppCompatActivity {
         });
 
         WorkoutExItemsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            int flag = 0;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                int fPos = linearLayoutManager.findLastCompletelyVisibleItemPosition() - 1; // 0 1 2 3 4 5 6 7 8 9  2 1 2
+                int fPos = linearLayoutManager.findLastCompletelyVisibleItemPosition(); // 0 1 2 3 4 5 6 7 8 9  2 1 2
+                Log.d("FocusedPos", String.valueOf(fPos));
 
                 //fPos = (fPos/2) + 1;
-               /*synchronized (this)*/ {
+               //synchronized (this) {
+                /*
                     if(newState == RecyclerView.SCROLL_STATE_IDLE){
-                        //workoutExItemAdapter.setFocusedItem(fPos);
+                        if ((linearLayoutManager.findLastCompletelyVisibleItemPosition() == workoutExItemAdapter.getItemCount() - 2) && (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == workoutExItemAdapter.getItemCount() - 4)) {
+                            focusedItem = workoutExItemAdapter.getItemCount() - 3;
+                            workoutExItemAdapter.setFocusedItem(focusedItem);
+                            Log.d("FocusedPos", "c3");
+                            //WorkoutExItemsRV.removeOnScrollListener(this);
+                            flag = 1;
+                        }
+                        else if(linearLayoutManager.findLastCompletelyVisibleItemPosition() == workoutExItemAdapter.getItemCount() - 2){
+                            focusedItem = workoutExItemAdapter.getItemCount() - 2;
+                            workoutExItemAdapter.setFocusedItem(focusedItem);
+                            Log.d("FocusedPos", "c1");
+                        }else {
+                            focusedItem = fPos - 1;
+                            workoutExItemAdapter.setFocusedItem(focusedItem);
+                            Log.d("FocusedPos", "c2");
+                            flag = 0;
+                        }
                         //recyclerView.removeOnScrollListener(this);
                         //Log.d("FocusedFlinged", String.valueOf(fPos) + " -- " + String.valueOf(linearLayoutManager.findLastVisibleItemPosition()) + " -- " + String.valueOf(linearLayoutManager.findFirstVisibleItemPosition()));
                     }
+                */
                 }
-            }
-
-            int flag = 0;
+            //}
 
             /**
              * TODO
@@ -181,9 +210,10 @@ public class AddWorkout extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+//                workoutExItemAdapter.setFocusedItem(-1);
                 int fPos = linearLayoutManager.findLastCompletelyVisibleItemPosition() - 1; // 0 1 2 3 4 5 6 7 8 9  2 1 2
-                Log.d("FocusedPos", String.valueOf(fPos));
-
+                //Log.d("FocusedPos", String.valueOf(fPos));
+/*
                 if (linearLayoutManager.findLastVisibleItemPosition() == workoutExItemAdapter.getItemCount() - 1) {
                     workoutExItemAdapter.setFocusedItem(workoutExItemAdapter.getItemCount() - 1);
                     //recyclerView.stopScroll();
@@ -192,10 +222,10 @@ public class AddWorkout extends AppCompatActivity {
                     workoutExItemAdapter.setFocusedItem(fPos);
                     flag = 0;
                 }
-
+*/
             }
         });
-
+/*
         workoutRepeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +233,7 @@ public class AddWorkout extends AppCompatActivity {
                 workoutRepeat.setText(String.valueOf(workoutReps));
             }
         });
-
+*/
         SaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,13 +248,12 @@ public class AddWorkout extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private void initWorkoutExDetails(){
 
         workoutExDetailsLayout = (RelativeLayout) findViewById(R.id.workoutExerciseDetails);
-        workoutExDetailsLayout.setVisibility(View.GONE);
+        workoutExDetailsLayout.setVisibility(View.INVISIBLE);
 
         // Ropes
         b1 = (ImageView) findViewById(R.id.ropes_black1);
@@ -251,10 +280,11 @@ public class AddWorkout extends AppCompatActivity {
 
         // Exercise Reps
         exRepsTxtView = (TextView) findViewById(R.id.exercise_reps_txtview);
-        exRepsPlusBtn = (ImageView) findViewById(R.id.exercise_reps_circle_btn);
+        exRepsPlusBtn = (CardView) findViewById(R.id.exerciseRepsPlusCV);
+
     }
 
-    private void initWorkoutViews(){
+    private void initWorkoutViews(int scrSize){
 
         // API Exercises
         ExercisesRV = (RecyclerView) findViewById(R.id.addWorkoutExercisesRV);
@@ -284,7 +314,41 @@ public class AddWorkout extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         WorkoutExItemsRV.setLayoutManager(linearLayoutManager);
 
-        snapHelper = new LinearSnapHelper();
+        snapHelper = new LinearSnapHelper(){
+
+                @Override
+                public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
+                    View centerView = findSnapView(layoutManager);
+                    if (centerView == null)
+                        return RecyclerView.NO_POSITION;
+
+                    int position = layoutManager.getPosition(centerView);
+                    int targetPosition = -1;
+                    if (layoutManager.canScrollHorizontally()) {
+                        if (velocityX < 0) {
+                            targetPosition = position - 1;
+                        } else {
+                            targetPosition = position + 1;
+                        }
+                    }
+
+                    if (layoutManager.canScrollVertically()) {
+                        if (velocityY < 0) {
+                            targetPosition = position - 1;
+                        } else {
+                            targetPosition = position + 1;
+                        }
+                    }
+
+                    final int firstItem = 0;
+                    final int lastItem = layoutManager.getItemCount() - 1;
+                    targetPosition = Math.min(lastItem, Math.max(targetPosition, firstItem));
+                    focusedItem = targetPosition;
+                    workoutExItemAdapter.setFocusedItem(focusedItem);
+                    return targetPosition;
+                }
+        };
+
         snapHelper.attachToRecyclerView(WorkoutExItemsRV);
         WorkoutExItemsRV.setOnFlingListener(snapHelper);
 
@@ -296,10 +360,14 @@ public class AddWorkout extends AppCompatActivity {
         WorkoutExItemsRV.smoothScrollToPosition(3);
         focusedItem = 2;
 
-        workoutExItemAdapter = new WorkoutExItemAdapter(context, workoutExItemArrayList, new WorkoutExItemAdapter.OnItemClickListener() {
+        final RelativeLayout.LayoutParams RVparams = (RelativeLayout.LayoutParams) WorkoutExItemsRV.getLayoutParams();
+
+        workoutExItemAdapter = new WorkoutExItemAdapter(context, workoutExItemArrayList, scrSize, new WorkoutExItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(WorkoutExItem workoutExItem, int position, WorkoutExItemAdapter.ViewHolder viewHolder) {
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) viewHolder.LLtoMove.getLayoutParams();
+                WorkoutExItemsRVHeight = viewHolder.itemView.getHeight();
+                Log.d("ClickedFocused", String.valueOf(focusedItem));
                 if (position >= focusedItem){
                     WorkoutExItemsRV.smoothScrollToPosition(position + 1);
                 }
@@ -307,19 +375,34 @@ public class AddWorkout extends AppCompatActivity {
                     WorkoutExItemsRV.smoothScrollToPosition(position - 1);
                 }
                 focusedItem = position;
-                workoutExItemAdapter.setFocusedItem(position);
+                workoutExItemAdapter.setFocusedItem(focusedItem);
                 if (workoutExItem.name != null){
-                    workoutExDetailsLayout.setVisibility(View.GONE);
+                    workoutExDetailsLayout.setVisibility(View.INVISIBLE);
                     Toast.makeText(context, "Drag Exercise and Drop Here Firstly", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    if (params.topMargin == 0 && workoutExDetailsLayout.getVisibility() == View.GONE){
+                    if (workoutExDetailsLayout.getVisibility() == View.INVISIBLE){
                         workoutExDetailsLayout.setVisibility(View.VISIBLE);
                         workoutExItemAdapter.setSelectedItem(position);
+
+                        RVparams.height = WorkoutExItemsRVHeight + 100;
+                        Log.d("heightOfRV", String.valueOf(RVparams.height));
+
+                        //RVparams.bottomMargin = 100;
+                        WorkoutExItemsRV.setLayoutParams(RVparams);
+
                     }
                     else {
-                        workoutExDetailsLayout.setVisibility(View.GONE);
+                        workoutExDetailsLayout.setVisibility(View.INVISIBLE);
+                        workoutExItemAdapter.setFocusedItem(position);
                         workoutExItemAdapter.setSelectedItem(-1);
+
+                        RVparams.height = WorkoutExItemsRVHeight;
+                        Log.d("heightOfRV2", String.valueOf(RVparams.height));
+
+                        //RVparams.bottomMargin = 0;
+                        WorkoutExItemsRV.setLayoutParams(RVparams);
+
                     }
                     Toast.makeText(context, "Set Exercise Details", Toast.LENGTH_LONG).show();
                 }

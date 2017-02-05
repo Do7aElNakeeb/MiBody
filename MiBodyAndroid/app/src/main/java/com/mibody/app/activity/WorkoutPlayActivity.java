@@ -3,7 +3,6 @@ package com.mibody.app.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,7 @@ import android.util.Log;
 
 import com.mibody.app.R;
 import com.mibody.app.app.WorkoutItem;
-import android.content.SharedPreferences.Editor;
+import com.mibody.app.fragments.WorkoutPlayAuto;
 
 /**
  * Created by NakeebMac on 10/23/16.
@@ -41,10 +40,10 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
         if (!sharedPreferences.getString("BT_MAC", "").isEmpty()){
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            WorkoutPlay workoutPlay = new WorkoutPlay(workoutItem);
-            workoutPlay.setBTAddress(sharedPreferences.getString("BT_MAC", ""));
+            WorkoutPlayAuto workoutPlayAuto = new WorkoutPlayAuto(workoutItem);
+            workoutPlayAuto.setBTAddress(sharedPreferences.getString("BT_MAC", ""));
 
-            fragmentTransaction.add(R.id.workoutPlayFragment, workoutPlay, "WorkoutFragment Play");
+            fragmentTransaction.add(R.id.workoutPlayFragment, workoutPlayAuto, "WorkoutFragment Play");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
         }
@@ -75,10 +74,10 @@ public class WorkoutPlayActivity extends AppCompatActivity implements BTDeviceLi
             ft.commit();
         }
         else {
-            WorkoutPlay workoutPlay = new WorkoutPlay(workoutItem);
-            workoutPlay.setBTAddress(address);
+            WorkoutPlayAuto workoutPlayAuto = new WorkoutPlayAuto(workoutItem);
+            workoutPlayAuto.setBTAddress(address);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.workoutPlayFragment, workoutPlay, "Movie Details Fragment");
+            ft.replace(R.id.workoutPlayFragment, workoutPlayAuto, "Movie Details Fragment");
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.addToBackStack(null);
             ft.commit();
