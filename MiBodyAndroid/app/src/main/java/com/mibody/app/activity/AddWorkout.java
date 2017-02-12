@@ -14,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -49,6 +51,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,12 +77,12 @@ public class AddWorkout extends AppCompatActivity {
     ProgressDialog pDialog;
 
     SQLiteHandler sqLiteHandler;
-    EditText WorkoutName;
+    EditText WorkoutNameET;
     EditText workoutRepeat;
-    int workoutReps = 0;
-    ImageView AddExercise;
+    int workoutReps = 1;
+    ImageView AddExercise, workoutNameEditBtn;
     ImageButton workoutRepeatBtn;
-    TextView SaveWorkout;
+    TextView WorkoutNameTxtView, SaveWorkout;
 
 
     int WorkoutExItemsRVHeight;
@@ -89,6 +92,7 @@ public class AddWorkout extends AppCompatActivity {
     EditText repsEdtTxt, restEdtTxt;
     ImageView repsMinusBtn, repsPlusBtn, restMinusBtn, restPlusBtn;
     CardView exRepsPlusBtn;
+    ProgressBar restTimePB;
 
     RecyclerView ExercisesRV, WorkoutExItemsRV;
     ArrayList<ExerciseItem> exerciseItemArrayList;
@@ -132,7 +136,9 @@ public class AddWorkout extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        WorkoutName = (EditText) findViewById(R.id.workoutNameET);
+        WorkoutNameET = (EditText) findViewById(R.id.workoutNameET);
+        WorkoutNameTxtView = (TextView) findViewById(R.id.workoutNameTxtView);
+        workoutNameEditBtn = (ImageView) findViewById(R.id.workoutNameEditBtn);
         //workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
         //workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
         AddExercise = (ImageView) findViewById(R.id.add_exercise);
@@ -151,6 +157,38 @@ public class AddWorkout extends AppCompatActivity {
         initWorkoutViews(size.x);
 
         WorkoutExItemsRVHeight = linearLayoutManager.getHeight();
+
+        workoutNameEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (WorkoutNameET.getVisibility() == View.VISIBLE) {
+                    WorkoutNameTxtView.setText(WorkoutNameET.getText().toString());
+                    WorkoutNameTxtView.setVisibility(View.VISIBLE);
+                    WorkoutNameET.setVisibility(View.GONE);
+                }else {
+                    WorkoutNameTxtView.setVisibility(View.INVISIBLE);
+                    WorkoutNameET.setText(WorkoutNameTxtView.getText().toString());
+                    WorkoutNameET.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        WorkoutNameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                WorkoutNameTxtView.setText(editable.toString());
+            }
+        });
 
         AddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,10 +278,13 @@ public class AddWorkout extends AppCompatActivity {
                 JSONArray jsonArray = new JSONArray();
                 for (int i=0; i < workoutExItemArrayList.size(); i++) {
                     jsonArray.put(workoutExItemArrayList.get(i).getJSONObject());
+                    Log.d("AddWJSONobject", workoutExItemArrayList.get(i).getJSONObject().toString());
                 }
                 Log.d ("JSONObjectSQL", jsonArray.toString());
 
-                addWorkout(new WorkoutItem("", WorkoutName.getText().toString(), workoutReps, jsonArray.toString(), "personalised"));
+                addWorkout(new WorkoutItem("", WorkoutNameTxtView.getText().toString(), workoutReps, String.valueOf(jsonArray), "personalised"));
+                Log.d("SjsonToServer", String.valueOf(jsonArray));
+                Log.d("jsonToServer", jsonArray.toString());
                 //sqLiteHandler.addWorkout(new WorkoutItem(WorkoutName.getText().toString(), workoutReps, "pic", jsonArray.toString()));
                 finish();
             }
@@ -277,10 +318,224 @@ public class AddWorkout extends AppCompatActivity {
         restEdtTxt = (EditText) findViewById(R.id.rest_time_edttxt);
         restMinusBtn = (ImageView) findViewById(R.id.rest_minus_btn);
         restPlusBtn = (ImageView) findViewById(R.id.rest_plus_btn);
+        restTimePB = (ProgressBar) findViewById(R.id.restProgressBar);
 
         // Exercise Reps
         exRepsTxtView = (TextView) findViewById(R.id.exercise_reps_txtview);
         exRepsPlusBtn = (CardView) findViewById(R.id.exerciseRepsPlusCV);
+
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b1.setImageResource(R.drawable.ropes_dot_black_selected);
+                r1.setImageResource(R.drawable.ropes_dot_red);
+                y1.setImageResource(R.drawable.ropes_dot_yellow);
+                workoutExItemArrayList.get(selectedItem).rope1 = "B";
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b2.setImageResource(R.drawable.ropes_dot_black_selected);
+                r2.setImageResource(R.drawable.ropes_dot_red);
+                y2.setImageResource(R.drawable.ropes_dot_yellow);
+                workoutExItemArrayList.get(selectedItem).rope2 = "B";
+            }
+        });
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b3.setImageResource(R.drawable.ropes_dot_black_selected);
+                r3.setImageResource(R.drawable.ropes_dot_red);
+                y3.setImageResource(R.drawable.ropes_dot_yellow);
+                workoutExItemArrayList.get(selectedItem).rope3 = "B";
+            }
+        });
+
+        r1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b1.setImageResource(R.drawable.ropes_dot_black);
+                r1.setImageResource(R.drawable.ropes_dot_red_selected);
+                y1.setImageResource(R.drawable.ropes_dot_yellow);
+                workoutExItemArrayList.get(selectedItem).rope1 = "R";
+            }
+        });
+        r2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b2.setImageResource(R.drawable.ropes_dot_black);
+                r2.setImageResource(R.drawable.ropes_dot_red_selected);
+                y2.setImageResource(R.drawable.ropes_dot_yellow);
+                workoutExItemArrayList.get(selectedItem).rope2 = "R";
+            }
+        });
+        r3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b3.setImageResource(R.drawable.ropes_dot_black);
+                r3.setImageResource(R.drawable.ropes_dot_red_selected);
+                y3.setImageResource(R.drawable.ropes_dot_yellow);
+                workoutExItemArrayList.get(selectedItem).rope3 = "R";
+            }
+        });
+
+        y1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b1.setImageResource(R.drawable.ropes_dot_black);
+                r1.setImageResource(R.drawable.ropes_dot_red);
+                y1.setImageResource(R.drawable.ropes_dot_yellow_selected);
+                workoutExItemArrayList.get(selectedItem).rope1 = "Y";
+            }
+        });
+        y2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b2.setImageResource(R.drawable.ropes_dot_black);
+                r2.setImageResource(R.drawable.ropes_dot_red);
+                y2.setImageResource(R.drawable.ropes_dot_yellow_selected);
+                workoutExItemArrayList.get(selectedItem).rope2 = "Y";
+            }
+        });
+        y3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b3.setImageResource(R.drawable.ropes_dot_black);
+                r3.setImageResource(R.drawable.ropes_dot_red);
+                y3.setImageResource(R.drawable.ropes_dot_yellow_selected);
+                workoutExItemArrayList.get(selectedItem).rope3 = "Y";
+            }
+        });
+
+        exRepsPlusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exRepsTxtView.setText(String.valueOf(Integer.parseInt(exRepsTxtView.getText().toString().trim()) + 1));
+                workoutExItemArrayList.get(selectedItem).exReps = Integer.parseInt(exRepsTxtView.getText().toString().trim());
+            }
+        });
+
+        repsMinusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) - 1));
+                workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+            }
+        });
+        repsPlusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) + 1));
+                workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+            }
+        });
+
+        restMinusBtn.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) - 1));
+                    restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
+                    workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
+                }
+                return true;
+            }
+        });
+        restPlusBtn.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) + 1));
+                restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
+                workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
+                return true;
+            }
+        });
+
+        repsTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                repsTxtView.setVisibility(View.GONE);
+                repsEdtTxt.setText(repsTxtView.getText().toString());
+                repsEdtTxt.setVisibility(View.VISIBLE);
+            }
+        });
+
+        restTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restTxtView.setVisibility(View.GONE);
+                restEdtTxt.setText(restTxtView.getText().toString());
+                restEdtTxt.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void updateWorkoutExItemDetails(){
+        switch (workoutExItemArrayList.get(selectedItem).rope1){
+            case "B":
+                b1.setImageResource(R.drawable.ropes_dot_black_selected);
+                r1.setImageResource(R.drawable.ropes_dot_red);
+                y1.setImageResource(R.drawable.ropes_dot_yellow);
+                break;
+            case "R":
+                r1.setImageResource(R.drawable.ropes_dot_red_selected);
+                b1.setImageResource(R.drawable.ropes_dot_black);
+                y1.setImageResource(R.drawable.ropes_dot_yellow);
+                break;
+            case "Y":
+                b1.setImageResource(R.drawable.ropes_dot_black);
+                r1.setImageResource(R.drawable.ropes_dot_red);
+                y1.setImageResource(R.drawable.ropes_dot_yellow_selected);
+                break;
+            default:
+                break;
+        }
+        switch (workoutExItemArrayList.get(selectedItem).rope2){
+            case "B":
+                b2.setImageResource(R.drawable.ropes_dot_black_selected);
+                r2.setImageResource(R.drawable.ropes_dot_red);
+                y2.setImageResource(R.drawable.ropes_dot_yellow);
+                break;
+            case "R":
+                b2.setImageResource(R.drawable.ropes_dot_black);
+                y2.setImageResource(R.drawable.ropes_dot_yellow);
+                r2.setImageResource(R.drawable.ropes_dot_red_selected);
+                break;
+            case "Y":
+                b2.setImageResource(R.drawable.ropes_dot_black);
+                r2.setImageResource(R.drawable.ropes_dot_red);
+                y2.setImageResource(R.drawable.ropes_dot_yellow_selected);
+                break;
+            default:
+                break;
+        }
+        switch (workoutExItemArrayList.get(selectedItem).rope3){
+            case "B":
+                b3.setImageResource(R.drawable.ropes_dot_black_selected);
+                r3.setImageResource(R.drawable.ropes_dot_red);
+                y3.setImageResource(R.drawable.ropes_dot_yellow);
+                break;
+            case "R":
+                r3.setImageResource(R.drawable.ropes_dot_red_selected);
+                b3.setImageResource(R.drawable.ropes_dot_black);
+                y3.setImageResource(R.drawable.ropes_dot_yellow);
+                break;
+            case "Y":
+                b3.setImageResource(R.drawable.ropes_dot_black);
+                r3.setImageResource(R.drawable.ropes_dot_red);
+                y3.setImageResource(R.drawable.ropes_dot_yellow_selected);
+                break;
+            default:
+                break;
+        }
+
+        workoutExItemArrayList.get(selectedItem).name = workoutExItemAdapter.workoutExItemArrayList.get(selectedItem).name;
+        exRepsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).exReps));
+        repsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).reps));
+        restTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).restTime));
+        restTimePB.setProgress(workoutExItemArrayList.get(selectedItem).restTime);
 
     }
 
@@ -294,7 +549,7 @@ public class AddWorkout extends AppCompatActivity {
         exerciseItemArrayList = new ArrayList<ExerciseItem>();
         exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
-        exercisesAdapter = new ExercisesAdapter(this, exerciseItemArrayList, 0);
+        exercisesAdapter = new ExercisesAdapter(this, 0, exerciseItemArrayList, 0);
         ExercisesRV.setAdapter(exercisesAdapter);
 
         // Workout Exercises RV
@@ -343,6 +598,12 @@ public class AddWorkout extends AppCompatActivity {
                     final int firstItem = 0;
                     final int lastItem = layoutManager.getItemCount() - 1;
                     targetPosition = Math.min(lastItem, Math.max(targetPosition, firstItem));
+                    if (targetPosition == 0){
+                        targetPosition = 1;
+                    }
+                    else if (targetPosition == workoutExItemAdapter.getItemCount() - 1){
+                        targetPosition = workoutExItemAdapter.getItemCount() - 2;
+                    }
                     focusedItem = targetPosition;
                     workoutExItemAdapter.setFocusedItem(focusedItem);
                     return targetPosition;
@@ -367,7 +628,12 @@ public class AddWorkout extends AppCompatActivity {
             public void onItemClick(WorkoutExItem workoutExItem, int position, WorkoutExItemAdapter.ViewHolder viewHolder) {
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) viewHolder.LLtoMove.getLayoutParams();
                 WorkoutExItemsRVHeight = viewHolder.itemView.getHeight();
+                RVparams.height = WorkoutExItemsRVHeight;
+                WorkoutExItemsRV.setLayoutParams(RVparams);
                 Log.d("ClickedFocused", String.valueOf(focusedItem));
+                selectedItem = position - 1;
+                updateWorkoutExItemDetails();
+
                 if (position >= focusedItem){
                     WorkoutExItemsRV.smoothScrollToPosition(position + 1);
                 }
@@ -376,7 +642,7 @@ public class AddWorkout extends AppCompatActivity {
                 }
                 focusedItem = position;
                 workoutExItemAdapter.setFocusedItem(focusedItem);
-                if (workoutExItem.name != null){
+                if (workoutExItem.name == null){
                     workoutExDetailsLayout.setVisibility(View.INVISIBLE);
                     Toast.makeText(context, "Drag Exercise and Drop Here Firstly", Toast.LENGTH_LONG).show();
                 }
@@ -385,11 +651,13 @@ public class AddWorkout extends AppCompatActivity {
                         workoutExDetailsLayout.setVisibility(View.VISIBLE);
                         workoutExItemAdapter.setSelectedItem(position);
 
-                        RVparams.height = WorkoutExItemsRVHeight + 100;
+                        RVparams.height = WorkoutExItemsRVHeight + 80;
                         Log.d("heightOfRV", String.valueOf(RVparams.height));
 
                         //RVparams.bottomMargin = 100;
                         WorkoutExItemsRV.setLayoutParams(RVparams);
+                        params.topMargin = 80;
+                        viewHolder.LLtoMove.setLayoutParams(params);
 
                     }
                     else {
@@ -402,6 +670,8 @@ public class AddWorkout extends AppCompatActivity {
 
                         //RVparams.bottomMargin = 0;
                         WorkoutExItemsRV.setLayoutParams(RVparams);
+                        params.topMargin = 0;
+                        viewHolder.LLtoMove.setLayoutParams(params);
 
                     }
                     Toast.makeText(context, "Set Exercise Details", Toast.LENGTH_LONG).show();
@@ -597,11 +867,11 @@ public class AddWorkout extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
         final String user_id = sharedPreferences.getString("user_id", "");
 
-        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST, AppConfig.URL_SERVER + "addWorkout.php", new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST, AppConfig.URL_SERVER + "addPersonalisedWorkout.php", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
+                Log.d(TAG, "Add Workout Response: " + response.toString());
                 hideDialog();
 
                 try {
@@ -625,9 +895,9 @@ public class AddWorkout extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Add Workout Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                sqLiteHandler.addWorkout(new WorkoutItem("", workoutItem.workoutName, workoutItem.workoutReps, workoutItem.exercisesJSON, "personalised"));
                 hideDialog();
             }
         }) {
