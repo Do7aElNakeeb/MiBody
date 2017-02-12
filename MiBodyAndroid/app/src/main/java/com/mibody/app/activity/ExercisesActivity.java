@@ -32,9 +32,7 @@ public class ExercisesActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ExercisesFragment exercisesFragment = new ExercisesFragment();
 
-        RegisterTwo registerTwo = new RegisterTwo();
-
-        fragmentTransaction.add(R.id.exercisesFragment, exercisesFragment);
+        fragmentTransaction.replace(R.id.exercisesFragment, exercisesFragment);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 

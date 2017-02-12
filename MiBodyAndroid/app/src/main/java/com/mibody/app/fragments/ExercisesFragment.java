@@ -2,10 +2,8 @@ package com.mibody.app.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +17,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.mibody.app.R;
-import com.mibody.app.activity.Exercises;
 import com.mibody.app.activity.WorkoutsItemsActivity;
 import com.mibody.app.app.AppConfig;
 import com.mibody.app.app.AppController;
 import com.mibody.app.app.ExerciseItem;
-import com.mibody.app.app.WorkoutItem;
-import com.mibody.app.helper.ExercisesItemAdapter;
 import com.mibody.app.helper.SQLiteHandler;
 import com.mibody.app.helper.ViewPagerAdapter;
-import com.mibody.app.helper.WorkoutsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,7 +82,7 @@ public class ExercisesFragment extends Fragment {
             sqLiteHandler.open();
 
         } catch (Exception e) {
-            Log.i("hello", "hello");
+            Log.i("SQLexception", "can't open SQL");
         }
 
         exerciseViewPager = (ViewPager) view.findViewById(R.id.exercisesViewpager);
@@ -108,7 +102,7 @@ public class ExercisesFragment extends Fragment {
         for (int i = 0; i<= exerciseItemArrayList.size(); i++){
             if((i % 9 == 0 || i == exerciseItemArrayList.size()) && i != 0){
                 Exercises exercises = new Exercises();
-                exercises.setArrayList(tempExerciseItems);
+                exercises.setArrayList(tempExerciseItems, viewPager.getHeight());
                 adapter.addFragment(exercises, "ExPage" + String.valueOf(i));
                 tempExerciseItems = new ArrayList<ExerciseItem>();
                 Log.d("ExPage Added", String.valueOf(i));

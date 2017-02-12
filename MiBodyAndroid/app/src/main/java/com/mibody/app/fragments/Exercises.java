@@ -1,5 +1,6 @@
-package com.mibody.app.activity;
+package com.mibody.app.fragments;
 
+import android.graphics.Point;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -8,14 +9,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.mibody.app.R;
 import com.mibody.app.app.ExerciseItem;
 import com.mibody.app.fragments.ExerciseDetails;
 import com.mibody.app.helper.ExercisesAdapter;
+import com.mibody.app.helper.GridSpacingItemDecoration;
 import com.mibody.app.helper.ItemClickListener;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ public class Exercises extends Fragment {
     RecyclerView exercisesRV;
 
     ArrayList<ExerciseItem> arrayList;
+    int fragmentHeight;
 
     public Exercises() {
         // Required empty public constructor
@@ -39,8 +44,9 @@ public class Exercises extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public void setArrayList(ArrayList<ExerciseItem> exerciseItemArrayList){
+    public void setArrayList(ArrayList<ExerciseItem> exerciseItemArrayList, int fragmentHeight){
         arrayList = exerciseItemArrayList;
+        this.fragmentHeight = fragmentHeight;
         Log.d("arraySent", String.valueOf(arrayList.size()));
     }
 
@@ -50,12 +56,28 @@ public class Exercises extends Fragment {
 
         exercisesRV = (RecyclerView) getView().findViewById(R.id.expandableListView);
         exercisesRV.setHasFixedSize(true);
-        exercisesRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3, LinearLayoutManager.VERTICAL, false));
+        exercisesRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
 
-        exercisesRV.setItemAnimator(new DefaultItemAnimator());
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        /*
+        getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                fragmentHeight = getView().getHeight(); //height is ready
+                Log.d("fraHeight", String.valueOf(fragmentHeight));
+            }
+        });
+*/
+        Log.d("fraHeight", String.valueOf(fragmentHeight));
+        //exercisesRV.setItemAnimator(new DefaultItemAnimator());
+
+        //exercisesRV.addItemDecoration(new GridSpacingItemDecoration(3, 50, false));
 
 
-        ExercisesAdapter exercisesAdapter = new ExercisesAdapter(this.getActivity(), arrayList, 1);
+        ExercisesAdapter exercisesAdapter = new ExercisesAdapter(this.getActivity(), fragmentHeight, arrayList, 1);
         exercisesRV.setAdapter(exercisesAdapter);
 
         /*
@@ -78,7 +100,6 @@ public class Exercises extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.exercises_page_fragment, container, false);
-
     }
 
 }
