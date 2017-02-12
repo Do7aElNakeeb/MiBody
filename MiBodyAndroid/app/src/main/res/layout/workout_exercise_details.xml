@@ -324,6 +324,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/reps_txtview"
                                 android:layout_marginTop="25dp"
+                                android:inputType="number"
                                 android:text="8"
                                 android:textColor="@color/MiBodyOrange"
                                 android:layout_centerInParent="true"
@@ -438,9 +439,10 @@
                                         android:layout_height="wrap_content"
                                         android:textStyle="bold"
                                         android:id="@+id/exercise_reps_txtview"
+                                        android:inputType="number"
                                         android:textSize="20sp"
                                         android:textColor="@color/MiBodyWhite"
-                                        android:text="0"/>
+                                        android:text="1"/>
                                 </LinearLayout>
 
 
@@ -485,6 +487,24 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"/>
 
+                            <ProgressBar
+                                android:id="@+id/restProgressBar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingStart="20dp"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:paddingEnd="20dp"
+                                android:layout_toRightOf="@id/rest_minus_btn"
+                                android:layout_toEndOf="@id/rest_minus_btn"
+                                android:layout_toLeftOf="@id/rest_plus_btn"
+                                android:layout_toStartOf="@id/rest_plus_btn"
+                                android:max="200"
+                                android:progress="90"
+                                android:progressDrawable="@drawable/rectangle_progress_bar"/>
+
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -498,26 +518,41 @@
                                 android:layout_centerHorizontal="true"
                                 android:src="@drawable/resttime_battery"/>
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/rest_time_txtview"
                                 android:layout_centerInParent="true"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:gravity="center"
-                                android:text="90 Sec"/>
+                                android:gravity="center">
 
-                            <EditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/rest_time_edttxt"
-                                android:textColor="@color/black"
-                                android:layout_centerInParent="true"
-                                android:textSize="15sp"
-                                android:visibility="gone"
-                                android:gravity="center"
-                                android:text="90 Sec"/>
+                                <EditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/rest_time_edttxt"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:visibility="gone"
+                                    android:gravity="center"
+                                    android:text="90 Sec"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/rest_time_txtview"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:text="90"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:text=" Sec"/>
+
+
+
+                            </LinearLayout>
+
 
 
                         </RelativeLayout>
