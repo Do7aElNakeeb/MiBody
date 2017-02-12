@@ -138,6 +138,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 */
         values.put(WORKOUT_EXERCISES, workoutItem.exercisesJSON);
         values.put(WORKOUT_REPS, workoutItem.workoutReps);
+        values.put(WORKOUT_TYPE, workoutItem.workoutType);
 
         Log.d("TAG", "New workout inserted into sqlite: ");
 
@@ -257,7 +258,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
                     Log.d("checkJSON", name + " " + String.valueOf(restTime));
 
-                    workoutExItems.add(new WorkoutExItem(name, image, ropes, reps, restTime, exReps));
+                    //workoutExItems.add(new WorkoutExItem(name, image, ropes, reps, restTime, exReps));
                 }
             }
 

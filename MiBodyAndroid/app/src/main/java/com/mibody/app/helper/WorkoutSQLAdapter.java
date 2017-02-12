@@ -54,7 +54,7 @@ public class WorkoutSQLAdapter extends RecyclerView.Adapter<AddWorkoutRecyclerVi
         mainHolder.Reps.setEnabled(false);
         mainHolder.RestTime.setText(String.valueOf(model.restTime));
         mainHolder.RestTime.setEnabled(false);
-        mainHolder.RGB.setText(model.ropes);
+        mainHolder.RGB.setText(model.rope1);
         mainHolder.setRepeat.setText(String.valueOf(model.exReps));
         mainHolder.setRepeat.setEnabled(false);
 

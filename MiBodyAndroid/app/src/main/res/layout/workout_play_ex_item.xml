@@ -4,14 +4,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_gravity="center"
+    android:layout_marginTop="10dp"
+    android:layout_gravity="center_horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:layout_width="6dp"
         android:layout_height="6dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="155dp"
         android:visibility="visible"
         android:alpha=".5"
         android:id="@+id/exDot1"
@@ -21,8 +22,8 @@
     <android.support.v7.widget.CardView
         android:layout_width="6dp"
         android:layout_height="6dp"
-        android:layout_gravity="center"
         android:alpha=".5"
+        android:layout_marginTop="155dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:visibility="visible"
@@ -34,9 +35,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="310dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         app:cardBackgroundColor="@color/MiBodyOrange"
-        app:cardElevation="0dp"
+        app:cardElevation="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginEnd="10dp"
@@ -54,97 +55,122 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                app:cardElevation="0dp"
-                android:background="@color/MiBodyWhite"
-                android:layout_gravity="center"
-                app:cardCornerRadius="55dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="95dp"
-                    android:layout_height="95dp"
-                    app:cardElevation="0dp"
-                    android:background="@drawable/ropes_dot_black_selected"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="47.5dp">
-
-                    <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/trueMarkCV"
+                    android:visibility="invisible"
+                    android:layout_centerHorizontal="true"
+                    app:cardCornerRadius="20dp"
+                    app:cardBackgroundColor="@color/MiBodyGreen">
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/circular_clock_bg"/>
-
-                        <ProgressBar
-                            android:id="@+id/exProgressBar"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:indeterminate="false"
-                            android:max="20"
-                            android:rotation="-90"
-                            android:progress="5"
-                            android:progressDrawable="@drawable/circular_progress_bar" />
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="4dp"
-                            android:src="@drawable/circular_clock"/>
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            app:cardElevation="0dp"
-                            android:layout_centerInParent="true"
-                            app:cardCornerRadius="30dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:id="@+id/workoutExRepsCount"
-                                android:text="5"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:textColor="@color/black"
-                                android:textSize="50sp"
-                                android:textStyle="bold"/>
-
-                            <EditText
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:id="@+id/workoutExRepsCountET"
-                                android:text="5"
-                                android:visibility="gone"
-                                android:padding="0dp"
-                                android:inputType="number"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:textColor="@color/black"
-                                android:textSize="50sp"
-                                android:textStyle="bold"/>
-
-                        </android.support.v7.widget.CardView>
-                    </RelativeLayout>
-
+                        android:layout_height="match_parent"
+                        android:src="@drawable/true_mark_icon"/>
                 </android.support.v7.widget.CardView>
 
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    app:cardElevation="0dp"
+                    android:layout_marginTop="-30dp"
+                    android:layout_below="@id/trueMarkCV"
+                    android:background="@color/MiBodyWhite"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="55dp">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="95dp"
+                        android:layout_height="95dp"
+                        app:cardElevation="0dp"
+                        android:background="@drawable/ropes_dot_black_selected"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="47.5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/circular_clock_bg"/>
+
+                            <ProgressBar
+                                android:id="@+id/exProgressBar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:indeterminate="false"
+                                android:max="20"
+                                android:rotation="-90"
+                                android:progress="0"
+                                android:progressDrawable="@drawable/circular_progress_bar" />
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="4dp"
+                                android:src="@drawable/circular_clock"/>
+
+                            <android.support.v7.widget.CardView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                app:cardElevation="0dp"
+                                android:layout_centerInParent="true"
+                                app:cardCornerRadius="30dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/workoutExRepsCount"
+                                    android:text="0"
+                                    android:layout_gravity="center"
+                                    android:maxLines="1"
+                                    android:gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="40sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/workoutExRepsCountET"
+                                    android:text="5"
+                                    android:imeOptions="actionDone"
+                                    android:selectAllOnFocus="true"
+                                    android:visibility="gone"
+                                    android:padding="0dp"
+                                    android:maxLines="1"
+                                    android:inputType="number"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="40sp"
+                                    android:textStyle="bold"/>
+
+                            </android.support.v7.widget.CardView>
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </android.support.v7.widget.CardView>
+            </RelativeLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/MiBodyWhite"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginStart="30dp">
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp">
 
             </FrameLayout>
 
@@ -173,7 +199,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="6dp"
         android:layout_height="6dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="155dp"
         android:visibility="visible"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
@@ -185,7 +211,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="6dp"
         android:layout_height="6dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="155dp"
         android:visibility="visible"
         android:id="@+id/exDot22"
         card_view:cardBackgroundColor="@color/MiBodyOrange"

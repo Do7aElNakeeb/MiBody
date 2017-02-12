@@ -12,28 +12,32 @@
         android:orientation="horizontal"
         android:paddingTop="10dp">
 
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/next_btn"
-            android:id="@+id/save_btn_arrow"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Finish"
-            android:layout_toLeftOf="@id/save_btn_arrow"
-            android:layout_toStartOf="@id/save_btn_arrow"
-            android:layout_alignBaseline="@id/save_btn_arrow"
-            android:textAllCaps="false"
-            android:textColor="@color/MiBodyOrange"
-            android:visibility="visible"
-            android:id="@+id/save_btn"/>
+            android:id="@+id/save_btn">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/next_btn"
+                android:id="@+id/save_btn_arrow"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finish"
+                android:layout_toLeftOf="@id/save_btn_arrow"
+                android:layout_toStartOf="@id/save_btn_arrow"
+                android:layout_alignBaseline="@id/save_btn_arrow"
+                android:textAllCaps="false"
+                android:textColor="@color/MiBodyOrange"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,6 +76,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:id="@+id/workoutPlayItemsRV">
 
             </android.support.v7.widget.RecyclerView>
@@ -82,7 +87,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="110dp"
         android:layout_alignParentBottom="true"
         android:background="#3c000000"
         android:visibility="visible"
@@ -99,7 +104,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/restTitle"
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
@@ -108,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/MiBodyGreen"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:text="Rest : "/>
 
                 <TextView
@@ -116,14 +121,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/exerciseRestTime"
                     android:textColor="@color/MiBodyGreen"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:text="90"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/MiBodyGreen"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:text=" Sec"/>
 
             </LinearLayout>
@@ -140,9 +145,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/MiBodyOrange"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:text="Next"/>
 
                 <TextView
@@ -150,8 +155,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/nextExerciseName"
                     android:textColor="@color/black"
-                    android:layout_marginTop="8dp"
-                    android:textSize="25sp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="23sp"
                     android:text="Pull up"/>
 
             </LinearLayout>
