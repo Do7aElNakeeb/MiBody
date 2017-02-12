@@ -44,6 +44,8 @@ public class WorkoutItem implements Parcelable{
         this.exercisesJSON = exercisesJSON;
         this.workoutType = workoutType;
 
+        exercisesList = new ArrayList<WorkoutExItem>();
+
         try {
             JSONArray resultsArr = new JSONArray(exercisesJSON);
             System.out.println(resultsArr.length());
@@ -59,12 +61,14 @@ public class WorkoutItem implements Parcelable{
                     // DB QueryValues Object to insert into Movies ArrayList
                     String name = obj.get("name").toString();
                     String image = obj.get("image").toString();
-                    String ropes = obj.get("ropes").toString();
-                    int reps = obj.getInt("reps");
-                    int restTime = obj.getInt("restTime");
-                    int exReps = obj.getInt("exReps");
+                    String rope1 = obj.get("rope1").toString();
+                    String rope2 = obj.get("rope2").toString();
+                    String rope3 = obj.get("rope3").toString();
+                    int reps = Integer.parseInt(obj.get("reps").toString());
+                    int restTime = Integer.parseInt(obj.get("restTime").toString());
+                    int exReps = Integer.parseInt(obj.get("exReps").toString());
 
-                    exercisesList.add(new WorkoutExItem(name, image, ropes, reps, restTime, exReps));
+                    exercisesList.add(new WorkoutExItem(name, image, rope1, rope2, rope3, reps, restTime, exReps));
 
                 }
 

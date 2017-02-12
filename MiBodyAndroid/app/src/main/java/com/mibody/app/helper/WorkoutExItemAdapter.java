@@ -45,7 +45,7 @@ import java.util.ArrayList;
 
 public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdapter.ViewHolder> {
 
-    private ArrayList<WorkoutExItem> workoutExItemArrayList;
+    public ArrayList<WorkoutExItem> workoutExItemArrayList;
     private Context context;
 
     private float screenWidth = 0;
@@ -98,6 +98,8 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
 
             final WorkoutExItem workoutExItem = workoutExItemArrayList.get(position -1);
+            workoutExItem.name = holder.exName.getText().toString();
+            //workoutExItem.exerciseImage = workoutExItem.name + ".png";
 
             final LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.LLtoMove.getLayoutParams();
             //params.bottomMargin = 0;
@@ -128,13 +130,13 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                     holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
                     holder.itemView.setAlpha(1);
 
-                    //params.topMargin = 100;
-                    holder.LLtoMove.setLayoutParams(params);
+                    //params.topMargin = 200;
+                    //holder.LLtoMove.setLayoutParams(params);
 
-                    holder.LLtoMove.setPadding(0, 100, 0, 0);
+                    //holder.LLtoMove.setPadding(0, 100, 0, 0);
 
                     //params.bottomMargin = 0;
-                    holder.LLtoMove.setLayoutParams(params);
+                    //holder.LLtoMove.setLayoutParams(params);
 /*
                     Animation shake = AnimationUtils.loadAnimation(context, R.anim.trans_down);
                     holder.LLtoMove.startAnimation(shake);
@@ -144,14 +146,15 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                     holder.itemView.setScaleX(1);
                     holder.exDot1.setVisibility(View.VISIBLE);
                     holder.exDot2.setVisibility(View.VISIBLE);
+                    workoutExItem.name = holder.exName.getText().toString();
                 }
                 else {
                     //addWorkoutLLparams.bottomMargin = 5;
                     //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
 
                     //params.topMargin = 0;
-                    holder.LLtoMove.setLayoutParams(params);
-                    holder.LLtoMove.setPadding(0, 0, 0, 0);
+                    //holder.LLtoMove.setLayoutParams(params);
+                    //holder.LLtoMove.setPadding(0, 0, 0, 0);
 
 
                     holder.exName.setVisibility(View.VISIBLE);
@@ -164,6 +167,8 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                     }
                 }
 
+                holder.icon.setAlpha((float) 1);
+                holder.cardView.setAlpha(1);
                 holder.exDot1.setVisibility(View.VISIBLE);
                 holder.exDot2.setVisibility(View.VISIBLE);
 //                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyWhite));
@@ -190,9 +195,22 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
 
                 //addWorkoutLLparams.width = (int) screenWidth / 4;
                 //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
-                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
-                holder.itemView.setAlpha((float) 0.3);
-                holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
+
+
+                if (selectedItem != -1) {
+                    holder.exName.setVisibility(View.INVISIBLE);
+                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
+                    holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
+                    holder.icon.setAlpha((float) 0.3);
+                    holder.cardView.setAlpha((float) 0.3);
+                }
+                else {
+                    holder.exName.setVisibility(View.VISIBLE);
+                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
+                    holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
+                    holder.icon.setAlpha((float) 1);
+                    holder.cardView.setAlpha(1);
+                }
             }
             //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
 
@@ -249,13 +267,14 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                             new Picasso.Builder(context).downloader(new OkHttpDownloader(context, Integer.MAX_VALUE)).build().load(AppConfig.URL_SERVER + "ExIcon/" + exerciseItem.getIcon()).into(holder.icon);
                             holder.exName.setText(exerciseItem.getName());
                             holder.exName.setVisibility(View.VISIBLE);
+                            workoutExItem.exerciseImage = exerciseItem.getIcon();
+                            workoutExItem.name = exerciseItem.getName();
 
                             //view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
                             view.setVisibility(View.VISIBLE);
                             notifyDataSetChanged();
                             break;
                         case DragEvent.ACTION_DRAG_ENDED:
-//                    v.setBackgroundDrawable(normalShape);
                         default:
                             break;
                     }
@@ -269,14 +288,10 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
             holder.itemView.setLayoutParams(params);
         }
 
-
     }
 
     public void setFocusedItem(int focusedItem) {
         this.focusedItem = focusedItem;
-    //    notifyItemChanged(focusedItem);
-  //      notifyItemChanged(focusedItem-1);
-//        notifyItemChanged(focusedItem+1);
         notifyDataSetChanged();
     }
 
@@ -321,59 +336,6 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
             exDot2 = (CardView) itemView.findViewById(R.id.exDot2);
 
 
-        }
-
-    }
-
-    private class MyTouchListener implements View.OnTouchListener {
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                view.setVisibility(View.VISIBLE);
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    private class MyDragListener implements View.OnDragListener {
-        /*
-        Drawable enterShape = getResources().getDrawable(
-                R.drawable.gym1);
-        Drawable normalShape = getResources().getDrawable(R.drawable.gym1);
-*/
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
-            int action = event.getAction();
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    // do nothing
-                    break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-//                    v.setBackgroundDrawable(enterShape);
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-//                    v.setBackgroundDrawable(normalShape);
-                    break;
-                case DragEvent.ACTION_DROP:
-                    // Dropped, reassign View to ViewGroup
-                    CardView view = (CardView) event.getLocalState();
-                    ViewGroup owner = (ViewGroup) view.getParent();
-                    //owner.removeView(view);
-                    CardView container = (CardView) v;
-                    container.addView(view);
-                    //view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
-                    view.setVisibility(View.VISIBLE);
-                    break;
-                case DragEvent.ACTION_DRAG_ENDED:
-//                    v.setBackgroundDrawable(normalShape);
-                default:
-                    break;
-            }
-            return true;
         }
 
     }

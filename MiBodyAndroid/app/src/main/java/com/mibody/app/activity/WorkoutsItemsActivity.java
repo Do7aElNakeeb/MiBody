@@ -90,7 +90,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         else {
             addWorkoutBtn.setVisibility(View.VISIBLE);
             SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
-            //user_id = sharedPreferences.getString("user_id", "");
+            user_id = sharedPreferences.getString("user_id", "");
         }
 
         loadWorkouts(workoutsType);
@@ -102,8 +102,6 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
 
     }
 
@@ -123,7 +121,12 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "MiBody Workouts Response: " + response);
+
+                        //Log.d(TAG, "MiBody Workouts Response: " + response);
+                        response = response.replaceAll("&quot;", "\"");
+                        response = response.replace("]\"", "]");
+                        response = response.replace("\"[", "[");
+                        Log.d(TAG, "MiBody Workouts Response2: " + response);
                         hideDialog();
 
                         workoutItemArrayList = new ArrayList<WorkoutItem>();
@@ -145,7 +148,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
                                     // DB QueryValues Object to insert into Movies ArrayList
                                     String id = obj.get("id").toString();
                                     String WorkoutName = obj.get("name").toString();
-                                    int WorkoutReps = obj.getInt("reps");
+                                    int WorkoutReps = Integer.parseInt(obj.get("reps").toString());
                                     String ExercisesJSON = obj.get("exercises").toString();
                                     String WorkoutType = obj.get("type").toString();
 
@@ -174,11 +177,9 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                 workoutItemArrayList = sqLiteHandler.getWorkouts("type="+'"'+ workoutsType +'"');
 
-
                 if (workoutItemArrayList.size() != 0) {
-                    Log.d("sizen", String.valueOf(workoutItemArrayList.size()) + String.valueOf(workoutItemArrayList.get(0).exercisesList.size()));
-
-
+                    Log.d("wSize", String.valueOf(workoutItemArrayList.size()));
+                    Log.d("eSize", String.valueOf(workoutItemArrayList.get(0).exercisesList.size()));
 
                     workoutsAdapter = new WorkoutsAdapter(getApplicationContext(), workoutItemArrayList);
                     workoutsRV.setAdapter(workoutsAdapter);
@@ -204,11 +205,15 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
         };
 
-        Log.d("StrReq", strReq.toString());
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadWorkouts(workoutsType);
+    }
 
     private void showDialog() {
         if (!pDialog.isShowing())
