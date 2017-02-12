@@ -7,6 +7,7 @@ package com.mibody.app.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -104,6 +105,10 @@ public class Login extends AppCompatActivity {
                 if (email.equals("guest") && password.equals("guest")){
                     //session.insertData("guest", email, "011", password, "50", null, null);
                     Toast.makeText(getApplicationContext(), "Welcome Guest!", Toast.LENGTH_LONG).show();
+                    SharedPreferences prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("user_id", "1");
+                    editor.apply();
                     session.setLogin("1");
                     // Launch login activity
                     Intent intent = new Intent(Login.this, Landing.class);
