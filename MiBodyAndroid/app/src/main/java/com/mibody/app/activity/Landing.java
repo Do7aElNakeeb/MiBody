@@ -38,7 +38,7 @@ public class Landing extends AppCompatActivity {
     RecyclerView landingVideosRV;
     Button previousBtn, nextBtn;
 
-    CardView landingExerciseBtn, landingWorkoutsBtn;
+    CardView landingExerciseBtn, landingWorkoutsBtn, landingProfileBtn;
     ImageView landingFbBtn, landingInstaBtn, landingUTubeBtn, landingTwitterBtn;
 
     String exercises_names[] = { "Exercise A", "Exercise B", "Exercise C", "Exercise D",
@@ -77,6 +77,7 @@ public class Landing extends AppCompatActivity {
         landingInstaBtn = (ImageView) slidingLayout.findViewById(R.id.landingInstaBtn);
         landingTwitterBtn = (ImageView) slidingLayout.findViewById(R.id.landingTwitterBtn);
         landingUTubeBtn = (ImageView) slidingLayout.findViewById(R.id.landingUTubeBtn);
+        landingProfileBtn = (CardView) slidingLayout.findViewById(R.id.landingProfileBtn);
 
         previousBtn = (Button) findViewById(R.id.previousVideo);
         nextBtn = (Button) findViewById(R.id.nextVideo);
@@ -90,6 +91,13 @@ public class Landing extends AppCompatActivity {
             videosArrayList.add(videoKeys[i]);
         }
 
+        landingProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Register.class);
+                startActivity(intent);
+            }
+        });
         landingExerciseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

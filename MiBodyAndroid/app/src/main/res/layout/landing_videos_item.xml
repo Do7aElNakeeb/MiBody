@@ -28,7 +28,7 @@
             android:layout_alignRight="@id/videoThumbnail"
             android:layout_alignBottom="@id/videoThumbnail"
             android:layout_gravity="center"
-            android:src="@drawable/play_icon"
+            android:src="@drawable/play_btn"
             android:padding="15dp"/>
     </RelativeLayout>
 
