@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/statisticsExName"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_alignParentBottom="true"
+        android:text="ExName"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/statisticsExName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp">
+
+        <RelativeLayout
+            android:layout_width="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/objectiveFL"
+                android:background="@color/MiBodyRed"
+                android:layout_alignParentBottom="true">
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:id="@+id/objectiveHC"
+                android:layout_above="@id/objectiveFL"
+                android:src="@drawable/half_circle_red"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/objectiveHC"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:id="@+id/FLred2"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/MiBodyRed2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:visibility="gone"
+                        android:id="@+id/objText"
+                        android:maxLines="1"
+                        android:text="objective"/>
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/triangle90red"
+                    android:layout_above="@id/FLred2"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/triangle90red"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/achievedFL"
+                android:background="@color/MiBodyGrey3"
+                android:layout_alignParentBottom="true">
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:id="@+id/achievedHC"
+                android:layout_above="@id/achievedFL"
+                android:src="@drawable/half_circle_grey"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/achievedHC"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:id="@+id/FLgrey4"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/MiBodyGrey4">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:visibility="gone"
+                        android:id="@+id/achText"
+                        android:maxLines="1"
+                        android:text="achieved"/>
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/triangle90grey"
+                    android:layout_above="@id/FLgrey4"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/triangle90grey"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

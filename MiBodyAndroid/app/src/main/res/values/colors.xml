@@ -11,4 +11,12 @@
     <color name="MiBodyWhite">#FFF</color>
     <color name="MiBodyYellow">#f2e730</color>
     <color name="MiBodyGreen">#03c200</color>
+    <color name="MiBodyGrey">#be000000</color>
+    <color name="MiBodyGrey2">#8f000000</color>
+
+    <color name="MiBodyGrey3">#5a5a5a</color>
+    <color name="MiBodyGrey4">#7f7e80</color>
+    <color name="MiBodyRed">#e31f31</color>
+    <color name="MiBodyRed2">#e04943</color>
+
 </resources>
