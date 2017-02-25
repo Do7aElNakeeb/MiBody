@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/WorkoutType"
                 android:id="@+id/workoutNameET"
+                android:imeOptions="actionDone"
                 android:textSize="18dp"
                 android:textColor="@color/black"
                 android:gravity="center"
@@ -156,7 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/workoutExerciseDetails">
@@ -169,7 +170,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/workoutNameTxtView"
         android:layout_above="@id/workoutExerciseDetails"
         android:id="@+id/addWorkoutUserExercisesRV">
 

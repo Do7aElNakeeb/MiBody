@@ -1,0 +1,49 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_gravity="center"
+    android:background="#fc3d39"
+    tools:context="ch.philopateer.mibody.fragments.Exercises">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exercises"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose your exercise"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:layout_marginBottom="10dp"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/exercisesViewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"/>
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

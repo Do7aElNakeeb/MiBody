@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context="com.mibody.app.fragments.WorkoutFragment">
+    tools:context="com.mibody.app.ch.mibody.app.fragments.WorkoutFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

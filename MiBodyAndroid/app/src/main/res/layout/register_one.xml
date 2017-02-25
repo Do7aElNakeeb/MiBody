@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.mibody.app.activity.Login">
+    tools:context="com.mibody.app.ch.mibody.app.activity.Login">
 
     <ImageView
         android:layout_width="match_parent"
@@ -13,19 +13,20 @@
         android:scaleType="centerCrop"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
+        android:id="@+id/btnLinkToLoginScreen"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="15dp"
+            android:layout_width="8dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrow_up"
+            android:src="@drawable/arrow_white"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:rotation="-90"/>
+            android:scaleX="-1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -97,6 +98,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/emailTV"
                 android:layout_marginTop="10dp"
                 android:text="Email Address"
                 android:gravity="center"
@@ -140,6 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:id="@+id/oldPassTV"
                 android:text="Password"
                 android:gravity="center"
                 android:textColor="#fff"/>
@@ -157,6 +160,30 @@
                 android:layout_marginTop="5dp"
                 android:maxLines="1"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/newPassTV"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:text="New Password"
+                android:gravity="center"
+                android:textColor="#fff"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/newpassword"
+                android:hint="New Password"
+                android:textColorHint="#7fffffff"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:visibility="gone"
+                android:background="@drawable/edittxt_bg"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"/>
+
             <Button
                 android:id="@+id/btnRegister"
                 style="?android:textAppearanceSmall"
@@ -169,6 +196,7 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"/>
 
+            <!--
             <Button
                 android:id="@+id/btnLinkToLoginScreen"
                 android:layout_width="match_parent"
@@ -179,6 +207,7 @@
                 android:background="@drawable/fbbtn"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
+-->
 
         </LinearLayout>
     </ScrollView>
@@ -205,8 +234,8 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:id="@+id/userImage"
+            android:adjustViewBounds="true"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
             android:src="@drawable/pp_default"/>
 
         <android.support.v7.widget.CardView
@@ -274,7 +303,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginBottom="10dp"
-                    android:id="@+id/CaptureImage"
+                    android:id="@+id/captureImage"
                     android:gravity="center"
                     android:text="Capture Photo"
                     android:layout_weight="1"/>
@@ -290,7 +319,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:id="@+id/SelectImage"
+                    android:id="@+id/selectImage"
                     android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="Choose from Gallery"

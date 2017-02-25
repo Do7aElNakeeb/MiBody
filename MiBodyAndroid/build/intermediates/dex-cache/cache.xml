@@ -3,33 +3,6 @@
 
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.1.0_5836b2fd73c249476fe4c8c7b9a990ba8e8dc2ac/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_8e77a1b8626f74b93dc44075bc8b2e4f96694ea8/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="aee64634871d88a419d59eb743c1258a60f19700">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.1.0_19e5c59b13c47b924731f97d884e1e518c37dc66/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.github.grennis/ExpandableRecyclerView/0.9.3/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -39,39 +12,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/libs/android-async-http-1.4.4.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="3bae85a076241828810bf8fbcc12e5891d5fc34c">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/2/android-async-http-1.4.4_34c52f2c02912d78038888f560d2f22e79b8c481/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-25.1.0_527336213f5e492f98e38d164ba104b17f35df7e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/transition/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d38084015027549951cbaea5d5f6fb795cc81151">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-transition-25.1.0_d62a2336f81ce4583f26a65ab7c1290ea6571687/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="417b745b10006aa362e5e731d5c221f02bc8c3ec">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b33c7d6e6b2ae6bddbe97d27ae2fa633a218b0f1/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -120,21 +66,21 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/customtabs/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="94ba691efc31bf53264db0716d9c9ec03843ea31">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-customtabs-25.0.0_7f1b4755443e6fc62e095a818d52bb4aefce4e93/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/libs/gson-2.2.4.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/2/gson-2.2.4_8ab5b52d8816d6305b2529ba760485b5f933f517/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7f2420506110902f033406b25697cf97ee8c38b2">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-25.1.0_f3c32b7abaffbe0153017a86cb0823cc7ea80c75/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -147,15 +93,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.1.0_52f1dbda8cff216faa06dc5e995508d0333cb354/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.mcxiaoke.volley/library/1.0.19/a8f23f65fc1e522ee4a1a697ee569901a46741fa/library-1.0.19.jar"
         jumboMode="true"
         optimize="true"
@@ -165,12 +102,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.0/support-annotations-25.1.0.jar"
+        jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/8ad21bf21784dacce5f2043afb97218cc377e835/bolts-applinks-1.4.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.0_20eca0e29dd7a699147230de98bf41838e8e8803/classes.dex" />
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/bolts-applinks-1.4.0_8f9e1dd62a4fadbb47e54fedcad6249d36682a2d/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -180,33 +117,6 @@
         revision="25.0.2"
         sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.1.0_4395e8aedd86be0874817988ca11807b8286609c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/cn.aigestudio.wheelpicker/WheelPicker/1.1.2/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7c27aea45fb254d37cb280bdd770a358d9b0fd2e">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/cn.aigestudio.wheelpicker-WheelPicker-1.1.2_f9f3a99afbb12d866b9828531659c3016b870c01/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/design/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="30103d98fa5ed824b54af839c85e2111f9bde8ec">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.1.0_2397f559e3b1af0a1017a2cd0a1ecbbc86897899/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.6.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="eccaaa9ffa6bb4bfbd2e870f01aaf69655d353be">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-9.6.1_7623ee9f3bc5120102efbd0a457f1ee3a1fe2c96/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -228,12 +138,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.1.0/jars/classes.jar"
+        jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.1.0_9270ae06e50b298430087700d9445193ad8fa971/classes.dex" />
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/bolts-tasks-1.4.0_c1a33af2a181697c584db182e78a6a8c7d696394/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -241,35 +151,8 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="b292a1747ef68ef90c6dfbf4af28ad1dbfc467f3">
+        sha1="9f17a0c11c8870b9c353406af68a8cd9d1282889">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_e4893dc9375ed1afee1157eae780d1cc6e393665/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.sothree.slidinguppanel/library/3.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c1200ab3b93b8f42c0878b00eb79a84c1f112cf7">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.sothree.slidinguppanel-library-3.0.0_3948e80e2ffb25a06015c6d774b30bd8f62d0c4d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.4.0/5b72bf48563ea8410e650de14aa33ff69a3e8c35/okio-1.4.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="5b72bf48563ea8410e650de14aa33ff69a3e8c35">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/okio-1.4.0_203bbaf08ec4309e2d54b8d2804096bdbd97bff9/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.6.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1e14ebe1cda8491f152083e752ca5bf73cd37bff">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-iid-9.6.1_0661d4fedc4f4676c829bbece9808b338b538cff/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -282,21 +165,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.6.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a36600281a648769411ef642c331851732bf29e">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-tasks-9.6.1_89c9b8b6d2ac783354aaf6effd982fd62b7e683a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/picasso-2.5.2_1c6415e8962b96965624078b1cd774f183ccf3d6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-multidex-1.0.1_7b93ad8fe7600861f282b3062eab6c6345a6eb70/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -309,12 +192,165 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-multidex-1.0.1_7b93ad8fe7600861f282b3062eab6c6345a6eb70/classes.dex" />
+        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.1.0_5836b2fd73c249476fe4c8c7b9a990ba8e8dc2ac/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_8e77a1b8626f74b93dc44075bc8b2e4f96694ea8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="aee64634871d88a419d59eb743c1258a60f19700">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.1.0_19e5c59b13c47b924731f97d884e1e518c37dc66/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/libs/android-async-http-1.4.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3bae85a076241828810bf8fbcc12e5891d5fc34c">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/2/android-async-http-1.4.4_34c52f2c02912d78038888f560d2f22e79b8c481/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/transition/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d38084015027549951cbaea5d5f6fb795cc81151">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-transition-25.1.0_d62a2336f81ce4583f26a65ab7c1290ea6571687/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="160d62eb4cf899e75ef1e110c010ff7785b36de3">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b33c7d6e6b2ae6bddbe97d27ae2fa633a218b0f1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7f2420506110902f033406b25697cf97ee8c38b2">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-25.1.0_f3c32b7abaffbe0153017a86cb0823cc7ea80c75/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.1.0_52f1dbda8cff216faa06dc5e995508d0333cb354/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.0/support-annotations-25.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.0_20eca0e29dd7a699147230de98bf41838e8e8803/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/cn.aigestudio.wheelpicker/WheelPicker/1.1.2/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7c27aea45fb254d37cb280bdd770a358d9b0fd2e">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/cn.aigestudio.wheelpicker-WheelPicker-1.1.2_f9f3a99afbb12d866b9828531659c3016b870c01/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/design/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="30103d98fa5ed824b54af839c85e2111f9bde8ec">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.1.0_2397f559e3b1af0a1017a2cd0a1ecbbc86897899/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.19.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c6047a34af07d6ec4e950ba1dc70ce23ac65ecaa">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.android-facebook-android-sdk-4.19.0_937fe28aa9bec472bb36b6422f80246c4e4d8ff3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.6.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="eccaaa9ffa6bb4bfbd2e870f01aaf69655d353be">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-9.6.1_7623ee9f3bc5120102efbd0a457f1ee3a1fe2c96/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.1.0_9270ae06e50b298430087700d9445193ad8fa971/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.4.0/5b72bf48563ea8410e650de14aa33ff69a3e8c35/okio-1.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5b72bf48563ea8410e650de14aa33ff69a3e8c35">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/okio-1.4.0_203bbaf08ec4309e2d54b8d2804096bdbd97bff9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.sothree.slidinguppanel/library/3.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c1200ab3b93b8f42c0878b00eb79a84c1f112cf7">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.sothree.slidinguppanel-library-3.0.0_3948e80e2ffb25a06015c6d774b30bd8f62d0c4d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.6.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1e14ebe1cda8491f152083e752ca5bf73cd37bff">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-iid-9.6.1_0661d4fedc4f4676c829bbece9808b338b538cff/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.6.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a36600281a648769411ef642c331851732bf29e">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-tasks-9.6.1_89c9b8b6d2ac783354aaf6effd982fd62b7e683a/classes.dex" />
     </item>
 
 </items>

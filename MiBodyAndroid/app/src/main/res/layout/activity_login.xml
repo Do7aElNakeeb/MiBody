@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mibody.app.activity.Login">
+    android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
@@ -28,25 +27,26 @@
             android:layout_marginBottom="8dp"
             android:visibility="gone"/>
 
-        <LinearLayout
-            android:layout_width="150dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="150dp"
             android:gravity="center">
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:layout_gravity="center"
+                android:id="@+id/login_logo"
+                android:layout_centerInParent="true"
                 android:src="@drawable/mibody_logo"/>
 
             <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="bottom"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="fitCenter"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/login_logo"
                 android:layout_marginBottom="20dp"
                 android:src="@drawable/tm_txt"/>
-        </LinearLayout>
+        </RelativeLayout>
 
         <ScrollView
             android:id="@+id/login_form"
@@ -73,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:id="@+id/email"
-                    android:hint="@string/prompt_email"
+                    android:hint="user@mibody.ch"
                     android:textColorHint="#7fffffff"
                     android:inputType="textEmailAddress"
                     android:textColor="#FFFFFF"
@@ -97,7 +97,7 @@
                     android:textColorHint="#7fffffff"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="@string/prompt_password"
+                    android:hint="●●●●●●"
                     android:textColor="#FFFFFF"
                     android:inputType="textPassword"
                     android:background="@drawable/edittxt_bg"
@@ -136,6 +136,17 @@
                     android:orientation="horizontal"
                     android:background="@drawable/fbbtn">
 
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/fbLoginBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/fbbtn" />
+<!--
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -154,7 +165,7 @@
                         android:textColor="#fff"
                         android:textSize="17dp"/>
 
-
+-->
                 </RelativeLayout>
 
                 <RelativeLayout

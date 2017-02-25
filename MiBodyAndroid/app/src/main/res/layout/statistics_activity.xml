@@ -25,23 +25,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:id="@+id/dimensionBtn">
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:adjustViewBounds="true"
+                        android:scaleX="-1"
                         android:src="@drawable/arrow_white"
                         android:id="@+id/dimensions_btn_arrow"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"/>
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dimensions"
-                        android:layout_toLeftOf="@id/dimensions_btn_arrow"
-                        android:layout_toStartOf="@id/dimensions_btn_arrow"
+                        android:text="Back"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_toRightOf="@id/dimensions_btn_arrow"
+                        android:layout_toEndOf="@id/dimensions_btn_arrow"
                         android:layout_alignBaseline="@id/dimensions_btn_arrow"
                         android:textAllCaps="false"
                         android:textColor="@color/MiBodyWhite"
@@ -309,9 +314,9 @@
                 android:id="@+id/userIV"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:scaleType="centerCrop"
                 android:layout_centerVertical="true"
-                android:src="@drawable/pp_default"
-                android:scaleType="centerCrop"/>
+                android:src="@drawable/pp_default"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -345,14 +350,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/userHeightTxtView"
-                        android:text="1,65"
+                        android:text="165"
                         android:textSize="12sp"
                         android:textColor="@color/MiBodyGrey"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/userHeightUnitTxtView"
-                        android:text="m"
+                        android:text="Cm"
                         android:textSize="12sp"
                         android:textColor="@color/MiBodyGrey"/>
                     <TextView
@@ -411,7 +416,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IMC : "
+                        android:text="BMI : "
                         android:textSize="12sp"
                         android:textColor="@color/MiBodyGrey2"/>
                     <TextView
@@ -458,8 +463,10 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:id="@+id/statisticsFilterBtn"
         android:src="@drawable/filter_icon"/>
 
@@ -467,20 +474,22 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:id="@+id/userImageChooseLayout"
+        android:id="@+id/statisticsFilterMenuLL"
         android:visibility="gone"
         android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/statisticsFilterBtn">
 
         <LinearLayout
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="5dp"
-            android:layout_gravity="start"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="end"
             android:orientation="horizontal">
 
             <ImageView
