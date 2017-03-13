@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/exercises_details_bg"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/MiBodyOrange"
+        android:layout_marginBottom="16dp"
+        android:text="Settings"/>
+
+    <Switch
+        android:text="Notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:saveEnabled="true"
+        android:id="@+id/notificationsSwitch"
+        android:layout_marginBottom="10dp"
+        android:checked="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/MiBodyGrey"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/logoutBtn"
+        android:padding="0dp"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:text="Logout"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"/>
+</LinearLayout>

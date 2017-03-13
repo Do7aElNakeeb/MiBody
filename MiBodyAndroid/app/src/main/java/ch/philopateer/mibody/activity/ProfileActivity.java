@@ -27,21 +27,21 @@ public class ProfileActivity extends AppCompatActivity {
         dimensionsBtnCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ProfileActivity.this, Dimensions.class));
+                startActivity(new Intent(getBaseContext(), Dimensions.class));
             }
         });
 
         statisticsBtnCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ProfileActivity.this, StatisticsActivity.class));
+                startActivity(new Intent(getBaseContext(), StatisticsActivity.class));
             }
         });
 
         profileInfoBtnCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, Register.class);
+                Intent intent = new Intent(getBaseContext(), ProfileInfo.class);
                 intent.putExtra("from", 1);
                 startActivity(intent);
             }

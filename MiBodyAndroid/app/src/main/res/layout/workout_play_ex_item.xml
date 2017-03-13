@@ -13,7 +13,7 @@
         android:layout_width="6dp"
         android:layout_height="6dp"
         android:layout_marginTop="155dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:alpha=".5"
         android:id="@+id/exDot1"
         card_view:cardBackgroundColor="@color/MiBodyOrange"
@@ -26,181 +26,212 @@
         android:layout_marginTop="155dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/exDot11"
         card_view:cardBackgroundColor="@color/MiBodyOrange"
         card_view:cardCornerRadius="3dp">
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="310dp"
-        android:layout_gravity="center_horizontal"
-        app:cardBackgroundColor="@color/MiBodyOrange"
-        app:cardElevation="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        app:cardUseCompatPadding="false"
-        app:cardCornerRadius="20dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:orientation="vertical"
-            android:gravity="center">
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/trueMarkCV"
-                    android:visibility="invisible"
-                    android:layout_centerHorizontal="true"
-                    app:cardCornerRadius="20dp"
-                    app:cardBackgroundColor="@color/MiBodyGreen">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/true_mark_icon"/>
-                </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="310dp"
+            android:layout_gravity="center_horizontal"
+            app:cardBackgroundColor="@color/MiBodyOrange"
+            app:cardElevation="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            app:cardUseCompatPadding="false"
+            app:cardCornerRadius="20dp">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    app:cardElevation="0dp"
-                    android:layout_marginTop="-30dp"
-                    android:layout_below="@id/trueMarkCV"
-                    android:background="@color/MiBodyWhite"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="55dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/counterRL">
 
                     <android.support.v7.widget.CardView
-                        android:layout_width="95dp"
-                        android:layout_height="95dp"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
                         app:cardElevation="0dp"
-                        android:background="@drawable/ropes_dot_black_selected"
+                        android:background="@color/MiBodyWhite"
                         android:layout_gravity="center"
-                        app:cardCornerRadius="47.5dp">
+                        app:cardCornerRadius="55dp">
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                        <android.support.v7.widget.CardView
+                            android:layout_width="95dp"
+                            android:layout_height="95dp"
+                            app:cardElevation="0dp"
+                            android:background="@drawable/ropes_dot_black_selected"
+                            android:layout_gravity="center"
+                            app:cardCornerRadius="47.5dp">
 
-                            <ImageView
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/circular_clock_bg"/>
+                                android:layout_height="match_parent">
 
-                            <ProgressBar
-                                android:id="@+id/exProgressBar"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:indeterminate="false"
-                                android:max="20"
-                                android:rotation="-90"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/circular_progress_bar" />
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="4dp"
-                                android:src="@drawable/circular_clock"/>
-
-                            <android.support.v7.widget.CardView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                app:cardElevation="0dp"
-                                android:layout_centerInParent="true"
-                                app:cardCornerRadius="30dp">
-
-                                <TextView
+                                <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:id="@+id/workoutExRepsCount"
-                                    android:text="0"
-                                    android:layout_gravity="center"
-                                    android:maxLines="1"
-                                    android:gravity="center"
-                                    android:textColor="@color/black"
-                                    android:textSize="40sp"
-                                    android:textStyle="bold"/>
+                                    android:src="@drawable/circular_clock_bg"/>
 
-                                <EditText
+                                <ProgressBar
+                                    android:id="@+id/exProgressBar"
+                                    style="?android:attr/progressBarStyleHorizontal"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:id="@+id/workoutExRepsCountET"
-                                    android:text="5"
-                                    android:imeOptions="actionDone"
-                                    android:selectAllOnFocus="true"
-                                    android:visibility="gone"
-                                    android:padding="0dp"
-                                    android:maxLines="1"
-                                    android:inputType="number"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:textColor="@color/black"
-                                    android:textSize="40sp"
-                                    android:textStyle="bold"/>
+                                    android:layout_centerInParent="true"
+                                    android:indeterminate="false"
+                                    android:max="20"
+                                    android:rotation="-90"
+                                    android:progress="0"
+                                    android:progressDrawable="@drawable/circular_progress_bar" />
 
-                            </android.support.v7.widget.CardView>
-                        </RelativeLayout>
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="4dp"
+                                    android:src="@drawable/circular_clock"/>
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    app:cardElevation="0dp"
+                                    android:layout_centerInParent="true"
+                                    app:cardCornerRadius="30dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/workoutExRepsCount"
+                                        android:text="0"
+                                        android:layout_gravity="center"
+                                        android:maxLines="1"
+                                        android:gravity="center"
+                                        android:textColor="@color/black"
+                                        android:textSize="40sp"
+                                        android:textStyle="bold"/>
+
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/workoutExRepsCountET"
+                                        android:text="5"
+                                        android:imeOptions="actionDone"
+                                        android:selectAllOnFocus="true"
+                                        android:visibility="gone"
+                                        android:padding="0dp"
+                                        android:maxLines="1"
+                                        android:inputType="number"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:textColor="@color/black"
+                                        android:textSize="40sp"
+                                        android:textStyle="bold"/>
+
+                                </android.support.v7.widget.CardView>
+                            </RelativeLayout>
+
+                        </android.support.v7.widget.CardView>
 
                     </android.support.v7.widget.CardView>
+                </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
-            </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/MiBodyWhite"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/MiBodyWhite"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp">
+                </View>
 
-            </FrameLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/workoutExerciseReps"
+                    android:text="20"
+                    android:gravity="center"
+                    android:textSize="40sp"
+                    android:layout_marginBottom="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/MiBodyWhite"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/workoutExerciseReps"
-                android:text="20"
-                android:gravity="center"
-                android:textSize="40sp"
-                android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/MiBodyWhite"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:id="@+id/workoutExItemIcon"
+                    android:src="@drawable/exercises_icon"
+                    android:layout_marginTop="20dp"/>
 
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/counterMinusCV"
+            android:visibility="gone"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="55dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/MiBodyRed">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:id="@+id/workoutExItemIcon"
-                android:src="@drawable/exercises_icon"
-                android:layout_marginTop="20dp"/>
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/white_minus_btn"/>
+        </android.support.v7.widget.CardView>
 
-        </LinearLayout>
+        <android.support.v7.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/counterPlusCV"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="55dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/MiBodyGreen">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/white_plus_btn"/>
+        </android.support.v7.widget.CardView>
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+
 
     <android.support.v7.widget.CardView
         android:layout_width="6dp"
         android:layout_height="6dp"
         android:layout_marginTop="155dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:alpha=".5"
@@ -212,7 +243,7 @@
         android:layout_width="6dp"
         android:layout_height="6dp"
         android:layout_marginTop="155dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/exDot22"
         card_view:cardBackgroundColor="@color/MiBodyOrange"
         android:alpha=".5"

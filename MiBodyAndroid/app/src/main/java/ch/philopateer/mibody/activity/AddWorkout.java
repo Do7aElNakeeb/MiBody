@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +14,21 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
@@ -34,6 +42,7 @@ import ch.philopateer.mibody.helper.WorkoutExItemAdapter;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -67,14 +76,15 @@ public class AddWorkout extends AppCompatActivity {
     ImageButton workoutRepeatBtn;
     TextView WorkoutNameTxtView, SaveWorkout;
 
+    LinearLayout dragExLL;
 
     int WorkoutExItemsRVHeight;
     RelativeLayout workoutExDetailsLayout, addWorkoutRL;
     ImageView b1, b2, b3, r1, r2, r3, y1, y2, y3;
-    TextView repsTxtView, restTxtView, exRepsTxtView;
+    TextView repsTxtView, restTxtView;//, exRepsTxtView;
     EditText repsEdtTxt, restEdtTxt;
     ImageView repsMinusBtn, repsPlusBtn, restMinusBtn, restPlusBtn;
-    CardView exRepsPlusBtn;
+    //CardView exRepsPlusBtn;
     ProgressBar restTimePB;
 
     RecyclerView ExercisesRV, WorkoutExItemsRV;
@@ -91,11 +101,17 @@ public class AddWorkout extends AppCompatActivity {
 
     int flag1st = 0;
 
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_workout);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         addWorkoutRL = (RelativeLayout) findViewById(R.id.addWorkoutRL);
 
@@ -108,9 +124,13 @@ public class AddWorkout extends AppCompatActivity {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
 
+        dragExLL = (LinearLayout) findViewById(R.id.dragExLL);
+        dragExLL.setVisibility(View.VISIBLE);
+
         WorkoutNameET = (EditText) findViewById(R.id.workoutNameET);
         WorkoutNameTxtView = (TextView) findViewById(R.id.workoutNameTxtView);
         workoutNameEditBtn = (ImageView) findViewById(R.id.workoutNameEditBtn);
+        workoutNameEditBtn.setColorFilter(ContextCompat.getColor(this, R.color.MiBodyOrange));
         //workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
         //workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
         AddExercise = (ImageView) findViewById(R.id.add_exercise);
@@ -137,10 +157,13 @@ public class AddWorkout extends AppCompatActivity {
                     WorkoutNameTxtView.setText(WorkoutNameET.getText().toString());
                     WorkoutNameTxtView.setVisibility(View.VISIBLE);
                     WorkoutNameET.setVisibility(View.GONE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(WorkoutNameET.getWindowToken(), 0);
                 }else {
                     WorkoutNameTxtView.setVisibility(View.INVISIBLE);
                     WorkoutNameET.setText(WorkoutNameTxtView.getText().toString());
                     WorkoutNameET.setVisibility(View.VISIBLE);
+
                 }
             }
         });
@@ -169,8 +192,9 @@ public class AddWorkout extends AppCompatActivity {
         SaveWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 JSONArray jsonArray = new JSONArray();
-                for (int i=0; i < workoutExItemArrayList.size(); i++) {
+                for (int i=0; i < workoutExItemArrayList.size() - 1; i++) {
                     jsonArray.put(workoutExItemArrayList.get(i).getJSONObject());
                     Log.d("AddWJSONobject", workoutExItemArrayList.get(i).getJSONObject().toString());
                 }
@@ -179,6 +203,7 @@ public class AddWorkout extends AppCompatActivity {
                 addWorkout(new WorkoutItem("", WorkoutNameTxtView.getText().toString(), workoutReps, String.valueOf(jsonArray), "personalised"));
                 Log.d("SjsonToServer", String.valueOf(jsonArray));
                 Log.d("jsonToServer", jsonArray.toString());
+                finish();
                 //sqLiteHandler.addWorkout(new WorkoutItem(WorkoutName.getText().toString(), workoutReps, "pic", jsonArray.toString()));
             }
         });
@@ -214,8 +239,8 @@ public class AddWorkout extends AppCompatActivity {
         restTimePB = (ProgressBar) findViewById(R.id.restProgressBar);
 
         // Exercise Reps
-        exRepsTxtView = (TextView) findViewById(R.id.exercise_reps_txtview);
-        exRepsPlusBtn = (CardView) findViewById(R.id.exerciseRepsPlusCV);
+        //exRepsTxtView = (TextView) findViewById(R.id.exercise_reps_txtview);
+        //exRepsPlusBtn = (CardView) findViewById(R.id.exerciseRepsPlusCV);
 
 
         b1.setOnClickListener(new View.OnClickListener() {
@@ -301,7 +326,7 @@ public class AddWorkout extends AppCompatActivity {
                 workoutExItemArrayList.get(selectedItem).rope3 = "Y";
             }
         });
-
+/*
         exRepsPlusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,12 +334,14 @@ public class AddWorkout extends AppCompatActivity {
                 workoutExItemArrayList.get(selectedItem).exReps = Integer.parseInt(exRepsTxtView.getText().toString().trim());
             }
         });
-
+*/
         repsMinusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) - 1));
-                workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+                if(Integer.parseInt(restTxtView.getText().toString()) > 0) {
+                    repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) - 1));
+                    workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+                }
             }
         });
         repsPlusBtn.setOnClickListener(new View.OnClickListener() {
@@ -328,7 +355,7 @@ public class AddWorkout extends AppCompatActivity {
         restMinusBtn.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                if(Integer.parseInt(restTxtView.getText().toString()) > 0){
                     restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) - 1));
                     restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
                     workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
@@ -339,9 +366,11 @@ public class AddWorkout extends AppCompatActivity {
         restPlusBtn.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) + 1));
-                restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
-                workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
+                if(Integer.parseInt(restTxtView.getText().toString()) < 200) {
+                    restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) + 1));
+                    restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
+                    workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
+                }
                 return true;
             }
         });
@@ -425,7 +454,7 @@ public class AddWorkout extends AppCompatActivity {
         }
 
         workoutExItemArrayList.get(selectedItem).name = workoutExItemAdapter.workoutExItemArrayList.get(selectedItem).name;
-        exRepsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).exReps));
+        //exRepsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).exReps));
         repsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).reps));
         restTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).restTime));
         restTimePB.setProgress(workoutExItemArrayList.get(selectedItem).restTime);
@@ -504,8 +533,9 @@ public class AddWorkout extends AppCompatActivity {
                         targetPosition = 1;
                     }
                     else if (targetPosition == workoutExItemAdapter.getItemCount() - 1){
-                        targetPosition = workoutExItemAdapter.getItemCount() - 2;
+                        //targetPosition = workoutExItemAdapter.getItemCount() - 2;
                     }
+
                     focusedItem = targetPosition;
                     workoutExItemAdapter.setFocusedItem(focusedItem);
                     return targetPosition;
@@ -518,10 +548,12 @@ public class AddWorkout extends AppCompatActivity {
 
         workoutExItemArrayList = new ArrayList<WorkoutExItem>();
         workoutExItemArrayList.add(new WorkoutExItem());
+        /*
         workoutExItemArrayList.add(new WorkoutExItem());
         workoutExItemArrayList.add(new WorkoutExItem());
-        WorkoutExItemsRV.smoothScrollToPosition(3);
-        focusedItem = 2;
+        */
+        WorkoutExItemsRV.smoothScrollToPosition(2);
+        focusedItem = 1;
 
         final RelativeLayout.LayoutParams RVparams = (RelativeLayout.LayoutParams) WorkoutExItemsRV.getLayoutParams();
 
@@ -541,28 +573,31 @@ public class AddWorkout extends AppCompatActivity {
                 }
                 focusedItem = position;
                 workoutExItemAdapter.setFocusedItem(focusedItem);
-                if (workoutExItem.name == null){
+                if (workoutExItem.name.equals("Drop here")){
+                    dragExLL.setVisibility(View.VISIBLE);
                     workoutExDetailsLayout.setVisibility(View.INVISIBLE);
                     Toast.makeText(context, "Drag Exercise and Drop Here Firstly", Toast.LENGTH_LONG).show();
                 }
                 else{
                     if (workoutExDetailsLayout.getVisibility() == View.INVISIBLE){
                         workoutExDetailsLayout.setVisibility(View.VISIBLE);
+                        dragExLL.setVisibility(View.GONE);
 
-                        RVparams.height = WorkoutExItemsRVHeight + 80;
+                        //RVparams.height = WorkoutExItemsRVHeight + 80;
                         Log.d("heightOfRV", String.valueOf(RVparams.height));
 
-                        WorkoutExItemsRV.setLayoutParams(RVparams);
+                        //WorkoutExItemsRV.setLayoutParams(RVparams);
 
                         workoutExItemAdapter.setSelectedItem(position);
                     }
                     else {
+                        dragExLL.setVisibility(View.VISIBLE);
                         workoutExDetailsLayout.setVisibility(View.INVISIBLE);
 
-                        RVparams.height = WorkoutExItemsRVHeight;
+                        //RVparams.height = WorkoutExItemsRVHeight;
                         Log.d("heightOfRV2", String.valueOf(RVparams.height));
 
-                        WorkoutExItemsRV.setLayoutParams(RVparams);
+                        //WorkoutExItemsRV.setLayoutParams(RVparams);
                         workoutExItemAdapter.setFocusedItem(position);
                         workoutExItemAdapter.setSelectedItem(-1);
 
@@ -598,6 +633,19 @@ public class AddWorkout extends AppCompatActivity {
 
     }
 
+    private void addWorkout(WorkoutItem workoutItem){
+
+        String key = databaseReference.child("/users/" + firebaseAuth.getCurrentUser().getUid() + "/workouts/").push().getKey();
+
+        workoutItem.workoutID = key;
+
+        Map<String, Object> postValues = workoutItem.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/users/" + firebaseAuth.getCurrentUser().getUid() + "/workouts/" + key, postValues);
+        databaseReference.updateChildren(childUpdates);
+    }
+/*
     private void addWorkout(final WorkoutItem workoutItem){
 
         // Tag used to cancel the request
@@ -665,7 +713,7 @@ public class AddWorkout extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-
+*/
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -676,5 +724,27 @@ public class AddWorkout extends AppCompatActivity {
             pDialog.dismiss();
             finish();
         }
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Check if the key event was the Back button
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            if (workoutExDetailsLayout.getVisibility() == View.VISIBLE) {
+
+                dragExLL.setVisibility(View.VISIBLE);
+                workoutExDetailsLayout.setVisibility(View.INVISIBLE);
+                workoutExItemAdapter.setSelectedItem(-1);
+            }
+            else {
+                finish();
+            }
+            return true;
+        }
+
+        // If it wasn't the Back key, bubble up to the default
+        // system behavior
+        return super.onKeyDown(keyCode, event);
     }
 }

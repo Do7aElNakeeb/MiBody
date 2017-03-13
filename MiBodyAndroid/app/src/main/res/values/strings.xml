@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MiBody</string>
+    <string name="app_name">mibody</string>
 
     <!-- Strings related to login -->
     <string name="name">Name</string>

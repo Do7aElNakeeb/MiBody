@@ -1,6 +1,7 @@
 package ch.philopateer.mibody.activity;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -184,6 +186,8 @@ public class Dimensions extends AppCompatActivity {
                 values.put(SQLiteHandler.MUSCLE_BICEPS, Biceps);
                 sqLiteHandler.updateMuscle(values);
                 sqLiteHandler.close();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -208,6 +212,9 @@ public class Dimensions extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event){
 
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(muscleET.getWindowToken(), 0);
 
                 dimenLayoutToFlip.setVisibility(View.GONE);
 
@@ -278,6 +285,9 @@ public class Dimensions extends AppCompatActivity {
                     Log.d("margins", String.valueOf(params.leftMargin));
 
                     dimenLayoutToFlip.setLayoutParams(params);
+
+                    InputMethodManager imm2 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm2.showSoftInput(muscleET, InputMethodManager.SHOW_FORCED);
 
                 }
 

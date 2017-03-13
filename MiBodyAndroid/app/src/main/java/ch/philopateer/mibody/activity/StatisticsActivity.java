@@ -31,6 +31,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -70,11 +80,17 @@ public class StatisticsActivity extends AppCompatActivity{
     int maxReps = 0;
     ArrayList<WorkoutExItem> workoutExItemArrayListObj;
     ArrayList<Integer> workoutExItemArrayListAch;
+    
+    FirebaseAuth firebaseAuth;
+    StorageReference photoReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics_activity);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        photoReference = FirebaseStorage.getInstance().getReference();
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -135,8 +151,9 @@ public class StatisticsActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(StatisticsActivity.this, Landing.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -236,7 +253,7 @@ public class StatisticsActivity extends AppCompatActivity{
         nameTV.setText(prefs.getString("name", "Guest"));
         weightTv.setText(prefs.getString("weight", "75"));
         heightTV.setText(prefs.getString("height", "160"));
-        String BMI = prefs.getString("BMI", "20");
+        String BMI = prefs.getString("BMI", "20.34");
         imcTV.setText(BMI.substring(0, BMI.indexOf('.') + 2));
 
         ageTV.setText(String.valueOf(calcAge()));
@@ -294,15 +311,58 @@ public class StatisticsActivity extends AppCompatActivity{
         userImage.setTag(target);
         userImage.setDrawingCacheEnabled(true);
 
-        new Picasso.Builder(this).downloader(new OkHttpDownloader(this, Integer.MAX_VALUE)).build().load(AppConfig.URL_SERVER + "userPhotos/" + prefs.getString("user_id", "") + ".png")
-                .into(target);
+        if (!prefs.getString("fbIDCon", "").equals("true")){
+            photoReference = photoReference.child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
+            Log.d("photoRef", photoReference.getPath());
+            Glide.with(this).using(new FirebaseImageLoader()).load(photoReference).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    userImage.setImageBitmap(resource);
+
+                    Matrix matrix = userImage.getImageMatrix();
+                    float scale;
+
+                    if (userImage.getDrawable().getIntrinsicWidth() * userImage.getHeight() > userImage.getDrawable().getIntrinsicHeight() * userImage.getWidth()) {
+                        scale = (float) userImage.getHeight() / (float) userImage.getDrawable().getIntrinsicHeight();
+                    } else {
+                        scale = (float) userImage.getWidth() / (float) userImage.getDrawable().getIntrinsicWidth();
+                    }
+
+                    matrix.setScale(scale, scale);
+                    userImage.setImageMatrix(matrix);
+
+                    try {
+
+                        Bitmap imageRounded = Bitmap.createBitmap(userImage.getDrawingCache().getWidth(), userImage.getDrawingCache().getHeight(), userImage.getDrawingCache().getConfig());
+                        Canvas canvas = new Canvas(imageRounded);
+                        Paint mpaint = new Paint();
+                        mpaint.setAntiAlias(true);
+                        mpaint.setShader(new BitmapShader(userImage.getDrawingCache(), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+                        canvas.drawRoundRect((new RectF(0, 0, userImage.getDrawingCache().getWidth(), userImage.getDrawingCache().getHeight())), 50, 50, mpaint);// Round Image Corner 100 100 100 100
+                        userImage.setImageBitmap(imageRounded);
+                    }
+                    catch (Exception e){
+
+                    }
+                }
+            });
+
+        }
+        else {
+            new Picasso.Builder(this)
+                    .downloader(new OkHttpDownloader(this, Integer.MAX_VALUE))
+                    .build()
+                    .load(AppConfig.fbPhotoURL + prefs.getString("fbID", "") + AppConfig.fbPhotoConginf)
+                    .into(target);
+        }
+
 
     }
 
     private int calcAge(){
         int age = 0;
         Calendar calendar = Calendar.getInstance();
-        String dob = prefs.getString("dob", "");
+        String dob = prefs.getString("dob", "1/6/1995");
         int dobDay = Integer.parseInt(dob.substring(0, dob.indexOf('/')));
         dob  = dob.replace(dob.substring(0, dob.indexOf('/') + 1), "");
         int dobMonth = Integer.parseInt(dob.substring(0, dob.indexOf('/')));

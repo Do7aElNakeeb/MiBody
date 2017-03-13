@@ -1,5 +1,6 @@
 package ch.philopateer.mibody.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -14,9 +15,12 @@ import android.widget.ToggleButton;
 import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
 
 import ch.philopateer.mibody.R;
+import ch.philopateer.mibody.activity.Register;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
 
 import java.util.Date;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by mamdouhelnakeeb on 12/2/16.
@@ -25,11 +29,11 @@ import java.util.Date;
 public class RegisterTwo extends Fragment {
 
     ToggleButton genderMale, genderFemale;
-    EditText weightET, heightET;
+    //EditText weightET, heightET;
     Button regTwoBtn;
     WheelDatePicker DoBPicker;
 
-    public String gender = "male", dob = "", weight, height;
+    public String gender = "male", dob = ""; //, weight, height;
 
 
     OnBtnClickListener onBtnClickListener;
@@ -42,11 +46,13 @@ public class RegisterTwo extends Fragment {
 
     }
 
-    public RegisterTwo(String gender, String dob, String weight, String height){
+    public RegisterTwo(String gender, String dob){
         this.gender = gender;
         this.dob = dob;
+        /*
         this.weight = weight;
         this.height = height;
+        */
     }
 
     @Override
@@ -56,9 +62,10 @@ public class RegisterTwo extends Fragment {
 
         genderMale = (ToggleButton) view.findViewById(R.id.genderMaleTB);
         genderFemale = (ToggleButton) view.findViewById(R.id.genderFemaleTB);
+        /*
         weightET = (EditText) view.findViewById(R.id.weightTxtField);
         heightET = (EditText) view.findViewById(R.id.heightTxtField);
-
+*/
         DoBPicker = (WheelDatePicker) view.findViewById(R.id.DoB_picker);
 
         regTwoBtn = (Button) view.findViewById(R.id.regTwoBtn);
@@ -89,6 +96,9 @@ public class RegisterTwo extends Fragment {
         DoBPicker.setMonth(6);
         DoBPicker.setYear(1995);
 
+        DoBPicker.setYearStart(1970);
+        DoBPicker.setYearEnd(2000);
+
         if (!dob.equals("")) {
             updateFields();
         }
@@ -107,10 +117,12 @@ public class RegisterTwo extends Fragment {
             @Override
             public void onClick(View view) {
 
+                /*
                 weight = weightET.getText().toString().trim();
                 height = heightET.getText().toString().trim();
-
+*/
                 //checking if email and passwords are empty
+                /*
                 if(TextUtils.isEmpty(weight)){
                     Toast.makeText(getActivity(),"Please enter weight",Toast.LENGTH_LONG).show();
                     return;
@@ -119,8 +131,10 @@ public class RegisterTwo extends Fragment {
                     Toast.makeText(getActivity(),"Please enter height",Toast.LENGTH_LONG).show();
                     return;
                 }
+*/
 
-                onBtnClickListener.onBtnClick();
+                ((Register)getActivity()).getViewPager().setCurrentItem(2);
+                //onBtnClickListener.onBtnClick();
             }
         });
 
@@ -150,8 +164,9 @@ public class RegisterTwo extends Fragment {
         tmpDoB  = tmpDoB.replace(tmpDoB.substring(0, tmpDoB.indexOf('/') + 1), "");
 
         DoBPicker.setYear(Integer.parseInt(tmpDoB.substring(0, 4)));
-
+/*
         weightET.setText(weight);
         heightET.setText(height);
+        */
     }
 }

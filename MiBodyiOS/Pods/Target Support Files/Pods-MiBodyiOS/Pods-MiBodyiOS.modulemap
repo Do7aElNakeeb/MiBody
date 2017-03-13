@@ -1,0 +1,6 @@
+framework module Pods_MiBodyiOS {
+  umbrella header "Pods-MiBodyiOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

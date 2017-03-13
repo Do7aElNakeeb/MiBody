@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.activity.WorkoutPlay;
+import ch.philopateer.mibody.app.WorkoutExItem;
 import ch.philopateer.mibody.app.WorkoutItem;
 
 import java.util.ArrayList;
@@ -27,13 +28,19 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
     private ArrayList<WorkoutItem> arrayList;
     private Context context;
 
-    private ItemClickListener clickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(WorkoutItem workoutItem);
+    }
 
 
-    public WorkoutsAdapter(Context context, ArrayList<WorkoutItem> arrayList) {
+    private final OnItemClickListener onItemClickListener;
+
+
+    public WorkoutsAdapter(Context context, ArrayList<WorkoutItem> arrayList, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.arrayList = arrayList;
-
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -71,11 +78,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, WorkoutPlay.class);
-                    intent.putExtra("WorkoutItem", arrayList.get(holder.getAdapterPosition()));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Log.d("exListNullCH", String.valueOf(arrayList.get(holder.getAdapterPosition()).exercisesList.size()));
-                    context.startActivity(intent);
+                    onItemClickListener.onItemClick(workoutItem);
                 }
             });
         }

@@ -153,7 +153,12 @@ public class WorkoutFragment extends Fragment{
 
             workoutsRV.setItemAnimator(new DefaultItemAnimator());
 
-            WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList);
+            WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList, new WorkoutsAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(WorkoutItem workoutItem) {
+
+                }
+            });
             workoutsRV.setAdapter(adapter);
         }
     }

@@ -23,6 +23,7 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by mamdouhelnakeeb on 1/28/17.
@@ -38,22 +39,16 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
     public ArrayList<WorkoutExItem> workoutExItemArrayList;
     public ArrayList<Integer> achWorkoutExItemArrayList;
     int achExReps;
-    private int focusedItem = 2;
+    private int focusedItem = -1;
+
+    private int itemAction = 0;
 
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    private final OnItemClickListener onItemClickListener;
-
-
-    public WorkoutPlayExItemsAdapter(Context context, int scrSize, ArrayList<WorkoutExItem> workoutExItemArrayList, ArrayList<Integer> achWorkoutExItemArrayList, OnItemClickListener onItemClickListener){
+    public WorkoutPlayExItemsAdapter(Context context, int scrSize, ArrayList<WorkoutExItem> workoutExItemArrayList, ArrayList<Integer> achWorkoutExItemArrayList){
         this.context = context;
         this.scrSize = scrSize;
         this.workoutExItemArrayList = workoutExItemArrayList;
         this.achWorkoutExItemArrayList = achWorkoutExItemArrayList;
-        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -80,21 +75,38 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
                     .downloader(new OkHttpDownloader(context, Integer.MAX_VALUE))
                     .build()
                     .load(AppConfig.URL_SERVER + "ExIcon/" + workoutExItem.exerciseImage)
+                    .placeholder(AppConfig.exercises_icons[Arrays.asList(AppConfig.exercises_names).indexOf(workoutExItem.name)])
                     .into(holder.exIcon);
 
-            Log.d("exImageHere", String.valueOf(workoutExItem.reps));
+            Log.d("exImageHere", String.valueOf(workoutExItem.name));
+
             holder.exReps.setText(String.valueOf(workoutExItem.reps));
+            holder.exRepsCounter.setText(String.valueOf(achExReps));
             holder.exProgressBar.setMax(workoutExItem.reps);
-            //holder.exProgressBar.setProgress(Integer.parseInt(holder.exRepsCounter.getText().toString()));
+            holder.exProgressBar.setProgress(achExReps);
+
+
+            if(itemAction == 0) {
+                holder.counterMinusCV.setVisibility(View.GONE);
+                holder.counterPlusCV.setVisibility(View.GONE);
+            }
 
             if (position == focusedItem) {
 
+                if(itemAction == 1){
+                    holder.counterMinusCV.setVisibility(View.VISIBLE);
+                    holder.counterPlusCV.setVisibility(View.VISIBLE);
+                }
+
+                /*
                 holder.exDot1.setVisibility(View.VISIBLE);
                 holder.exDot2.setVisibility(View.VISIBLE);
                 holder.exDot11.setVisibility(View.VISIBLE);
                 holder.exDot22.setVisibility(View.VISIBLE);
+                */
                 holder.itemView.setAlpha(1);
 
+                /*
                 holder.exRepsCounter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -110,30 +122,34 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
 
                     }
                 });
+*/
 
-
-                holder.trueMarkCV.setOnClickListener(new View.OnClickListener() {
+                holder.counterPlusCV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (holder.trueMarkCV.getVisibility() == View.VISIBLE){
-                            if(holder.workoutExRepsCountET.getText().toString().equals("")){
-                                Toast.makeText(context, "Enter Reps Value", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1, Integer.parseInt(holder.workoutExRepsCountET.getText().toString()) + achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1));
-                                //achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1) = ;
-                                Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
+                        if (holder.counterPlusCV.getVisibility() == View.VISIBLE){
+                            holder.exRepsCounter.setText(String.valueOf(Integer.parseInt(holder.exRepsCounter.getText().toString()) + 1));
+                            holder.exProgressBar.setProgress(Integer.parseInt(holder.exRepsCounter.getText().toString()));
 
-                                holder.exRepsCounter.setText(holder.workoutExRepsCountET.getText().toString());
-                                holder.exProgressBar.setProgress(Integer.parseInt(holder.workoutExRepsCountET.getText().toString()));
+                            achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1,
+                                    Integer.parseInt(holder.exRepsCounter.getText().toString()));
 
-                                holder.exRepsCounter.setVisibility(View.VISIBLE);
-                                holder.workoutExRepsCountET.setVisibility(View.GONE);
-                                holder.trueMarkCV.setVisibility(View.INVISIBLE);
+                            Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
+                        }
+                    }
+                });
 
-                                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(holder.workoutExRepsCountET.getWindowToken(), 0);
-                            }
+                holder.counterMinusCV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (holder.counterMinusCV.getVisibility() == View.VISIBLE && Integer.parseInt(holder.exRepsCounter.getText().toString()) > 0){
+                            holder.exRepsCounter.setText(String.valueOf(Integer.parseInt(holder.exRepsCounter.getText().toString()) - 1));
+                            holder.exProgressBar.setProgress(Integer.parseInt(holder.exRepsCounter.getText().toString()));
+
+                            achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1,
+                                    Integer.parseInt(holder.exRepsCounter.getText().toString()));
+
+                            Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
                         }
                     }
                 });
@@ -163,7 +179,7 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        CardView exDot1, exDot11, exDot2, exDot22, trueMarkCV;
+        CardView exDot1, exDot11, exDot2, exDot22, counterMinusCV, counterPlusCV;
         TextView exRepsCounter, exReps;
         EditText workoutExRepsCountET;
         ImageView exIcon;
@@ -177,7 +193,8 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
             exDot2 = (CardView) itemView.findViewById(R.id.exDot2);
             exDot11 = (CardView) itemView.findViewById(R.id.exDot11);
             exDot22 = (CardView) itemView.findViewById(R.id.exDot22);
-            trueMarkCV = (CardView) itemView.findViewById(R.id.trueMarkCV);
+            counterMinusCV = (CardView) itemView.findViewById(R.id.counterMinusCV);
+            counterPlusCV = (CardView) itemView.findViewById(R.id.counterPlusCV);
 
             workoutExRepsCountET = (EditText) itemView.findViewById(R.id.workoutExRepsCountET);
             exProgressBar = (ProgressBar) itemView.findViewById(R.id.exProgressBar);
@@ -198,6 +215,11 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
 
     public void setFocusedItem(int focusedItem) {
         this.focusedItem = focusedItem;
+        notifyDataSetChanged();
+    }
+
+    public void setItemAction(int itemAction){
+        this.itemAction = itemAction;
         notifyDataSetChanged();
     }
 }

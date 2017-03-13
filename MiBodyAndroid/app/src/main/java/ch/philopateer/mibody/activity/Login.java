@@ -8,7 +8,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,7 +28,9 @@ import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
 import ch.philopateer.mibody.helper.SessionManager;
+import ch.philopateer.mibody.object.UserData;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -35,9 +40,26 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
@@ -70,12 +92,21 @@ public class Login extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
+    StorageReference photoReferenece;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        photoReferenece = FirebaseStorage.getInstance().getReference();
+
+
         FacebookSdk.sdkInitialize(getApplicationContext());
+
         callbackManager = CallbackManager.Factory.create();
 
         loginButton = (LoginButton) findViewById(R.id.fbLoginBtn);
@@ -102,8 +133,30 @@ public class Login extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+        else {
+            fbLogout();
+        }
 
-        fbLogin();
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                fbLogin(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+            }
+        });
+
 
         btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +166,6 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -147,10 +199,66 @@ public class Login extends AppCompatActivity {
                 }
                 else {
                     String regID = FirebaseInstanceId.getInstance().getToken();
-                    loginUser(email, password, regID);
+                    //loginUser(email, password, regID);
+                    loginWithMail(email, password);
                 }
             }
         });
+    }
+
+    private void loginWithMail(final String email, final String password){
+        pDialog.setMessage("Login with Email");
+        showDialog();
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task){
+                        hideDialog();
+                        if (task.isSuccessful()) {
+                            saveToSharedPrefs();
+                            loginToHome();
+                        } else {
+                            //Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                            builder.setMessage(task.getException().getMessage())
+                                    .setTitle("Error!")
+                                    .setPositiveButton(android.R.string.ok, null);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+                });
+    }
+
+    private void saveToSharedPrefs(){
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid());
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserData userData = dataSnapshot.getValue(UserData.class);
+
+                session.insertData(firebaseAuth.getCurrentUser().getUid(), userData.name, firebaseAuth.getCurrentUser().getEmail(),
+                        userData.gender, userData.dob, userData.weight, userData.height, userData.units, userData.BMI);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        databaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void loginToHome(){
+        Intent intent = new Intent(getBaseContext(), Landing.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void loginUser(final String email, final String password, final String regID){
@@ -190,7 +298,7 @@ public class Login extends AppCompatActivity {
                         String BMI = jObj.get("BMI").toString();
                         String regID = jObj.get("regID").toString();
 
-                        session.insertData(user_id, name, email, mobile, gender, dob, weight, height, units, BMI, regID);
+                        session.insertData(user_id, name, email, gender, dob, weight, height, units, BMI);
 
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
@@ -249,87 +357,103 @@ public class Login extends AppCompatActivity {
             pDialog.dismiss();
     }
 
-    private void fbLogin(){
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
+    private void fbLogin(final AccessToken token){
+        pDialog.setMessage("Login with Facebook");
+        showDialog();
 
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.i("LoginActivity", response.toString());
-                        // Get facebook data from login
-                        try {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (object.has("id")) {
-                                editor.putString("fbID", object.getString("id"));
-                                Log.d("id", object.getString("id"));
-                            }
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                            if (object.has("name")) {
-                                editor.putString("name", object.getString("name"));
-                                Log.d("name", object.getString("name"));
-                            }
-
-                            if (object.has("email")) {
-                                editor.putString("email", object.getString("email"));
-                                Log.d("email", object.getString("email"));
-                            }
-
-                            if (object.has("gender")) {
-                                editor.putString("gender", object.getString("gender"));
-                                Log.d("gender", object.getString("gender"));
-                            }
-
-                            if (object.has("birthday")) {
-                                String tmpDoB, dob = object.getString("birthday");
-
-                                tmpDoB = dob.substring(3, 5) +
-                                        "/" +
-                                        dob.substring(0, 2) +
-                                        "/" +
-                                        dob.substring(6, 10);
-
-                                editor.putString("bod", tmpDoB);
-                                Log.d("birthday", tmpDoB);
-                            }
-
-                            editor.putString("fbIDCon", "true");
-                            editor.apply();
-
-                            Intent intent = new Intent(Login.this, Register.class);
-                            intent.putExtra("from", 2);
-                            startActivity(intent);
-
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(Login.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        catch(JSONException e) {
-                            Log.d(TAG,"Error parsing JSON");
+                        else {
+                            GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    Log.i("LoginActivity", response.toString());
+                                    // Get facebook data from login
+                                    try {
+
+                                        if (object.has("id")) {
+                                            editor.putString("fbID", object.getString("id"));
+                                            Log.d("id", object.getString("id"));
+                                        }
+
+                                        if (object.has("name")) {
+                                            editor.putString("name", object.getString("name"));
+                                            Log.d("name", object.getString("name"));
+                                        }
+
+                                        if (object.has("email")) {
+                                            editor.putString("email", object.getString("email"));
+                                            Log.d("email", object.getString("email"));
+                                        }
+
+                                        if (object.has("gender")) {
+                                            editor.putString("gender", object.getString("gender"));
+                                            Log.d("gender", object.getString("gender"));
+                                        }
+
+                                        String tmpDoB = "", dob;
+                                        if (object.has("birthday")) {
+                                            dob = object.getString("birthday");
+
+                                            tmpDoB = dob.substring(3, 5) +
+                                                    "/" +
+                                                    dob.substring(0, 2) +
+                                                    "/" +
+                                                    dob.substring(6, 10);
+
+                                            editor.putString("bod", tmpDoB);
+                                            Log.d("birthday", tmpDoB);
+                                        }
+
+                                        editor.putString("fbIDCon", "true");
+                                        session.setLogin("1");
+                                        editor.apply();
+
+                                        FirebaseDatabase.getInstance().getReference().child("users")
+                                                .child(firebaseAuth.getCurrentUser().getUid())
+                                                .setValue(new UserData(object.getString("name"), object.getString("email"),
+                                                        object.getString("gender"), tmpDoB, "", "", "0", ""));
+
+                                        loginToHome();
+
+                                    }
+                                    catch(JSONException e) {
+                                        Log.d(TAG,"Error parsing JSON");
+                                    }
+                                }
+                            });
+                            Bundle parameters = new Bundle();
+                            parameters.putString("fields", "id,name,email,gender,birthday");
+                            request.setParameters(parameters);
+                            request.executeAsync();
+
+                            Log.d("tsttt", "testt2");
                         }
+
+                        hideDialog();
                     }
                 });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, name, email, gender, birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
 
-            }
+    }
 
-            @Override
-            public void onCancel() {
-                // App code
-                Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-            }
-        });
+    public void fbLogout() {
+        //mAuth.signOut();
+        LoginManager.getInstance().logOut();
 
     }
 

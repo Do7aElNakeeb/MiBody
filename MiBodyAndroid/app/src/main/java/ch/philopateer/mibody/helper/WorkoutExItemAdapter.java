@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,8 +94,15 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                 }
             });
 
-            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
-            holder.itemView.setAlpha(1);
+            if (holder.exName.getText().toString().equals("Drop here")){
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyGrey3));
+                holder.itemView.setAlpha((float) 0.6);
+            }
+            else {
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
+                holder.itemView.setAlpha(1);
+            }
+
 
             if (position == focusedItem) {
 
@@ -102,13 +110,14 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                 //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
                 if (position == selectedItem){
                     holder.exName.setVisibility(View.INVISIBLE);
+                    /*
                     holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
                     holder.itemView.setAlpha(1);
+*/
+                    //params.bottomMargin = 80;
+                    //holder.LLtoMove.setLayoutParams(params);
 
-                    params.topMargin = 80;
-                    holder.LLtoMove.setLayoutParams(params);
-
-                    //holder.LLtoMove.setPadding(0, 100, 0, 0);
+                    //holder.LLtoMove.setPadding(0, 0, 0, 80);
 
                     //params.bottomMargin = 0;
                     //holder.LLtoMove.setLayoutParams(params);
@@ -127,8 +136,8 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                     //addWorkoutLLparams.bottomMargin = 5;
                     //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
 
-                    params.topMargin = 0;
-                    holder.LLtoMove.setLayoutParams(params);
+                    //params.bottomMargin = 0;
+                    //holder.LLtoMove.setLayoutParams(params);
                     //holder.LLtoMove.setPadding(0, 0, 0, 0);
 
 
@@ -172,20 +181,26 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                 //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
 
 
+
                 if (selectedItem != -1) {
                     holder.exName.setVisibility(View.INVISIBLE);
-                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.black));
+                    /*
+                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyGrey3));
                     holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
                     holder.icon.setAlpha((float) 0.3);
                     holder.cardView.setAlpha((float) 0.3);
+                    */
                 }
                 else {
                     holder.exName.setVisibility(View.VISIBLE);
+                /*
                     holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.MiBodyOrange));
                     holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
                     holder.icon.setAlpha((float) 1);
                     holder.cardView.setAlpha(1);
+                    */
                 }
+
             }
             //holder.addWorkoutLL.setLayoutParams(addWorkoutLLparams);
 
@@ -208,6 +223,14 @@ public class WorkoutExItemAdapter extends RecyclerView.Adapter<WorkoutExItemAdap
                             // Dropped, reassign View to ViewGroup
                             CardView view = (CardView) event.getLocalState();
                             ExerciseItem exerciseItem = (ExerciseItem) view.getTag(R.id.exDot2);
+                            if (holder.exName.getText().toString().equals("Drop here")){
+                                Log.d("tsss", "drop here text");
+                                workoutExItemArrayList.add(new WorkoutExItem());
+                                notifyItemInserted(workoutExItemArrayList.size());
+                                setFocusedItem(holder.getAdapterPosition());
+                            }
+
+                            Log.d("tsss111", "drop here text");
                             new Picasso.Builder(context)
                                     .downloader(new OkHttpDownloader(context, Integer.MAX_VALUE))
                                     .build()

@@ -21,6 +21,7 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.view.View.DragShadowBuilder;
 
@@ -75,7 +76,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
                 .downloader(new OkHttpDownloader(context, Integer.MAX_VALUE))
                 .build()
                 .load(AppConfig.URL_SERVER + "ExIcon/" + exerciseItem.getIcon())
-                .placeholder(AppConfig.exercises_icons[pos]).into(holder.icon);
+                .placeholder(AppConfig.exercises_icons[Arrays.asList(AppConfig.exercises_names).indexOf(exerciseItem.getName())])
+                .into(holder.icon);
         holder.name.setVisibility(View.VISIBLE);
 
         if(type == 0){

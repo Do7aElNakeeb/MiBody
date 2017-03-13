@@ -16,7 +16,7 @@
         android:background="#00ffffff"
         sothree:umanoOverlay="true"
         sothree:umanoAnchorPoint="0"
-        sothree:umanoPanelHeight="320dp"
+        sothree:umanoPanelHeight="130dp"
         sothree:umanoParalaxOffset="0dp"
         sothree:umanoShadowHeight="0dp">
 

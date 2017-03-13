@@ -384,6 +384,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
+                            android:visibility="gone"
                             android:textAlignment="center"
                             android:layout_weight="3"
                             android:textColor="@color/black"
@@ -402,6 +403,110 @@
                             android:text="Rest Time"/>
                     </LinearLayout>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/rest_minus_btn"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/workout_wx_minus_btn"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="1dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/rest_plus_btn"
+                            android:adjustViewBounds="true"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="1dp"
+                            android:src="@drawable/workout_ex_plus_btn"
+                            android:layout_gravity="center"
+                            android:gravity="center"/>
+
+                        <ProgressBar
+                            android:id="@+id/restProgressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:paddingStart="20dp"
+                            android:paddingLeft="23dp"
+                            android:paddingRight="40dp"
+                            android:paddingEnd="20dp"
+                            android:layout_toRightOf="@id/rest_minus_btn"
+                            android:layout_toEndOf="@id/rest_minus_btn"
+                            android:layout_toLeftOf="@id/rest_plus_btn"
+                            android:layout_toStartOf="@id/rest_plus_btn"
+                            android:max="200"
+                            android:progress="200"
+                            android:progressDrawable="@drawable/rectangle_progress_bar"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:padding="10dp"
+                            android:id="@+id/restTimeBattary"
+                            android:layout_toRightOf="@id/rest_minus_btn"
+                            android:layout_toEndOf="@id/rest_minus_btn"
+                            android:layout_toLeftOf="@id/rest_plus_btn"
+                            android:layout_toStartOf="@id/rest_plus_btn"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/resttime_battery"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center">
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/rest_time_edttxt"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:visibility="gone"
+                                android:gravity="center"
+                                android:text="90 Sec"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/rest_time_txtview"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:text="90"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:text=" Sec"/>
+
+
+
+                        </LinearLayout>
+
+
+
+                    </RelativeLayout>
+
+                    <!--
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -559,7 +664,7 @@
 
                     </LinearLayout>
 
-
+-->
 
                 </LinearLayout>
 

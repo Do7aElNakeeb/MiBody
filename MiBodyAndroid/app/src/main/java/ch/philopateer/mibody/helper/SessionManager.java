@@ -47,19 +47,17 @@ public class SessionManager {
     }
 
 
-    public void insertData(String user_id, String name, String email, String mobile, String gender, String dob,
-                           String weight, String height, String units, String BMI, String regID){
+    public void insertData(String user_id, String name, String email, String gender, String dob,
+                           String weight, String height, String units, String BMI){
         editor.putString("user_id", user_id);
         editor.putString("name", name);
         editor.putString("email", email);
-        editor.putString("mobile", mobile);
         editor.putString("gender", gender);
         editor.putString("dob", dob);
         editor.putString("weight", weight);
         editor.putString("height", height);
         editor.putString("units", units);
         editor.putString("BMI", BMI);
-        editor.putString("regID", regID);
         editor.apply();
         setLogin("1");
     }

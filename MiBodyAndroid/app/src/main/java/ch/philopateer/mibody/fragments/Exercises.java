@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.ExerciseItem;
 import ch.philopateer.mibody.helper.ExercisesAdapter;
 
@@ -47,7 +48,6 @@ public class Exercises extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        exercisesRV = (RecyclerView) getView().findViewById(ch.philopateer.mibody.R.id.expandableListView);
         exercisesRV.setHasFixedSize(true);
         exercisesRV.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
 
@@ -74,7 +74,11 @@ public class Exercises extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(ch.philopateer.mibody.R.layout.exercises_page_fragment, container, false);
+        View view =  inflater.inflate(ch.philopateer.mibody.R.layout.exercises_page_fragment, container, false);
+
+        exercisesRV = (RecyclerView) view.findViewById(R.id.expandableListView);
+
+        return view;
     }
 
 }

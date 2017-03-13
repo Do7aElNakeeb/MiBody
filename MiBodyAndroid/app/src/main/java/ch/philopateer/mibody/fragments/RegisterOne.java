@@ -45,6 +45,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import ch.philopateer.mibody.R;
+import ch.philopateer.mibody.activity.Register;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
 
@@ -63,7 +64,7 @@ public class RegisterOne extends Fragment {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextNewPassword;
-    private EditText editTextMobile;
+    //private EditText editTextMobile;
     private EditText editTextName;
 
     public Button buttonSignup;
@@ -73,7 +74,9 @@ public class RegisterOne extends Fragment {
     public String mobile;
     public String password;
     public String newPassword;
-    public String photo;
+    public String photo = "";
+
+    public Uri photoPath;
 
     CardView ppEditCV;
     TextView captureImage, selectImage, oldPassTV, newPassTV, emailTV;
@@ -112,11 +115,10 @@ public class RegisterOne extends Fragment {
 
         View view = inflater.inflate(R.layout.register_one, container, false);
 
-
         //initializing views
         editTextName = (EditText) view.findViewById(R.id.name);
         editTextEmail = (EditText) view.findViewById(R.id.email);
-        editTextMobile = (EditText) view.findViewById(R.id.mobile);
+        //editTextMobile = (EditText) view.findViewById(R.id.mobile);
         editTextPassword = (EditText) view.findViewById(R.id.password);
         editTextNewPassword = (EditText) view.findViewById(R.id.newpassword);
 
@@ -154,7 +156,7 @@ public class RegisterOne extends Fragment {
                 //getting email and password from edit texts
                 name = editTextName.getText().toString().trim();
                 email = editTextEmail.getText().toString().trim();
-                mobile = editTextMobile.getText().toString().trim();
+                //mobile = editTextMobile.getText().toString().trim();
                 password  = editTextPassword.getText().toString().trim();
                 newPassword = editTextNewPassword.getText().toString().trim();
 
@@ -167,16 +169,15 @@ public class RegisterOne extends Fragment {
                     Toast.makeText(getActivity(),"Please enter email",Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(TextUtils.isEmpty(mobile)){
-                    Toast.makeText(getActivity(),"Please enter mobile",Toast.LENGTH_LONG).show();
-                    return;
-                }
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(getActivity(),"Please enter password",Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                onBtnClickListener.onBtnClick();
+
+                ((Register)getActivity()).getViewPager().setCurrentItem(1);
+
+                //onBtnClickListener.onBtnClick();
 
             }
         });
@@ -324,7 +325,7 @@ public class RegisterOne extends Fragment {
 
         editTextName.setText(name);
         editTextEmail.setText(email);
-        editTextMobile.setText(mobile);
+        //editTextMobile.setText(mobile);
         editTextPassword.setText(password);
     }
 
@@ -354,11 +355,11 @@ public class RegisterOne extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
+            photoPath = data.getData();
             try {
 
                 //Getting the Bitmap from Gallery
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoPath);
 
                 photoCircled();
 

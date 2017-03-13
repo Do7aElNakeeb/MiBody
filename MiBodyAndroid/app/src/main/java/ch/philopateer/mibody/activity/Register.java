@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -20,8 +22,23 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
 import ch.philopateer.mibody.fragments.RegisterOne;
@@ -30,6 +47,7 @@ import ch.philopateer.mibody.fragments.RegisterTwo;
 import ch.philopateer.mibody.helper.SessionManager;
 import ch.philopateer.mibody.helper.ViewPagerAdapter;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
+import ch.philopateer.mibody.object.UserData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +63,9 @@ public class Register extends AppCompatActivity {
     private static final String TAG = Register.class.getSimpleName();
 
     ViewPager viewPager;
+    RegisterOne registerOne;
+    RegisterTwo registerTwo;
+    RegisterThree registerThree;
 
     String name;
     String email;
@@ -70,21 +91,30 @@ public class Register extends AppCompatActivity {
     int from = 0;
     String fromStr = "";
 
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
+    StorageReference photoReferenece;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ch.philopateer.mibody.R.layout.register_activity);
+        setContentView(R.layout.register_activity);
+
+        prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = prefs.edit();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        photoReferenece = FirebaseStorage.getInstance().getReference();
 
         from = getIntent().getExtras().getInt("from");
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-
         // Session manager
         session = new SessionManager(this);
 
-        viewPager = (ViewPager) findViewById(ch.philopateer.mibody.R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager();
 
     }
@@ -92,9 +122,7 @@ public class Register extends AppCompatActivity {
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        final RegisterOne registerOne;
-        final RegisterTwo registerTwo;
-        final RegisterThree registerThree;
+
 
         if (from == 0){
             registerOne = new RegisterOne();
@@ -104,13 +132,11 @@ public class Register extends AppCompatActivity {
         }
         else if (from == 1){
             // retrieve data from shared prefs
-            prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
             registerOne = new RegisterOne(prefs.getString("name", ""), prefs.getString("email", ""),
                     prefs.getString("mobile", ""), prefs.getString("password", ""), prefs.getString("photo", ""));
 
-            registerTwo = new RegisterTwo(prefs.getString("gender", ""), prefs.getString("dob", ""),
-                    prefs.getString("weight", ""), prefs.getString("height", ""));
+            registerTwo = new RegisterTwo(prefs.getString("gender", ""), prefs.getString("dob", ""));
 
             registerThree = new RegisterThree(Integer.parseInt(prefs.getString("units", "0")), Float.parseFloat(prefs.getString("weight", "")),
                     Float.parseFloat(prefs.getString("height", "")), prefs.getString("BMI", ""));
@@ -120,13 +146,11 @@ public class Register extends AppCompatActivity {
         }
         else {
             // retrieve data from shared prefs
-            prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
             registerOne = new RegisterOne(prefs.getString("name", ""), prefs.getString("email", ""),
                     prefs.getString("mobile", ""), prefs.getString("password", ""), prefs.getString("photo", ""));
 
-            registerTwo = new RegisterTwo(prefs.getString("gender", ""), prefs.getString("dob", ""),
-                    prefs.getString("weight", ""), prefs.getString("height", ""));
+            registerTwo = new RegisterTwo(prefs.getString("gender", ""), prefs.getString("dob", ""));
 
             registerThree = new RegisterThree(Integer.parseInt(prefs.getString("units", "0")), Float.parseFloat(prefs.getString("weight", "0")),
                     Float.parseFloat(prefs.getString("height", "0")), prefs.getString("BMI", ""));
@@ -134,33 +158,47 @@ public class Register extends AppCompatActivity {
             fromStr = "Registering";
         }
 
-        registerOne.initListener(new OnBtnClickListener() {
+        OnBtnClickListener onBtnClickListener1 = new OnBtnClickListener() {
             @Override
             public void onBtnClick() {
                 viewPager.setCurrentItem(1);
             }
-        });
+        };
 
-
-        registerTwo.initListener(new OnBtnClickListener() {
+        OnBtnClickListener onBtnClickListener2 = new OnBtnClickListener() {
             @Override
             public void onBtnClick() {
+/*
                 registerThree.weight = Float.parseFloat(registerTwo.weight);
                 registerThree.height = Float.parseFloat(registerTwo.height);
                 registerThree.BMI = "0";
+                */
                 viewPager.setCurrentItem(2);
             }
-        });
+        };
 
-        registerThree.initListener(new OnBtnClickListener() {
+        OnBtnClickListener onBtnClickListener3 = new OnBtnClickListener() {
             @Override
             public void onBtnClick() {
-
+                /*
+                registerWithMail(registerOne.name, registerOne.email, registerOne.password, registerOne.photoPath,
+                        registerTwo.gender, registerTwo.dob, String.valueOf(registerThree.weight), String.valueOf(registerThree.height), String.valueOf(registerThree.units),
+                        registerThree.BMI);
+                        */
+                /*
                 registerUser(registerOne.name, registerOne.email, registerOne.mobile, registerOne.password, registerOne.newPassword, registerOne.photo,
-                        registerTwo.gender, registerTwo.dob, registerTwo.weight, registerTwo.height, String.valueOf(registerThree.units),
+                        registerTwo.gender, registerTwo.dob, String.valueOf(registerThree.weight), String.valueOf(registerThree.height), String.valueOf(registerThree.units),
                         registerThree.BMI,  FirebaseInstanceId.getInstance().getToken());
+                */
             }
-        });
+        };
+
+        registerOne.initListener(onBtnClickListener1);
+
+
+        registerTwo.initListener(onBtnClickListener2);
+
+        registerThree.initListener(onBtnClickListener3);
 
         adapter.addFragment(registerOne, "1");
         adapter.addFragment(registerTwo, "2");
@@ -168,6 +206,122 @@ public class Register extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    public void registerWithMail(){
+
+        final String name = registerOne.name;
+        final String email = registerOne.email;
+        final String password = registerOne.password;
+        final Uri photoPath = registerOne.photoPath;
+        final String gender = registerTwo.gender;
+        final String dob = registerTwo.dob;
+        final String weight = String.valueOf(registerThree.weight);
+        final String height = String.valueOf(registerThree.height);
+        final String units = String.valueOf(registerThree.units);
+        final String BMI = registerThree.BMI;
+
+        if (name.isEmpty()){
+            Toast.makeText(this, "Name is Missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (email.isEmpty()){
+            Toast.makeText(this, "Email is Missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (password.isEmpty()){
+            Toast.makeText(this, "Password is Missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (weight.isEmpty()){
+            Toast.makeText(this, "Weight is Missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (height.isEmpty()){
+            Toast.makeText(this, "Height is Missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        pDialog.setMessage("Registering with Mail");
+        showDialog();
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task){
+
+                        if (task.isSuccessful()) {
+                            FirebaseDatabase.getInstance().getReference().child("users")
+                                    .child(firebaseAuth.getCurrentUser().getUid())
+                                    .setValue(new UserData(name, email, gender, dob, weight, height, units, BMI));
+
+
+                            photoReferenece = photoReferenece.child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
+                            photoReferenece.putFile(photoPath)
+                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            hideDialog();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            hideDialog();
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+                                            builder.setMessage(e.getMessage())
+                                                    .setTitle("Error!")
+                                                    .setPositiveButton(android.R.string.ok, null);
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                            return;
+                                        }
+                                    });
+                            saveToSharedPrefs();
+                            loginToHome();
+
+                        } else {
+                            //Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+                            builder.setMessage(task.getException().getMessage())
+                                    .setTitle("Error!")
+                                    .setPositiveButton(android.R.string.ok, null);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+                });
+    }
+
+    private void saveToSharedPrefs(){
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid());
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserData userData = dataSnapshot.getValue(UserData.class);
+
+                session.insertData(firebaseAuth.getCurrentUser().getUid(), userData.name, firebaseAuth.getCurrentUser().getEmail(),
+                        userData.gender, userData.dob, userData.weight, userData.height,
+                        userData.units, userData.BMI);
+                editor.putString("fbIDCon", "false");
+                editor.apply();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        databaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void loginToHome(){
+        Intent intent = new Intent(getBaseContext(), Landing.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
     private void registerUser(final String name, final String email, final String mobile, final String password, final String newPassword, final String photo,
                               final String gender, final String dob, final String weight, final String height, final String units, final String BMI, final String regID){
@@ -224,7 +378,7 @@ public class Register extends AppCompatActivity {
                         String user_id = jObj.get("user_id").toString();
 
 
-                        session.insertData(user_id, name, email, mobile, gender, dob, weight, height, units, BMI, regID);
+                        session.insertData(user_id, name, email, gender, dob, weight, height, units, BMI);
 
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
@@ -233,7 +387,7 @@ public class Register extends AppCompatActivity {
                         }
                         else {
                             // Launch login activity
-                            Intent intent = new Intent(Register.this, Landing.class);
+                            Intent intent = new Intent(getBaseContext(), Landing.class);
                             startActivity(intent);
                             finish();
                         }
@@ -309,7 +463,7 @@ public class Register extends AppCompatActivity {
                 Log.d(TAG, "Upload Response: " + response.toString());
 
                 // Launch login activity
-                Intent intent = new Intent(Register.this, Landing.class);
+                Intent intent = new Intent(getBaseContext(), Landing.class);
                 startActivity(intent);
                 finish();
 
@@ -319,7 +473,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Launch login activity
-                Intent intent = new Intent(Register.this, Landing.class);
+                Intent intent = new Intent(getBaseContext(), Landing.class);
                 startActivity(intent);
                 finish();
             }
@@ -340,4 +494,10 @@ public class Register extends AppCompatActivity {
             pDialog.dismiss();
     }
 
+    public ViewPager getViewPager() {
+        if (null == viewPager) {
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+        }
+        return viewPager;
+    }
 }

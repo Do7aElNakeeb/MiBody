@@ -4,11 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.firebase.database.Exclude;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by nakeebimac on 10/18/16.
@@ -18,9 +22,9 @@ public class WorkoutItem implements Parcelable{
 
     public String workoutID;
     public String workoutName;
+    public String exercisesJSON;
     public ArrayList<WorkoutExItem> exercisesList;
     public int workoutReps;
-    public String exercisesJSON;
     public String workoutType;
 
     public WorkoutItem(String workoutName, ArrayList<WorkoutExItem> exercisesList, int workoutReps){
@@ -31,6 +35,17 @@ public class WorkoutItem implements Parcelable{
 
     public WorkoutItem(){
 
+    }
+
+    // [START post_to_map]
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("workoutID", workoutID);
+        result.put("workoutName", workoutName);
+        result.put("exercisesJSON", exercisesJSON);
+
+        return result;
     }
 
     public WorkoutItem(String workoutID, String workoutName, int workoutReps, String exercisesJSON, String workoutType){

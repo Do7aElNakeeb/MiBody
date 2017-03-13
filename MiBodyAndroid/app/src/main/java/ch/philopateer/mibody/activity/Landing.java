@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,16 +30,15 @@ import java.util.ArrayList;
 public class Landing extends AppCompatActivity {
 
     private SlidingUpPanelLayout slidingLayout;
-    private TextView textView;
 
     int currVidPosition = 0;
     RecyclerView landingVideosRV;
     Button previousBtn, nextBtn;
 
-    CardView landingExerciseBtn, landingWorkoutsBtn, landingProfileBtn;
-    ImageView landingFbBtn, landingInstaBtn, landingUTubeBtn, landingTwitterBtn;
+    CardView landingExerciseBtn, landingWorkoutsBtn, landingProfileBtn, landingSettingsBtn;
+    ImageView landingFbBtn, landingInstaBtn, landingUTubeBtn, landingTwitterBtn, landingSiteBtn;
 
-    String videoKeys[] = {"BPhvUwyNHaY", "6fBZBntjEOA"};
+    String videoKeys[] = {"BPhvUwyNHaY"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +49,15 @@ public class Landing extends AppCompatActivity {
         //set layout slide listener
         slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
 
-        //some "demo" event
-        slidingLayout.setPanelSlideListener(onSlideListener());
-
         landingExerciseBtn = (CardView) slidingLayout.findViewById(R.id.landingExercisesBtn);
         landingWorkoutsBtn = (CardView) slidingLayout.findViewById(R.id.landingWorkoutsBtn);
+        landingSiteBtn = (ImageView) slidingLayout.findViewById(R.id.landingSiteBtn);
         landingFbBtn = (ImageView) slidingLayout.findViewById(R.id.landingFbBtn);
         landingInstaBtn = (ImageView) slidingLayout.findViewById(R.id.landingInstaBtn);
         landingTwitterBtn = (ImageView) slidingLayout.findViewById(R.id.landingTwitterBtn);
         landingUTubeBtn = (ImageView) slidingLayout.findViewById(R.id.landingUTubeBtn);
         landingProfileBtn = (CardView) slidingLayout.findViewById(R.id.landingProfileBtn);
+        landingSettingsBtn = (CardView)slidingLayout.findViewById(R.id.landingSettingsBtn);
 
         previousBtn = (Button) findViewById(R.id.previousVideo);
         nextBtn = (Button) findViewById(R.id.nextVideo);
@@ -75,7 +74,7 @@ public class Landing extends AppCompatActivity {
         landingProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -83,7 +82,7 @@ public class Landing extends AppCompatActivity {
         landingExerciseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ExercisesActivity.class);
+                Intent intent = new Intent(getBaseContext(), ExercisesActivity.class);
                 startActivity(intent);
             }
         });
@@ -91,8 +90,26 @@ public class Landing extends AppCompatActivity {
         landingWorkoutsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WorkoutsActivity.class);
+                Intent intent = new Intent(getBaseContext(), WorkoutsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        landingSettingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), Settings.class);
+                startActivity(intent);
+            }
+        });
+
+        landingSiteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "http://www.mibody.ch";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
         });
 
@@ -188,60 +205,22 @@ public class Landing extends AppCompatActivity {
         });
     }
 
-    /**
-     * Request show sliding layout when clicked
-     * @return
-     */
-    private View.OnClickListener onShowListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //show sliding layout in bottom of screen (not expand it)
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Check if the key event was the Back button
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            if (slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
                 slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
-        };
+            else {
+                finish();
+            }
+            return true;
+        }
+
+        // If it wasn't the Back key, bubble up to the default
+        // system behavior
+        return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * Hide sliding layout when click button
-     * @return
-     */
-    private View.OnClickListener onHideListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //hide sliding layout
-                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            }
-        };
-    }
-
-    private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
-        return new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View view, float v) {
-                //textView.setText("panel is sliding");
-            }
-
-            @Override
-            public void onPanelCollapsed(View view) {
-                //textView.setText("panel Collapse");
-            }
-
-            @Override
-            public void onPanelExpanded(View view) {
-                //textView.setText("panel expand");
-            }
-
-            @Override
-            public void onPanelAnchored(View view) {
-               // textView.setText("panel anchored");
-            }
-
-            @Override
-            public void onPanelHidden(View view) {
-                //textView.setText("panel is Hidden");
-            }
-        };
-    }
 }

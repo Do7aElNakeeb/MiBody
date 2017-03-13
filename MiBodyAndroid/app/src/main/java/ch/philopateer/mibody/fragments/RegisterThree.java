@@ -4,14 +4,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ch.philopateer.mibody.R;
+import ch.philopateer.mibody.activity.Register;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
 
 /**
@@ -22,6 +29,9 @@ public class RegisterThree extends Fragment {
 
     TextView cmTxt, lbTxt, kgTxt, inchTxt, BMITxt;
     Button regThreeBtn;
+
+    EditText weightET, heightET;
+    LinearLayout bmiLL;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -35,7 +45,7 @@ public class RegisterThree extends Fragment {
     public void initListener(OnBtnClickListener onBtnClickListener){
         this.onBtnClickListener = onBtnClickListener;
     }
-
+/*
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -58,7 +68,7 @@ public class RegisterThree extends Fragment {
             }
         }
     }
-
+*/
     public RegisterThree(){
 
     }
@@ -82,13 +92,89 @@ public class RegisterThree extends Fragment {
         BMITxt = (TextView) view.findViewById(R.id.BMITxt);
         regThreeBtn = (Button) view.findViewById(R.id.regThreeBtn);
 
+        bmiLL = (LinearLayout) view.findViewById(R.id.bmiLL);
+
+        weightET = (EditText) view.findViewById(R.id.weightTxtField);
+        heightET = (EditText) view.findViewById(R.id.heightTxtField);
+
         BMITxt.setText(String.valueOf(BMIeqn(height, weight)));
+
+        weightET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (!editable.toString().equals("") && !heightET.getText().toString().equals("")) {
+                    //weightET.setText(editable.toString());
+                    weight = Float.parseFloat(weightET.getText().toString());
+                    height = Float.parseFloat(heightET.getText().toString());
+                    BMITxt.setText(BMIeqn(height, weight));
+                    bmiLL.setVisibility(View.VISIBLE);
+                }
+                else {
+                    bmiLL.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        heightET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (!weightET.getText().toString().equals("") && !editable.toString().equals("")) {
+                    //heightET.setText(editable.toString());
+                    weight = Float.parseFloat(weightET.getText().toString());
+                    height = Float.parseFloat(heightET.getText().toString());
+                    BMITxt.setText(BMIeqn(height, weight));
+                    bmiLL.setVisibility(View.VISIBLE);
+                }
+                else {
+                    bmiLL.setVisibility(View.GONE);
+                }
+            }
+        });
 
         regThreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                onBtnClickListener.onBtnClick();
+
+                final String weight = weightET.getText().toString().trim();
+                final String height = heightET.getText().toString().trim();
+
+                //checking if email and passwords are empty
+
+                if(TextUtils.isEmpty(weight)){
+                    Toast.makeText(getActivity(),"Please enter weight",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(height)){
+                    Toast.makeText(getActivity(),"Please enter height", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                ((Register)getActivity()).registerWithMail();
+                //onBtnClickListener.onBtnClick();
 
             }
         });

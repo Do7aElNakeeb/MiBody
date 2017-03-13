@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import ch.philopateer.mibody.app.AppController;
 import ch.philopateer.mibody.app.ExerciseItem;
 import ch.philopateer.mibody.helper.SQLiteHandler;
 import ch.philopateer.mibody.helper.ViewPagerAdapter;
+import me.relex.circleindicator.CircleIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +45,16 @@ public class ExercisesFragment extends Fragment {
     String exercisesCategory = "";
 
     ViewPager exerciseViewPager;
+    CircleIndicator circleIndicator;
+    PagerSnapHelper pagerSnapHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.exercises_fragment, container, false);
+
+
+        circleIndicator = (CircleIndicator) view.findViewById(R.id.page_indicator);
 
         // Progress dialog
         pDialog = new ProgressDialog(getActivity());
@@ -63,6 +70,7 @@ public class ExercisesFragment extends Fragment {
         }
 
         exerciseViewPager = (ViewPager) view.findViewById(R.id.exercisesViewpager);
+
         exerciseItemArrayList = new ArrayList<ExerciseItem>();
 
         loadExercises();
@@ -72,7 +80,6 @@ public class ExercisesFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-
 
         ArrayList<ExerciseItem> tempExerciseItems = new ArrayList<ExerciseItem>();
 
@@ -92,6 +99,9 @@ public class ExercisesFragment extends Fragment {
         }
 
         viewPager.setAdapter(adapter);
+
+        circleIndicator.setViewPager(viewPager);
+
     }
 
     private void loadExercises(){

@@ -27,7 +27,7 @@ public class WorkoutsActivity extends AppCompatActivity {
         predefined.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WorkoutsActivity.this, WorkoutsItemsActivity.class);
+                Intent intent = new Intent(getBaseContext(), WorkoutsItemsActivity.class);
                 intent.putExtra("type", "predefined");
                 startActivity(intent);
             }
@@ -36,7 +36,7 @@ public class WorkoutsActivity extends AppCompatActivity {
         personalised.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WorkoutsActivity.this, WorkoutsItemsActivity.class);
+                Intent intent = new Intent(getBaseContext(), WorkoutsItemsActivity.class);
                 intent.putExtra("type", "personalised");
                 startActivity(intent);
             }
