@@ -24,6 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
  
+        /*
+        let landing = Landing()
+        window?.rootViewController = landing
+        window?.makeKeyAndVisible()
+        */
+        
         return true
     }
 
