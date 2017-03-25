@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
         statisticsBtnCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), StatisticsActivity.class));
+                startActivity(new Intent(getBaseContext(), Schedule.class));
             }
         });
 

@@ -106,7 +106,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="4ac4f8d2290753d65c6d0c94da8b0a2447ee22e3">
+        sha1="2d598d3610ba2c4245c626bc4dfb63221c0c0bbb">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_e4893dc9375ed1afee1157eae780d1cc6e393665/classes.dex" />
     </item>
     <item
@@ -160,7 +160,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="fe81d347343b100c0aa5e428808723e1dc9f8eea">
+        sha1="f62a3d39b2faefc2ba84cd81b16d59fcdeef6a5c">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b33c7d6e6b2ae6bddbe97d27ae2fa633a218b0f1/classes.dex" />
     </item>
     <item
