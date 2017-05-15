@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import ch.philopateer.mibody.app.ExerciseItem;
-import ch.philopateer.mibody.app.Muscles;
-import ch.philopateer.mibody.app.WorkoutExItem;
-import ch.philopateer.mibody.app.WorkoutItem;
+import ch.philopateer.mibody.object.ExerciseItem;
+import ch.philopateer.mibody.object.Muscles;
+import ch.philopateer.mibody.object.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

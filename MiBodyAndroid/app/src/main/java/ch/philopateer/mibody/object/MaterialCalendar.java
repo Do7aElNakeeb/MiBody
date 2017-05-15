@@ -6,7 +6,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import ch.philopateer.mibody.adapter.MaterialCalendarAdapter;
 import ch.philopateer.mibody.fragments.ScheduleFragment;
@@ -18,17 +23,25 @@ import ch.philopateer.mibody.fragments.ScheduleFragment;
 public class MaterialCalendar {
 
     // Variables
-    public static int mMonth = -1;
-    public static int mYear = -1;
-    public static int mCurrentDay = -1;
-    public static int mCurrentMonth = -1;
-    public static int mCurrentYear = -1;
-    public static int mFirstDay = -1;
-    public static int mNumDaysInMonth = -1;
+    public int mMonth = -1;
+    public int mYear = -1;
+    public int mCurrentDay = -1;
+    public int mCurrentMonth = -1;
+    public int mCurrentYear = -1;
+    public int mFirstDay = -1;
+    public int mNumDaysInMonth = -1;
+
+    public ScheduleFragment scheduleFragment;
 
 
-    public static void getInitialCalendarInfo() {
+    public MaterialCalendar(ScheduleFragment scheduleFragment){
+        this.scheduleFragment = scheduleFragment;
+    }
+
+    public void getInitialCalendarInfo() {
         Calendar cal = Calendar.getInstance();
+
+        //scheduleFragment = new ScheduleFragment();
 
         if (cal != null) {
             Log.d("MONTH_NUMBER", String.valueOf(cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
@@ -50,7 +63,7 @@ public class MaterialCalendar {
         }
     }
 
-    private static void refreshCalendar(TextView monthTextView, GridView calendarGridView,
+    private void refreshCalendar(TextView monthTextView, GridView calendarGridView,
                                         MaterialCalendarAdapter materialCalendarAdapter, int month, int year) {
 
         checkCurrentDay(month, year);
@@ -63,13 +76,30 @@ public class MaterialCalendar {
         }
 
         // Clear Saved Events ListView count when changing calendars
-        if (ScheduleFragment.playedWorkoutsAdapter != null) {
-            ScheduleFragment.mNumEventsOnDay = -1;
-            ScheduleFragment.playedWorkoutsAdapter.notifyDataSetChanged();
+        if (scheduleFragment.playedWorkoutsAdapter != null) {
+            scheduleFragment.mNumEventsOnDay = -1;
+            scheduleFragment.playedWorkoutsAdapter.notifyDataSetChanged();
             Log.d("EVENTS_ADAPTER", "refresh");
         }
 
-        ScheduleFragment.getSavedEventsForCurrentMonth();
+        long monthInMilliseconds = 0;
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/yyyy", Locale.US);
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC+2"));
+
+
+        String date = String.valueOf(month + 1) + "/" + String.valueOf(year);
+        Log.d("dateIsC:", date);
+
+        try {
+            Date mDate = formatter.parse(date);
+            monthInMilliseconds = mDate.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("monthInMills", String.valueOf(monthInMilliseconds));
+
+        scheduleFragment.getSavedEventsForCurrentMonth(monthInMilliseconds);
 
         if (materialCalendarAdapter != null) {
             if (calendarGridView != null) {
@@ -80,11 +110,11 @@ public class MaterialCalendar {
         }
     }
 
-    private static String getMonthName(int month) {
+    private String getMonthName(int month) {
         return new DateFormatSymbols().getMonths()[month];
     }
 
-    private static void checkCurrentDay(int month, int year) {
+    private void checkCurrentDay(int month, int year) {
         if (month == mCurrentMonth && year == mCurrentYear) {
             Calendar cal = java.util.Calendar.getInstance();
             mCurrentDay = cal.get(Calendar.DAY_OF_MONTH);
@@ -93,7 +123,7 @@ public class MaterialCalendar {
         }
     }
 
-    private static void getNumDayInMonth(int month, int year) {
+    private void getNumDayInMonth(int month, int year) {
         Calendar cal = Calendar.getInstance();
         if (cal != null) {
             cal.set(Calendar.MONTH, month);
@@ -104,7 +134,7 @@ public class MaterialCalendar {
         }
     }
 
-    private static void getFirstDay(int month, int year) {
+    private void getFirstDay(int month, int year) {
         Calendar cal = Calendar.getInstance();
         if (cal != null) {
             cal.set(Calendar.MONTH, month);
@@ -154,20 +184,20 @@ public class MaterialCalendar {
     }
 
     // Call in View.OnClickListener for Previous ImageView
-    public static void previousOnClick(ImageView previousImageView, TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
+    public void previousOnClick(ImageView previousImageView, TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
         if (previousImageView != null && mMonth != -1 && mYear != -1) {
             previousMonth(monthTextView, calendarGridView, materialCalendarAdapter);
         }
     }
 
     // Call in View.OnClickListener for Next ImageView
-    public static void nextOnClick(ImageView nextImageView, TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
+    public void nextOnClick(ImageView nextImageView, TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
         if (nextImageView != null && mMonth != -1 && mYear != -1) {
             nextMonth(monthTextView, calendarGridView, materialCalendarAdapter);
         }
     }
 
-    private static void previousMonth(TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
+    private void previousMonth(TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
         if (mMonth == 0) {
             mMonth = 11;
             mYear = mYear - 1;
@@ -178,22 +208,25 @@ public class MaterialCalendar {
         refreshCalendar(monthTextView, calendarGridView, materialCalendarAdapter, mMonth, mYear);
     }
 
-    private static void nextMonth(TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
+    private void nextMonth(TextView monthTextView, GridView calendarGridView, MaterialCalendarAdapter materialCalendarAdapter) {
 
-        if (mYear < Calendar.getInstance().get(Calendar.YEAR)){
-            mMonth = 0;
-            mYear = mYear + 1;
-            refreshCalendar(monthTextView, calendarGridView, materialCalendarAdapter, mMonth, mYear);
-        }
+        if (mMonth == 11) {
+            if (mYear < Calendar.getInstance().get(Calendar.YEAR)) {
+                mMonth = 0;
+                mYear = mYear + 1;
+                refreshCalendar(monthTextView, calendarGridView, materialCalendarAdapter, mMonth, mYear);
+            }
+        } else {
+            if ( (mYear == Calendar.getInstance().get(Calendar.YEAR) && mMonth < Calendar.getInstance().get(Calendar.MONTH)) || (mYear < Calendar.getInstance().get(Calendar.YEAR)) ) {
 
-        else if (mMonth < Calendar.getInstance().get(Calendar.MONTH)) {
-            mMonth = mMonth + 1;
-            refreshCalendar(monthTextView, calendarGridView, materialCalendarAdapter, mMonth, mYear);
+                mMonth = mMonth + 1;
+                refreshCalendar(monthTextView, calendarGridView, materialCalendarAdapter, mMonth, mYear);
+            }
         }
     }
 
     // Call in GridView.OnItemClickListener for custom Calendar GirdView
-    public static void selectCalendarDay(MaterialCalendarAdapter materialCalendarAdapter, int position) {
+    public void selectCalendarDay(MaterialCalendarAdapter materialCalendarAdapter, int position) {
         Log.d("SELECTED_POSITION", String.valueOf(position));
         int weekPositions = 6;
         int noneSelectablePositions = weekPositions + mFirstDay;
@@ -207,7 +240,7 @@ public class MaterialCalendar {
         }
     }
 
-    private static void getSelectedDate(int selectedPosition, int month, int year) {
+    private void getSelectedDate(int selectedPosition, int month, int year) {
         int weekPositions = 6;
         int dateNumber = selectedPosition - weekPositions - mFirstDay;
         Log.d("DATE_NUMBER", String.valueOf(dateNumber));

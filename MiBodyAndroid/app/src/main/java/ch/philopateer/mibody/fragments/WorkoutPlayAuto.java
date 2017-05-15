@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.WorkoutItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 
 public class WorkoutPlayAuto extends Fragment {
 

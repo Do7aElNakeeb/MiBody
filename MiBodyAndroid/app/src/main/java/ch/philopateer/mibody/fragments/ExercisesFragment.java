@@ -2,7 +2,6 @@ package ch.philopateer.mibody.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -18,7 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
-import ch.philopateer.mibody.app.ExerciseItem;
+import ch.philopateer.mibody.object.ExerciseItem;
 import ch.philopateer.mibody.helper.SQLiteHandler;
 import ch.philopateer.mibody.helper.ViewPagerAdapter;
 import me.relex.circleindicator.CircleIndicator;

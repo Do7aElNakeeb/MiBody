@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.app;
+package ch.philopateer.mibody.object;
 
 import android.util.Log;
 

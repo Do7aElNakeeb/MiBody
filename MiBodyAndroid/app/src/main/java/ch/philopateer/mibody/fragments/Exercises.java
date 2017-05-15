@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ch.philopateer.mibody.R;
-import ch.philopateer.mibody.app.ExerciseItem;
+import ch.philopateer.mibody.object.ExerciseItem;
 import ch.philopateer.mibody.helper.ExercisesAdapter;
 
 import java.util.ArrayList;

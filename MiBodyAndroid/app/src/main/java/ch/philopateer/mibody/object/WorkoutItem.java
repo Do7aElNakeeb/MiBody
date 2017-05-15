@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.app;
+package ch.philopateer.mibody.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -37,6 +37,14 @@ public class WorkoutItem implements Parcelable{
 
     }
 
+    public WorkoutItem(String workoutID, String workoutName, String exercisesJSON){
+        this.workoutID = workoutID;
+        this.workoutName = workoutName;
+        this.exercisesJSON = exercisesJSON;
+
+        JSONtoArray();
+    }
+
     // [START post_to_map]
     @Exclude
     public Map<String, Object> toMap() {
@@ -54,6 +62,12 @@ public class WorkoutItem implements Parcelable{
         this.workoutReps = workoutReps;
         this.exercisesJSON = exercisesJSON;
         this.workoutType = workoutType;
+
+        JSONtoArray();
+
+    }
+
+    public void JSONtoArray(){
 
         exercisesList = new ArrayList<WorkoutExItem>();
 

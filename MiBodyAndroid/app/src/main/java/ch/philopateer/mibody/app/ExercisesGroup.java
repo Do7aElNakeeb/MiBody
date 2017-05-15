@@ -2,6 +2,8 @@ package ch.philopateer.mibody.app;
 
 import java.util.ArrayList;
 
+import ch.philopateer.mibody.object.ExerciseItem;
+
 /**
  * Created by NakeebMac on 10/1/16.
  */

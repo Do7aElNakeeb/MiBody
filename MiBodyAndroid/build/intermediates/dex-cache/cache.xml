@@ -30,6 +30,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.21.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6a70160a70685ce25bda1c6e094c73676a399039">
+        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.android-facebook-android-sdk-4.21.1_d1d928c53a3da358c33ae7e3cc634c9b8b3cf693/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database/9.6.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -162,15 +171,6 @@
         revision="25.0.2"
         sha1="f62a3d39b2faefc2ba84cd81b16d59fcdeef6a5c">
         <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b33c7d6e6b2ae6bddbe97d27ae2fa633a218b0f1/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.20.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="cb2ef781533c3f11c4e80341cbaebad275c66586">
-        <dex dex="/Users/mamdouhelnakeeb/Desktop/WORK/MiBody/MibodyApp/MiBody/MiBodyAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.android-facebook-android-sdk-4.20.0_65ff37c6648475cdce728fcf82f377abd6ad5122/classes.dex" />
     </item>
     <item
         is-multidex="true"

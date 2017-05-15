@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ch.philopateer.mibody.app.ExerciseItem;
-import ch.philopateer.mibody.app.WorkoutExItem;
+import ch.philopateer.mibody.object.ExerciseItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

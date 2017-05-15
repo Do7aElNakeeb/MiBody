@@ -30,6 +30,8 @@ public class MaterialCalendarAdapter extends BaseAdapter{
     int mWeekDayNames = 7;
     int mGridViewIndexOffset = 1;
 
+    MaterialCalendar materialCalendar;
+
     private static class ViewHolder {
         ImageView mSelectedDayImageView;
         TextView mTextView;
@@ -37,15 +39,16 @@ public class MaterialCalendarAdapter extends BaseAdapter{
     }
 
     // Constructor
-    public MaterialCalendarAdapter(Context context) {
+    public MaterialCalendarAdapter(Context context, MaterialCalendar materialCalendar) {
         mContext = context;
+        this.materialCalendar = materialCalendar;
     }
 
     @Override
     public int getCount() {
-        if (MaterialCalendar.mFirstDay != -1 && MaterialCalendar.mNumDaysInMonth != -1) {
-            Log.d("GRID_COUNT", String.valueOf(mWeekDayNames + MaterialCalendar.mFirstDay + MaterialCalendar.mNumDaysInMonth));
-            return mWeekDayNames + MaterialCalendar.mFirstDay + MaterialCalendar.mNumDaysInMonth;
+        if (materialCalendar.mFirstDay != -1 && materialCalendar.mNumDaysInMonth != -1) {
+            Log.d("GRID_COUNT", String.valueOf(mWeekDayNames + materialCalendar.mFirstDay + materialCalendar.mNumDaysInMonth));
+            return mWeekDayNames + materialCalendar.mFirstDay + materialCalendar.mNumDaysInMonth;
         }
 
         return mWeekDayNames;
@@ -112,10 +115,8 @@ public class MaterialCalendarAdapter extends BaseAdapter{
         return convertView;
     }
 
-
-
     private void setCalendarDay(int position) {
-        if (position <= mWeekDayNames - mGridViewIndexOffset + MaterialCalendar.mFirstDay) {
+        if (position <= mWeekDayNames - mGridViewIndexOffset + materialCalendar.mFirstDay) {
             mHolder.mTextView.setTextColor(mContext.getResources().getColor(R.color.calendar_day_text_color));
             Log.d("NO_CLICK_POSITION", String.valueOf(position));
         } else {
@@ -160,18 +161,18 @@ public class MaterialCalendarAdapter extends BaseAdapter{
 
             default:
                 Log.d("CURRENT_POSITION", String.valueOf(position));
-                if (position < mWeekDayNames + MaterialCalendar.mFirstDay) {
+                if (position < mWeekDayNames + materialCalendar.mFirstDay) {
                     Log.d("BLANK_POSITION", "This is a blank day");
                     mHolder.mTextView.setText("");
                     mHolder.mTextView.setTypeface(Typeface.DEFAULT);
                 } else {
                     mHolder.mTextView.setText(String.valueOf(position - (mWeekDayNames - mGridViewIndexOffset) -
-                            MaterialCalendar.mFirstDay));
+                            materialCalendar.mFirstDay));
                     //mHolder.mTextView.setTypeface(Typeface.DEFAULT_BOLD);
 
-                    if (MaterialCalendar.mCurrentDay != -1) {
-                        int startingPosition = mWeekDayNames - mGridViewIndexOffset + MaterialCalendar.mFirstDay;
-                        int currentDayPosition = startingPosition + MaterialCalendar.mCurrentDay;
+                    if (materialCalendar.mCurrentDay != -1) {
+                        int startingPosition = mWeekDayNames - mGridViewIndexOffset + materialCalendar.mFirstDay;
+                        int currentDayPosition = startingPosition + materialCalendar.mCurrentDay;
 
                         if (position == currentDayPosition) {
                             //mHolder.mTextView.setTextColor(mContext.getResources().getColor(R.color.calendar_number_text_color));
@@ -193,10 +194,10 @@ public class MaterialCalendarAdapter extends BaseAdapter{
         // Reset saved position indicator
         mHolder.mSavedEventImageView.setVisibility(View.INVISIBLE);
 
-        if (MaterialCalendar.mFirstDay != -1 && ScheduleFragment.mSavedEventDays != null &&
+        if (materialCalendar.mFirstDay != -1 && ScheduleFragment.mSavedEventDays != null &&
                 ScheduleFragment.mSavedEventDays.size() > 0) {
 
-            int startingPosition = mWeekDayNames - mGridViewIndexOffset + MaterialCalendar.mFirstDay;
+            int startingPosition = mWeekDayNames - mGridViewIndexOffset + materialCalendar.mFirstDay;
             Log.d("SAVED_EVENT_STARTINGPOS", String.valueOf(startingPosition));
             if (position > startingPosition) {
                 for (int i = 0; i < ScheduleFragment.mSavedEventDays.size(); i++) {

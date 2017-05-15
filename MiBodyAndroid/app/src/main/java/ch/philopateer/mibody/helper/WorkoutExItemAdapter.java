@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.ExerciseItem;
-import ch.philopateer.mibody.app.WorkoutExItem;
+import ch.philopateer.mibody.object.ExerciseItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 

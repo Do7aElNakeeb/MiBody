@@ -1,6 +1,8 @@
 package ch.philopateer.mibody.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ch.philopateer.mibody.R;
+import ch.philopateer.mibody.activity.StatisticsActivity;
 import ch.philopateer.mibody.fragments.ScheduleFragment;
+import ch.philopateer.mibody.helper.WorkoutExItemAdapter;
+import ch.philopateer.mibody.object.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 
 /**
  * Created by mamdouhelnakeeb on 3/24/17.
@@ -20,7 +29,10 @@ import ch.philopateer.mibody.fragments.ScheduleFragment;
 public class PlayedWorkoutsAdapter extends BaseAdapter {
     // Variables
     private Context mContext;
-    private static ViewHolder mHolder;
+    private ViewHolder mHolder;
+    private ScheduleFragment scheduleFragment;
+
+    private WorkoutItem workoutItem = null;
 
     private static class ViewHolder {
         TextView mTitle;
@@ -30,17 +42,15 @@ public class PlayedWorkoutsAdapter extends BaseAdapter {
     }
 
     // Constructor
-    public PlayedWorkoutsAdapter(Context context) {
+    public PlayedWorkoutsAdapter(Context context, ScheduleFragment scheduleFragment) {
         mContext = context;
+        this.scheduleFragment = scheduleFragment;
     }
 
     @Override
     public int getCount() {
-        if (ScheduleFragment.mNumEventsOnDay != 0 || ScheduleFragment.mNumEventsOnDay != -1) {
-            return ScheduleFragment.mNumEventsOnDay;
-        }
-
-        return 0;
+        Log.d("numOfEvOnDay", String.valueOf(scheduleFragment.mNumEventsOnDay));
+        return scheduleFragment.mNumEventsOnDay;
     }
 
     @Override
@@ -54,7 +64,13 @@ public class PlayedWorkoutsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        if (scheduleFragment.mSavedEventsPerDay.containsKey(scheduleFragment.selectedDay)) {
+            workoutItem = scheduleFragment.mSavedEventsPerDay.get(scheduleFragment.selectedDay).get(position);
+            workoutItem.JSONtoArray();
+        }
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.schedule_played_workout_item, parent, false);
@@ -67,9 +83,11 @@ public class PlayedWorkoutsAdapter extends BaseAdapter {
                 mHolder.mAbout = (TextView) convertView.findViewById(R.id.saved_event_about_textView);
                 mHolder.mImageView = (ImageView) convertView.findViewById(R.id.saved_event_imageView);
                 convertView.setTag(mHolder);
+
             }
         } else {
             mHolder = (ViewHolder) convertView.getTag();
+
         }
 
         // Animates in each cell when added to the ListView
@@ -78,32 +96,34 @@ public class PlayedWorkoutsAdapter extends BaseAdapter {
             convertView.startAnimation(animateIn);
         }
 
-        if (mHolder.mTitle != null) {
-            setEventTitle();
-        }
+        mHolder.mTitle.setText(workoutItem.workoutName);
 
-        if (mHolder.mAbout != null) {
-            setEventAbout();
+        String workoutExercises = "";
+        for (int i = 0; i < workoutItem.exercisesList.size(); i++) {
+            if (i == workoutItem.exercisesList.size() - 1) {
+                workoutExercises += workoutItem.exercisesList.get(i).name;
+            } else {
+                workoutExercises += workoutItem.exercisesList.get(i).name + ", ";
+            }
         }
+        mHolder.mAbout.setText(workoutExercises);
 
-        if (mHolder.mImageView != null) {
-            setEventImage();
 
-        }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (workoutItem != null) {
+
+
+                    Intent intent = new Intent(mContext, StatisticsActivity.class);
+                    intent.putExtra("workoutItemStats", workoutItem);
+                    Log.d("workoutItemExArSize", String.valueOf(workoutItem.exercisesList.size()));
+                    mContext.startActivity(intent);
+                }
+            }
+        });
 
         return convertView;
     }
 
-    private void setEventTitle() {
-        mHolder.mTitle.setText("Workout 1");
-    }
-
-    private void setEventAbout() {
-        mHolder.mAbout.setText("Pushup, Dip, Squat");
-    }
-
-    private void setEventImage() {
-        // Set event item image (bitmap, drawable, uri...)
-        //mHolder.mImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_calendar));
-    }
 }

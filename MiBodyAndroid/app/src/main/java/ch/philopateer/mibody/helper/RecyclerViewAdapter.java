@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.ExerciseItem;
+import ch.philopateer.mibody.object.ExerciseItem;
 
 import java.util.ArrayList;
 

@@ -122,8 +122,6 @@ public class Register extends AppCompatActivity {
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-
-
         if (from == 0){
             registerOne = new RegisterOne();
             registerTwo = new RegisterTwo();

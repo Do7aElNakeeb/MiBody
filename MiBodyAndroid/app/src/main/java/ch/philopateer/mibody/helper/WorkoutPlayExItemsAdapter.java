@@ -8,16 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
 
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;

@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.app;
+package ch.philopateer.mibody.object;
 
 /**
  * Created by NakeebMac on 10/1/16.

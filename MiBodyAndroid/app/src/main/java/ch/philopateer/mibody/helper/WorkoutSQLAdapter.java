@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import ch.philopateer.mibody.R;
-import ch.philopateer.mibody.app.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
 
 import java.util.List;
 

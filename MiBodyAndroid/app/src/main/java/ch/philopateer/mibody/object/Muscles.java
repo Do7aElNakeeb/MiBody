@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.app;
+package ch.philopateer.mibody.object;
 
 /**
  * Created by mamdouhelnakeeb on 1/23/17.

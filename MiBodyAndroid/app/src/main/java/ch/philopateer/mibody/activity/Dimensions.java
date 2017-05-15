@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ch.philopateer.mibody.app.Muscles;
+import ch.philopateer.mibody.object.Muscles;
 import ch.philopateer.mibody.helper.SQLiteHandler;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import ch.philopateer.mibody.R;
-import ch.philopateer.mibody.app.WorkoutItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 import ch.philopateer.mibody.fragments.WorkoutPlayManual;
 
 /**

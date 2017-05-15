@@ -11,10 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.ExerciseItem;
+import ch.philopateer.mibody.object.ExerciseItem;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.Target;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 

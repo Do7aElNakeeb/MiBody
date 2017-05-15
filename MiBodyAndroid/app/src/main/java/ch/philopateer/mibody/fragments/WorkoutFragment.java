@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.philopateer.mibody.app.WorkoutExItem;
-import ch.philopateer.mibody.app.WorkoutItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 import ch.philopateer.mibody.helper.SQLiteHandler;
 import ch.philopateer.mibody.helper.WorkoutSQLAdapter;
 import ch.philopateer.mibody.helper.WorkoutsAdapter;

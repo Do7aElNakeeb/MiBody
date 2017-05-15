@@ -22,14 +22,28 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONArray;
+
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.activity.StatisticsActivity;
-import ch.philopateer.mibody.app.WorkoutExItem;
-import ch.philopateer.mibody.app.WorkoutItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 import ch.philopateer.mibody.helper.WorkoutPlayExItemsAdapter;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by mamdouhelnakeeb on 1/28/17.
@@ -54,6 +68,10 @@ public class WorkoutPlayManual extends Fragment {
 
     int exReps = 1;
 
+
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
+
     public OnBtnClickListener onBtnClickListener;
 
     public void initListener(OnBtnClickListener onBtnClickListener){
@@ -64,6 +82,10 @@ public class WorkoutPlayManual extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.workout_play_fragment, container, false);
+
+        // init Firebase authentication and database
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         workoutsPlayItemsRV = (RecyclerView) view.findViewById(R.id.workoutPlayItemsRV);
         workoutName = (TextView) view.findViewById(R.id.workoutName);
@@ -170,8 +192,7 @@ public class WorkoutPlayManual extends Fragment {
             @Override
             public void onClick(View view) {
 
-                achExReps = workoutPlayExItemsAdapter.achWorkoutExItemArrayList;
-
+                /*
                 SharedPreferences objPrefs = getActivity().getSharedPreferences("ExObjStatistics", Context.MODE_PRIVATE);
                 SharedPreferences.Editor objEditor = objPrefs.edit();
 
@@ -184,9 +205,10 @@ public class WorkoutPlayManual extends Fragment {
                 }
                 objEditor.apply();
                 achEditor.apply();
+                */
 
-                startActivity(new Intent(getActivity(), StatisticsActivity.class));
-                getActivity().finish();
+                addWorkoutToCalender();
+
                 //onBtnClickListener.onBtnClick();
                 /*
                 Intent intent = new Intent(getActivity(), Dimensions.class);
@@ -244,11 +266,83 @@ public class WorkoutPlayManual extends Fragment {
                         }
                     }.start();
                 }
+                else if (processActionTV.getText().toString().equals("DONE")){
+                    addWorkoutToCalender();
+                }
             }
         });
 
         return view;
     }
+
+    private void addWorkoutToCalender(){
+
+
+        achExReps = workoutPlayExItemsAdapter.achWorkoutExItemArrayList;
+
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < workoutItem.exercisesList.size(); i++) {
+            workoutItem.exercisesList.get(i).exReps = achExReps.get(i);
+            jsonArray.put(workoutItem.exercisesList.get(i).getJSONObject());
+            Log.d("AddWJSONobject", workoutItem.exercisesList.get(i).getJSONObject().toString());
+        }
+
+        long timeInMilliSeconds = System.currentTimeMillis();
+        long monthInMilliseconds = 0, dayInMilliseconds = 0;
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("MM/yyyy", Locale.US);
+        monthFormatter.setTimeZone(TimeZone.getDefault());
+
+        SimpleDateFormat dayFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        monthFormatter.setTimeZone(TimeZone.getDefault());
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMilliSeconds);
+        String monthYear = monthFormatter.format(calendar.getTime());
+        String dayMonthYear = dayFormatter.format(calendar.getTime());
+
+        try {
+            Date mDate = monthFormatter.parse(monthYear);
+            monthInMilliseconds = mDate.getTime();
+
+            Date dDate = dayFormatter.parse(dayMonthYear);
+            dayInMilliseconds = dDate.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("dateInMillis", String.valueOf(monthInMilliseconds));
+        Log.d("timeInMillis", String.valueOf(timeInMilliSeconds));
+
+
+        workoutItem.workoutID = String.valueOf(timeInMilliSeconds);
+        workoutItem.exercisesJSON = jsonArray.toString();
+
+        databaseReference.child("/users/" + firebaseAuth.getCurrentUser().getUid() + "/statistics/"
+                + String.valueOf(monthInMilliseconds)
+                + "/" + String.valueOf(dayInMilliseconds)
+                + "/" + String.valueOf(timeInMilliSeconds))
+                .push();
+
+        Map<String, Object> postValues = workoutItem.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/users/" + firebaseAuth.getCurrentUser().getUid() + "/statistics/"
+                + String.valueOf(monthInMilliseconds)
+                + "/" + String.valueOf(dayInMilliseconds)
+                + "/" + String.valueOf(timeInMilliSeconds), postValues);
+
+        databaseReference.updateChildren(childUpdates);
+
+        // intent to Statistics Activity
+        Intent intent = new Intent(getActivity().getBaseContext(), StatisticsActivity.class);
+        intent.putExtra("workoutItemStats", workoutItem);
+        startActivity(intent);
+        getActivity().finish();
+
+    }
+
 /*
     private void initWorkoutItem(){
         if(exReps <= workoutItem.exercisesList.get(focusedItem).exReps){

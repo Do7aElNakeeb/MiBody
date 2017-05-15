@@ -1,8 +1,11 @@
 package ch.philopateer.mibody.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +16,33 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 
 import ch.philopateer.mibody.R;
+import ch.philopateer.mibody.activity.StatisticsActivity;
+import ch.philopateer.mibody.activity.WorkoutPlay;
 import ch.philopateer.mibody.adapter.MaterialCalendarAdapter;
 import ch.philopateer.mibody.adapter.PlayedWorkoutsAdapter;
+import ch.philopateer.mibody.adapter.PlayedWorkoutsOnDayAdapter;
 import ch.philopateer.mibody.object.MaterialCalendar;
+import ch.philopateer.mibody.object.WorkoutItem;
 
 /**
  * Created by mamdouhelnakeeb on 3/24/17.
@@ -41,14 +61,22 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     private MaterialCalendarAdapter mMaterialCalendarAdapter;
 
     // Saved Events Adapter
-    public static PlayedWorkoutsAdapter playedWorkoutsAdapter;
-    public static ListView mSavedEventsListView;
+    public PlayedWorkoutsOnDayAdapter playedWorkoutsAdapter;
+    public RecyclerView mSavedEventsListView;
 
-    public static ArrayList<HashMap<String, Integer>> mSavedEventsPerDay;
+    /* <day, array> */
+    public HashMap<Integer, ArrayList<WorkoutItem>> mSavedEventsPerDay;
     public static ArrayList<Integer> mSavedEventDays;
 
-    public static int mNumEventsOnDay = 0;
+    public int mNumEventsOnDay = 0;
 
+
+    FirebaseAuth firebaseAuth;
+    DatabaseReference databaseReference;
+
+    MaterialCalendar materialCalendar;
+
+    public int selectedDay = -1;
 
     @Override
     public void onAttach(Activity activity) {
@@ -63,11 +91,18 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.schedule_fragment, container, false);
+
+        // init Firebase authentication and database
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid()).child("statistics");
+
+
         if (rootView != null) {
             // Get Calendar info
             // Get Calendar info
-            MaterialCalendar.getInitialCalendarInfo();
-            getSavedEventsForCurrentMonth();
+            materialCalendar = new MaterialCalendar(this);
+            materialCalendar.getInitialCalendarInfo();
+            getSavedEventsForCurrentMonth(System.currentTimeMillis());
 
             // Previous ImageView
             mPrevious = (ImageView) rootView.findViewById(R.id.material_calendar_previous);
@@ -95,14 +130,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             mCalendar = (GridView) rootView.findViewById(R.id.material_calendar_gridView);
             if (mCalendar != null) {
                 mCalendar.setOnItemClickListener(this);
-                mMaterialCalendarAdapter = new MaterialCalendarAdapter(getActivity());
+                mMaterialCalendarAdapter = new MaterialCalendarAdapter(getActivity(), materialCalendar);
                 mCalendar.setAdapter(mMaterialCalendarAdapter);
 
 
                 // Set current day to be auto selected when first opened
-                if (MaterialCalendar.mCurrentDay != -1 && MaterialCalendar.mFirstDay != -1){
-                    int startingPosition = 6 + MaterialCalendar.mFirstDay;
-                    int currentDayPosition = startingPosition + MaterialCalendar.mCurrentDay;
+                if (materialCalendar.mCurrentDay != -1 && materialCalendar.mFirstDay != -1){
+                    int startingPosition = 6 + materialCalendar.mFirstDay;
+                    int currentDayPosition = startingPosition + materialCalendar.mCurrentDay;
 
                     Log.d("INITIALSELECTEDPOSITION", String.valueOf(currentDayPosition));
                     mCalendar.setItemChecked(currentDayPosition, true);
@@ -114,7 +149,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             }
 
             // ListView for saved events in calendar
-            mSavedEventsListView = (ListView) rootView.findViewById(R.id.playedWorkoutsLV);
+            mSavedEventsListView = (RecyclerView) rootView.findViewById(R.id.playedWorkoutsLV);
+            mSavedEventsListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         }
 
         return rootView;
@@ -125,13 +161,25 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         super.onActivityCreated(savedInstanceState);
 
         if (mSavedEventsListView != null) {
-            playedWorkoutsAdapter = new PlayedWorkoutsAdapter(getActivity());
+            playedWorkoutsAdapter = new PlayedWorkoutsOnDayAdapter(getActivity(), this, new PlayedWorkoutsOnDayAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    WorkoutItem workoutItem = mSavedEventsPerDay.get(selectedDay).get(position);
+                    if (workoutItem != null) {
+
+                        Intent intent = new Intent(getActivity().getBaseContext(), StatisticsActivity.class);
+                        intent.putExtra("workoutItemStats", workoutItem);
+                        Log.d("workoutItemExArSize", String.valueOf(workoutItem.exercisesList.size()));
+                        startActivity(intent);
+                    }
+                }
+            });
+
             mSavedEventsListView.setAdapter(playedWorkoutsAdapter);
-            mSavedEventsListView.setOnItemClickListener(this);
             Log.d("EVENTS_ADAPTER", "set adapter");
 
             // Show current day saved events on load
-            int today = MaterialCalendar.mCurrentDay + 6 + MaterialCalendar.mFirstDay;
+            int today = materialCalendar.mCurrentDay + 6 + materialCalendar.mFirstDay;
             showSavedEventsListView(today);
         }
     }
@@ -141,11 +189,11 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         if (view != null) {
             switch (view.getId()) {
                 case R.id.material_calendar_previous:
-                    MaterialCalendar.previousOnClick(mPrevious, mMonthName, mCalendar, mMaterialCalendarAdapter);
+                    materialCalendar.previousOnClick(mPrevious, mMonthName, mCalendar, mMaterialCalendarAdapter);
                     break;
 
                 case R.id.material_calendar_next:
-                    MaterialCalendar.nextOnClick(mNext, mMonthName, mCalendar, mMaterialCalendarAdapter);
+                    materialCalendar.nextOnClick(mNext, mMonthName, mCalendar, mMaterialCalendarAdapter);
                     break;
 
                 default:
@@ -158,7 +206,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.material_calendar_gridView:
-                MaterialCalendar.selectCalendarDay(mMaterialCalendarAdapter, position);
+                materialCalendar.selectCalendarDay(mMaterialCalendarAdapter, position);
 
                 // Reset event list
                 mNumEventsOnDay = -1;
@@ -185,13 +233,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         // For loop adding each event date to ArrayList
         // Also get ArrayList<SavedEvents>
 
-        mSavedEventsPerDay = new ArrayList<HashMap<String, Integer>>();
+        //mSavedEventsPerDay = new ArrayList<HashMap<String, ArrayList<WorkoutItem>>>();
 
         /**
          * Make sure to use this variable name or update in CalendarAdapter 'setSavedEvent'
          */
-        mSavedEventDays = new ArrayList<Integer>();
+        //mSavedEventDays = new ArrayList<Integer>();
 
+        /*
         // This is just used for testing purposes to show saved events on the calendar
         Random random = new Random();
         int randomNumOfEvents = random.nextInt(10 - 1) + 1;
@@ -210,15 +259,18 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         }
 
         Log.d("SAVED_EVENT_DATES", String.valueOf(mSavedEventDays));
+        */
     }
 
-    protected static void showSavedEventsListView(int position) {
+
+    protected void showSavedEventsListView(int position) {
         Boolean savedEventsOnThisDay = false;
         int selectedDate = -1;
 
-        if (MaterialCalendar.mFirstDay != -1 && mSavedEventDays != null && mSavedEventDays.size
-                () > 0) {
-            selectedDate = position - (6 + MaterialCalendar.mFirstDay);
+        if (materialCalendar.mFirstDay != -1 && mSavedEventDays != null && mSavedEventDays.size() > 0) {
+
+            selectedDate = position - (6 + materialCalendar.mFirstDay);
+            this.selectedDay = selectedDate;
             Log.d("SELECTED_SAVED_DATE", String.valueOf(selectedDate));
 
             for (int i = 0; i < mSavedEventDays.size(); i++) {
@@ -231,15 +283,12 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         Log.d("SAVED_EVENTS_BOOL", String.valueOf(savedEventsOnThisDay));
 
         if (savedEventsOnThisDay) {
-            Log.d("POS", String.valueOf(selectedDate));
-            if (mSavedEventsPerDay != null && mSavedEventsPerDay.size() > 0) {
-                for (int i = 0; i < mSavedEventsPerDay.size(); i++) {
-                    HashMap<String, Integer> x = mSavedEventsPerDay.get(i);
-                    if (x.containsKey("day" + selectedDate)) {
-                        mNumEventsOnDay = mSavedEventsPerDay.get(i).get("day" + selectedDate);
-                        Log.d("NUM_EVENT_ON_DAY", String.valueOf(mNumEventsOnDay));
-                    }
-                }
+            Log.d("POSDAY", String.valueOf(selectedDate));
+            if (mSavedEventsPerDay != null && mSavedEventsPerDay.size() > 0 && mSavedEventsPerDay.containsKey(selectedDate)) {
+
+                mNumEventsOnDay = mSavedEventsPerDay.get(selectedDate).size();
+                Log.d("NUM_EVENT_ON_DAY", String.valueOf(mNumEventsOnDay));
+
             }
         } else {
             mNumEventsOnDay = -1;
@@ -249,7 +298,95 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             playedWorkoutsAdapter.notifyDataSetChanged();
 
             // Scrolls back to top of ListView before refresh
-            mSavedEventsListView.setSelection(0);
+            mSavedEventsListView.smoothScrollToPosition(0);
         }
     }
+
+    public void getSavedEventsForCurrentMonth(long timeInMilliSeconds){
+
+
+        mSavedEventsPerDay = new HashMap<Integer, ArrayList<WorkoutItem>>();
+
+        /**
+         * Make sure to use this variable name or update in CalendarAdapter 'setSavedEvent'
+         */
+        mSavedEventDays = new ArrayList<Integer>();
+
+        // init Firebase authentication and database
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid()).child("statistics");
+
+        long monthInMilliseconds = 0;
+
+        final Calendar calendar = Calendar.getInstance();
+        final SimpleDateFormat dayFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        dayFormatter.setTimeZone(TimeZone.getDefault());
+
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("MM/yyyy", Locale.US);
+        monthFormatter.setTimeZone(TimeZone.getDefault());
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        calendar.setTimeInMillis(timeInMilliSeconds);
+        String date = monthFormatter.format(calendar.getTime());
+
+        try {
+            Date mDate = monthFormatter.parse(date);
+            monthInMilliseconds = mDate.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        final String monthInMillsStr = String.valueOf(monthInMilliseconds);
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot workoutsPerMonthSnapShot : dataSnapshot.child(monthInMillsStr).getChildren()){
+
+                    String monthInMillis = workoutsPerMonthSnapShot.getKey();
+
+                    Log.d("SnapShotKeyMonth", monthInMillis);
+
+                    calendar.setTimeInMillis(Long.parseLong(monthInMillis));
+                    String date = dayFormatter.format(calendar.getTime());
+                    String day = date.substring(0, date.indexOf('/'));
+
+                    Log.d("dateIs:", date);
+                    Log.d("dayIs:", day);
+
+                    mSavedEventDays.add(Integer.parseInt(day));
+
+                    //HashMap<Integer, ArrayList<WorkoutItem>> dayInfo = new HashMap<Integer, ArrayList<WorkoutItem>>();
+
+
+                    GenericTypeIndicator<HashMap<String, WorkoutItem>> workoutItemsGTypeInd = new GenericTypeIndicator<HashMap<String, WorkoutItem>>() {};
+
+                    Map<String, WorkoutItem> workoutItemHashMap = workoutsPerMonthSnapShot.getValue(workoutItemsGTypeInd); //(HashMap<String, WorkoutItem>) workoutsPerMonthSnapShot.getValue();
+                    ArrayList<WorkoutItem> workoutItemArrayList = new ArrayList<WorkoutItem>(workoutItemHashMap.values());
+
+
+                    Log.d("SnapShotKeyDayCount", String.valueOf(workoutItemArrayList.size()));
+
+                    Log.d("SnapShotKeyDayName", String.valueOf(workoutItemArrayList.get(0).workoutID));
+
+                    //dayInfo.put(Integer.parseInt(day), workoutItemArrayList);
+                    Log.d("day" + day, String.valueOf(workoutItemArrayList.size()));
+
+                    mSavedEventsPerDay.put(Integer.parseInt(day), workoutItemArrayList);
+
+                }
+
+                mMaterialCalendarAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        databaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
 }

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
 
 import java.util.ArrayList;
 
@@ -25,14 +25,13 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
     Context context;
     private int rvHeight, maxReps;
     private ArrayList<WorkoutExItem> workoutExItemArrayListObj;
-    private ArrayList<Integer> workoutExItemArrayListAch;
+   // private ArrayList<Integer> workoutExItemArrayListAch;
 
-    public StatisticsExAdapter(Context context, int rvHeight, int maxReps, ArrayList<WorkoutExItem> workoutExItemArrayListObj, ArrayList<Integer> workoutExItemArrayListAch){
+    public StatisticsExAdapter(Context context, int rvHeight, int maxReps, ArrayList<WorkoutExItem> workoutExItemArrayListObj){
         this.context = context;
         this.rvHeight = rvHeight;
         this.maxReps = maxReps;
         this.workoutExItemArrayListObj = workoutExItemArrayListObj;
-        this.workoutExItemArrayListAch = workoutExItemArrayListAch;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,20 +47,20 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
         RelativeLayout.LayoutParams achParams2 = (RelativeLayout.LayoutParams) holder.FLgrey.getLayoutParams();
 
 
-        WorkoutExItem workoutExItemObj = workoutExItemArrayListObj.get(position);
-        int workoutExItemAch = workoutExItemArrayListAch.get(position);
+        int workoutExItemObj = workoutExItemArrayListObj.get(position).reps;
+        int workoutExItemAch = workoutExItemArrayListObj.get(position).exReps;
 
-        if (workoutExItemObj.reps != 0){
-            Log.d("ObjAch", String.valueOf(rvHeight) + " - " + String.valueOf(workoutExItemObj.reps) + " - " + String.valueOf(workoutExItemAch) + " - " + String.valueOf(maxReps));
+        if (workoutExItemObj != 0){
+            Log.d("ObjAch", String.valueOf(rvHeight) + " - " + String.valueOf(workoutExItemObj) + " - " + String.valueOf(workoutExItemAch) + " - " + String.valueOf(maxReps));
             if (maxReps > 0) {
 
                 achParams.height = (int) ((float) rvHeight * ((float) workoutExItemAch / (float) maxReps) * (float)9 / (float)10);
                 achParams2.height = achParams.height / 2;
                 Log.d("objStats", String.valueOf(((float) workoutExItemAch / (float) maxReps) * (float)9 / (float)10));
 
-                objParams.height = (int) ((float) rvHeight * ((float) workoutExItemObj.reps / (float) maxReps) * (float)9 / (float)10);
+                objParams.height = (int) ((float) rvHeight * ((float) workoutExItemObj / (float) maxReps) * (float)9 / (float)10);
                 objParams2.height = objParams.height / 2;
-                Log.d("objStats2", String.valueOf(((float) workoutExItemObj.reps / (float) maxReps) * (float)9 / (float)10));
+                Log.d("objStats2", String.valueOf(((float) workoutExItemObj / (float) maxReps) * (float)9 / (float)10));
             }
             else {
                 achParams.height = 0;
@@ -73,29 +72,9 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
             holder.FLred.setLayoutParams(objParams2);
             holder.achievedFL.setLayoutParams(achParams);
             holder.FLgrey.setLayoutParams(achParams2);
-            holder.statisticsExName.setText(AppConfig.exercises_names[position]);
+            holder.statisticsExName.setText(workoutExItemArrayListObj.get(position).name);
             holder.itemView.setVisibility(View.VISIBLE);
         }
-/*
-        workoutExItemObj.reps = workoutExItemObj.reps * workoutExItemObj.exReps;
-        workoutExItemAch.reps = workoutExItemAch.reps * workoutExItemAch.exReps;
-*/
-
-
-        /*
-        if (workoutExItemAch.reps >= workoutExItemObj.reps){
-            if (workoutExItemAch.reps == maxReps){
-                achParams.height = rvHeight * (workoutExItemAch.reps / maxReps);
-                achParams2.height = achParams.height / 2;
-                objParams.height = rvHeight * (workoutExItemObj.reps / maxReps);
-                objParams2.height = objParams.height / 2;
-            }
-            else {
-
-            }
-        }
-        */
-
 
     }
 

@@ -2,12 +2,10 @@ package ch.philopateer.mibody.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -21,20 +19,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.AppController;
-import ch.philopateer.mibody.app.ExerciseItem;
-import ch.philopateer.mibody.app.WorkoutExItem;
-import ch.philopateer.mibody.app.WorkoutItem;
+import ch.philopateer.mibody.object.ExerciseItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutItem;
 import ch.philopateer.mibody.helper.ExercisesAdapter;
 import ch.philopateer.mibody.helper.SQLiteHandler;
 import ch.philopateer.mibody.helper.WorkoutExItemAdapter;
@@ -49,8 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;

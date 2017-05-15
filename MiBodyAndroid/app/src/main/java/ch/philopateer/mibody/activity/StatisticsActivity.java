@@ -5,14 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
@@ -20,7 +16,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -32,11 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,11 +39,10 @@ import com.squareup.picasso.Target;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.app.WorkoutExItem;
+import ch.philopateer.mibody.object.WorkoutExItem;
 import ch.philopateer.mibody.helper.StatisticsExAdapter;
+import ch.philopateer.mibody.object.WorkoutItem;
 
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -84,10 +75,19 @@ public class StatisticsActivity extends AppCompatActivity{
     FirebaseAuth firebaseAuth;
     StorageReference photoReference;
 
+    WorkoutItem workoutItem = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics_activity);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.containsKey("workoutItemStats")) {
+            workoutItem = (WorkoutItem) getIntent().getParcelableExtra("workoutItemStats");
+            workoutItem.JSONtoArray();
+            Log.d("workoutItemExArSize2", String.valueOf(workoutItem.exercisesList.size()));
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
         photoReference = FirebaseStorage.getInstance().getReference();
@@ -189,27 +189,31 @@ public class StatisticsActivity extends AppCompatActivity{
         showDialog();
         workoutExItemArrayListAch = new ArrayList<Integer>();
         workoutExItemArrayListObj = new ArrayList<WorkoutExItem>();
+        /*
         SharedPreferences objPrefs = getSharedPreferences("ExObjStatistics", Context.MODE_PRIVATE);
 
         SharedPreferences achPrefs = getSharedPreferences("ExAchStatistics", Context.MODE_PRIVATE);
+*/
 
+        for (int i = 0; i < workoutItem.exercisesList.size(); i++){
 
-        for (int i = 0; i < AppConfig.exercises_names.length; i++){
+            if (workoutItem.exercisesList.get(i).reps >= maxReps) {
+                maxReps = workoutItem.exercisesList.get(i).reps;
+            }
+            if (workoutItem.exercisesList.get(i).exReps >= maxReps) {
+                maxReps = workoutItem.exercisesList.get(i).exReps;
+            }
 
-            if(objPrefs.getInt(AppConfig.exercises_names[i], 0) != 0) {
-                workoutExItemArrayListObj.add(new WorkoutExItem(AppConfig.exercises_names[i], "", "", "", "", objPrefs.getInt(AppConfig.exercises_names[i], 0), 0, 0));
-                workoutExItemArrayListAch.add(achPrefs.getInt(AppConfig.exercises_names[i], 0));
-            /*
+            //workoutExItemArrayListObj.add(new WorkoutExItem(AppConfig.exercises_names[i], "", "", "", "", objPrefs.getInt(AppConfig.exercises_names[i], 0), 0, 0));
+            //workoutExItemArrayListAch.add(workoutItem.exercisesList.get(i).exReps);
+
+            if(workoutItem.exercisesList.size() != 0) {
+                /*
             workoutExItemArrayListObj.get(i).name = AppConfig.exercises_names[i];
             workoutExItemArrayListObj.get(i).reps = objPrefs.getInt(AppConfig.exercises_names[i], 0);
             workoutExItemArrayListAch.set(i, achPrefs.getInt(AppConfig.exercises_names[i], 0));
             */
-                if (workoutExItemArrayListObj.get(workoutExItemArrayListObj.size()-1).reps >= maxReps) {
-                    maxReps = workoutExItemArrayListObj.get(workoutExItemArrayListObj.size()-1).reps;
-                }
-                if (workoutExItemArrayListAch.get(workoutExItemArrayListAch.size()-1) >= maxReps) {
-                    maxReps = workoutExItemArrayListAch.get(workoutExItemArrayListAch.size()-1);
-                }
+
 
             }
 
@@ -227,7 +231,7 @@ public class StatisticsActivity extends AppCompatActivity{
             public boolean onPreDraw() {
                 yAxisFL.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                statisticsExAdapter = new StatisticsExAdapter(StatisticsActivity.this, yAxisFL.getHeight(), maxReps, workoutExItemArrayListObj, workoutExItemArrayListAch);
+                statisticsExAdapter = new StatisticsExAdapter(StatisticsActivity.this, yAxisFL.getHeight(), maxReps, workoutItem.exercisesList);
                 exercisesStatisticsRV.setLayoutManager(new LinearLayoutManager(StatisticsActivity.this, LinearLayoutManager.HORIZONTAL, false));
                 exercisesStatisticsRV.setAdapter(statisticsExAdapter);
                 hideDialog();
