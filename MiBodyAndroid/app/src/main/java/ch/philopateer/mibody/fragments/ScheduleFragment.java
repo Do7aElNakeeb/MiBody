@@ -56,6 +56,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     ImageView mNext;
     TextView mMonthName;
     GridView mCalendar;
+    TextView playedWorkoutsNoneTV;
 
     // Calendar Adapter
     private MaterialCalendarAdapter mMaterialCalendarAdapter;
@@ -76,7 +77,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
 
     MaterialCalendar materialCalendar;
 
-    public int selectedDay = -1;
+    public int selectedDay = -1, today = -1;
 
     @Override
     public void onAttach(Activity activity) {
@@ -151,6 +152,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             // ListView for saved events in calendar
             mSavedEventsListView = (RecyclerView) rootView.findViewById(R.id.playedWorkoutsLV);
             mSavedEventsListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+            playedWorkoutsNoneTV = (TextView) rootView.findViewById(R.id.playedWorkoutsNoneTV);
         }
 
         return rootView;
@@ -179,7 +182,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             Log.d("EVENTS_ADAPTER", "set adapter");
 
             // Show current day saved events on load
-            int today = materialCalendar.mCurrentDay + 6 + materialCalendar.mFirstDay;
+            today = materialCalendar.mCurrentDay + 6 + materialCalendar.mFirstDay;
             showSavedEventsListView(today);
         }
     }
@@ -294,6 +297,15 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             mNumEventsOnDay = -1;
         }
 
+        if (mNumEventsOnDay > 0) {
+            playedWorkoutsNoneTV.setVisibility(View.GONE);
+            mSavedEventsListView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mSavedEventsListView.setVisibility(View.GONE);
+            playedWorkoutsNoneTV.setVisibility(View.VISIBLE);
+        }
+
         if (playedWorkoutsAdapter != null && mSavedEventsListView != null) {
             playedWorkoutsAdapter.notifyDataSetChanged();
 
@@ -307,9 +319,6 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
 
         mSavedEventsPerDay = new HashMap<Integer, ArrayList<WorkoutItem>>();
 
-        /**
-         * Make sure to use this variable name or update in CalendarAdapter 'setSavedEvent'
-         */
         mSavedEventDays = new ArrayList<Integer>();
 
         // init Firebase authentication and database
@@ -377,6 +386,10 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
                 }
 
                 mMaterialCalendarAdapter.notifyDataSetChanged();
+
+                if (today != selectedDay){
+                    showSavedEventsListView(today);
+                }
 
             }
 
