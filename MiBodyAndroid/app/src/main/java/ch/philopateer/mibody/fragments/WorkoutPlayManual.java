@@ -52,31 +52,20 @@ import java.util.TimeZone;
 public class WorkoutPlayManual extends Fragment {
 
     RecyclerView workoutsPlayItemsRV;
-    TextView workoutName, exerciseName, exerciseReps, processActionTV; // exerciseRestTime, nextExerciseName;
-    ImageView nextExerciseBtn;
+    TextView workoutName, exerciseName, exerciseReps, processActionTV, counterHintTV;
 
     CardView processActionCV;
     ProgressBar processActionPB;
 
     int targertPos = 0;
     RelativeLayout saveBtn;
-    public WorkoutItem workoutItem, workoutItem2;
+    public WorkoutItem workoutItem;
     WorkoutPlayExItemsAdapter workoutPlayExItemsAdapter;
-    public ArrayList<WorkoutExItem> achWorkoutExItemArrayList;
     public ArrayList<Integer> achExReps;
     int focusedItem = -1;
 
-    int exReps = 1;
-
-
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
-
-    public OnBtnClickListener onBtnClickListener;
-
-    public void initListener(OnBtnClickListener onBtnClickListener){
-        this.onBtnClickListener = onBtnClickListener;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,13 +80,10 @@ public class WorkoutPlayManual extends Fragment {
         workoutName = (TextView) view.findViewById(R.id.workoutName);
         exerciseName = (TextView) view.findViewById(R.id.exerciseName);
         exerciseReps = (TextView) view.findViewById(R.id.exerciseReps);
-        /*
-        exerciseRestTime = (TextView) view.findViewById(R.id.exerciseRestTime);
-        nextExerciseName = (TextView) view.findViewById(R.id.nextExerciseName);
-        nextExerciseBtn = (ImageView) view.findViewById(R.id.nextExerciseBtn);
-        */
+
         processActionCV = (CardView) view.findViewById(R.id.processActionCV);
         processActionTV = (TextView) view.findViewById(R.id.processActionTV);
+        counterHintTV = (TextView) view.findViewById(R.id.counterHintTV);
         processActionPB = (ProgressBar) view.findViewById(R.id.processActionPB);
 
         saveBtn = (RelativeLayout) view.findViewById(R.id.save_btn);
@@ -107,28 +93,19 @@ public class WorkoutPlayManual extends Fragment {
         display.getSize(size);
 
         workoutsPlayItemsRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-/*
-        workoutItem2 = workoutItem;
-        achWorkoutExItemArrayList = workoutItem2.exercisesList;
 
-        achWorkoutExItemArrayList = new ArrayList<WorkoutExItem>(workoutItem.exercisesList.size());
-        Collections.copy(achWorkoutExItemArrayList, workoutItem.exercisesList);
-*/
         achExReps = new ArrayList<Integer>();
 
         for (int i = 0; i < workoutItem.exercisesList.size(); i++){
             achExReps.add(workoutItem.exercisesList.get(i).reps);
-            //achWorkoutExItemArrayList.add(workoutExItem);
+
             Log.d("RepsObjAch", String.valueOf(achExReps.get(i)) + " - " + String.valueOf(workoutItem.exercisesList.get(i).reps));
-            //achWorkoutExItemArrayList.get(i).reps = 0;
             Log.d("RepsObjAch2", String.valueOf(achExReps.get(i)) + " - " + String.valueOf(workoutItem.exercisesList.get(i).reps));
         }
 
         workoutPlayExItemsAdapter = new WorkoutPlayExItemsAdapter(getActivity(), size.x, workoutItem.exercisesList, achExReps);
 
         workoutsPlayItemsRV.setAdapter(workoutPlayExItemsAdapter);
-
-//        workoutsPlayItemsRV.stopScroll();
 
         workoutName.setText(workoutItem.workoutName);
 
@@ -168,8 +145,7 @@ public class WorkoutPlayManual extends Fragment {
                     targetPosition = workoutPlayExItemsAdapter.getItemCount() - 2;
                 }
                 targertPos = targetPosition;
-                //workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
-                //workoutsPlayItemsRV.scrollToPosition(focusedItem + 1);
+
                 return targetPosition;
             }
         };
@@ -177,49 +153,17 @@ public class WorkoutPlayManual extends Fragment {
         workoutsPlayItemsRV.setOnFlingListener(snapHelper);
         workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
 
-        //initWorkoutItem();
-
-/*
-        nextExerciseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                focusedItem++;
-                initWorkoutItem();
-            }
-        });
-*/
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                /*
-                SharedPreferences objPrefs = getActivity().getSharedPreferences("ExObjStatistics", Context.MODE_PRIVATE);
-                SharedPreferences.Editor objEditor = objPrefs.edit();
-
-                SharedPreferences achPrefs = getActivity().getSharedPreferences("ExAchStatistics", Context.MODE_PRIVATE);
-                SharedPreferences.Editor achEditor = achPrefs.edit();
-
-                for (int i = 0; i < workoutItem.exercisesList.size(); i++) {
-                    achEditor.putInt(workoutItem.exercisesList.get(i).name, achPrefs.getInt(workoutItem.exercisesList.get(i).name, 0) + achExReps.get(i));
-                    objEditor.putInt(workoutItem.exercisesList.get(i).name, objPrefs.getInt(workoutItem.exercisesList.get(i).name, 0) + workoutItem.exercisesList.get(i).reps);
-                }
-                objEditor.apply();
-                achEditor.apply();
-                */
-
                 addWorkoutToCalender();
-
-                //onBtnClickListener.onBtnClick();
-                /*
-                Intent intent = new Intent(getActivity(), Dimensions.class);
-                getActivity().startActivity(intent);
-                getActivity().finish();
-                */
             }
         });
 
 
         exerciseName.setText(workoutItem.exercisesList.get(0).name);
+        counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(0).name + " exercise");
 
         processActionCV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,12 +177,14 @@ public class WorkoutPlayManual extends Fragment {
                     processActionPB.setProgress(workoutItem.exercisesList.get(focusedItem).restTime);
                     workoutPlayExItemsAdapter.setItemAction(0);
                     processActionTV.setText("REST");
+                    counterHintTV.setText("Press RESt to begin rest time");
 
                 }
                 else if (processActionTV.getText().toString().equals("REST")){
 
                     workoutPlayExItemsAdapter.setItemAction(1);
                     processActionPB.setMax(workoutItem.exercisesList.get(focusedItem).restTime);
+                    counterHintTV.setText("Modify exercise reps unless they matches the objective");
 
                     new CountDownTimer(workoutItem.exercisesList.get(focusedItem).restTime * 1000, 1000){
 
@@ -257,11 +203,13 @@ public class WorkoutPlayManual extends Fragment {
 
                             if (focusedItem == workoutItem.exercisesList.size() - 1){
                                 processActionTV.setText("DONE");
+                                counterHintTV.setText("Press DONE to finish workout and get statistics");
                             }
                             else {
                                 processActionTV.setText("START");
                                 workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
                                 exerciseName.setText(workoutItem.exercisesList.get(focusedItem + 1).name);
+                                counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
                             }
                         }
                     }.start();
@@ -343,37 +291,6 @@ public class WorkoutPlayManual extends Fragment {
 
     }
 
-/*
-    private void initWorkoutItem(){
-        if(exReps <= workoutItem.exercisesList.get(focusedItem).exReps){
-            if (focusedItem == workoutItem.exercisesList.size() - 1 && exReps == workoutItem.exercisesList.get(focusedItem).exReps){
-                //nextExerciseName.setText("Finish");
-                nextExerciseBtn.setVisibility(View.GONE);
-            }
-            exReps++;
-            workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
-            workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 1);
-            exerciseReps.setText(String.valueOf(exReps) + "/" +  String.valueOf(workoutItem.exercisesList.get(focusedItem).exReps) + " Reps.");
-            exerciseName.setText(workoutItem.exercisesList.get(focusedItem).name);
-            //exerciseRestTime.setText(String.valueOf(workoutItem.exercisesList.get(focusedItem).restTime));
-
-        }
-        else {
-            exReps = 1;
-            focusedItem++;
-            workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
-            workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 1);
-            exerciseReps.setText(String.valueOf(exReps) + "/" +  String.valueOf(workoutItem.exercisesList.get(focusedItem).exReps) + " Reps.");
-            exerciseName.setText(workoutItem.exercisesList.get(focusedItem).name);
-            //exerciseRestTime.setText(String.valueOf(workoutItem.exercisesList.get(focusedItem).restTime));
-
-            if (focusedItem != workoutItem.exercisesList.size() - 1) {
-               // nextExerciseName.setText(workoutItem.exercisesList.get(focusedItem + 1).name);
-            }
-
-        }
-    }
-*/
     public WorkoutPlayManual(WorkoutItem workoutItem){
         this.workoutItem = workoutItem;
     }
