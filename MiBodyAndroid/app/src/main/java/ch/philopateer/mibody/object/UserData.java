@@ -26,6 +26,15 @@ public class UserData {
         this.BMI = BMI;
     }
 
+    public UserData(String name, String email, String gender, String dob, String weight, String height){
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.dob = dob;
+        this.weight = weight;
+        this.height = height;
+    }
+
     public UserData(){
 
     }

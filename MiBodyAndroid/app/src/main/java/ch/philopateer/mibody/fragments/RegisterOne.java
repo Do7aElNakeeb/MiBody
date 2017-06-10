@@ -194,6 +194,17 @@ public class RegisterOne extends Fragment {
         ppEditCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Toast.makeText(getActivity(), "Select Image", Toast.LENGTH_SHORT).show();
+                int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                }
+                else {
+                    showFileChooser();
+                }
+                /*
                 if (changePhotoMenu.getVisibility() == View.VISIBLE){
                     blackLayout.setVisibility(View.GONE);
                     changePhotoMenu.setVisibility(View.GONE);
@@ -203,6 +214,7 @@ public class RegisterOne extends Fragment {
                     changePhotoMenu.setVisibility(View.VISIBLE);
 
                 }
+                */
             }
         });
 

@@ -51,6 +51,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -94,7 +95,7 @@ public class Login extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
-    StorageReference photoReferenece;
+    StorageReference photoReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        photoReferenece = FirebaseStorage.getInstance().getReference();
+        photoReference = FirebaseStorage.getInstance().getReference();
 
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -424,10 +425,29 @@ public class Login extends AppCompatActivity {
                                         session.setLogin("1");
                                         editor.apply();
 
-                                        FirebaseDatabase.getInstance().getReference().child("users")
-                                                .child(firebaseAuth.getCurrentUser().getUid())
-                                                .setValue(new UserData(object.getString("name"), object.getString("email"),
-                                                        object.getString("gender"), tmpDoB, "", "", "0", ""));
+                                        String photoUrl = AppConfig.fbPhotoURL + prefs.getString("fbID", "") + AppConfig.fbPhotoConginf;
+
+                                        photoReference = FirebaseStorage.getInstance().getReference().child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
+                                        photoReference.putFile(Uri.parse(photoUrl))
+                                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                                                        builder.setMessage(e.getMessage())
+                                                                .setTitle("Error!")
+                                                                .setPositiveButton(android.R.string.ok, null);
+                                                        AlertDialog dialog = builder.create();
+                                                        dialog.show();
+                                                    }
+                                                });
+
 
                                         loginToHome();
 

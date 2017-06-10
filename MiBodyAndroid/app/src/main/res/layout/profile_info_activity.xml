@@ -11,6 +11,17 @@
         android:background="@color/black"
         android:scaleType="centerCrop"/>
 
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/profileEditIV"
+        android:scaleX="-1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:tint="@color/MiBodyWhite"
+        android:src="@drawable/pen_icon"/>
 
     <ImageView
         android:layout_width="150dp"
@@ -50,8 +61,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/name"
+                android:text=""
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:maxLines="1"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/nameET"
+                android:padding="0dp"
+                android:visibility="gone"
+                android:background="@android:color/transparent"
                 android:text="Mamdouh El Nakeeb"
                 android:textSize="22sp"
+                android:inputType="numberDecimal"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:gravity="center"
@@ -76,10 +102,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/email"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:maxLines="1"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/emailET"
                 android:text="mamdouh.el.nakeeb@gmail.com"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:gravity="center"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
                 android:maxLines="1"/>
 
             <View
@@ -101,11 +139,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/gender"
-                android:text="Male"
+                android:text=""
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:gravity="center"
                 android:maxLines="1"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/genderSpinner"
+                android:textAlignment="center"
+                android:visibility="gone">
+
+            </Spinner>
 
             <View
                 android:layout_width="match_parent"
@@ -126,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/dob"
-                android:text="1/6/1995"
+                android:text=""
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:gravity="center"
@@ -161,6 +208,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/weight"
+                        android:text=""
+                        android:textSize="15sp"
+                        android:textColor="#FFFFFF"
+                        android:gravity="center"
+                        android:maxLines="1"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/weightET"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"
                         android:text="45"
                         android:textSize="15sp"
                         android:textColor="#FFFFFF"
@@ -192,6 +251,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:id="@+id/height"
+                        android:text=""
+                        android:textSize="15sp"
+                        android:textColor="#FFFFFF"
+                        android:gravity="center"
+                        android:maxLines="1"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/heightET"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"
+                        android:inputType="numberDecimal"
                         android:text="165"
                         android:textSize="15sp"
                         android:textColor="#FFFFFF"

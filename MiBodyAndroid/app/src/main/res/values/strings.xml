@@ -41,4 +41,9 @@
     <string name="calendar_next">next</string>
     <string name="saved_event_image">saved event image</string>
 
+    <array name="genderArray">
+        <item>Male</item>
+        <item>Female</item>
+    </array>
+
 </resources>
