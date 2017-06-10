@@ -177,7 +177,7 @@ public class WorkoutPlayManual extends Fragment {
                     processActionPB.setProgress(workoutItem.exercisesList.get(focusedItem).restTime);
                     workoutPlayExItemsAdapter.setItemAction(0);
                     processActionTV.setText("REST");
-                    counterHintTV.setText("Press RESt to begin rest time");
+                    counterHintTV.setText("Press REST to begin rest time");
 
                 }
                 else if (processActionTV.getText().toString().equals("REST")){

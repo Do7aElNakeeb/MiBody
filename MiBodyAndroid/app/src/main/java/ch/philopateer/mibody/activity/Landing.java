@@ -15,10 +15,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
-import ch.philopateer.mibody.helper.LandingVideosAdapter;
+import ch.philopateer.mibody.adapter.LandingVideosAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;

@@ -10,11 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -121,7 +124,7 @@ public class AddWorkout extends AppCompatActivity {
         WorkoutNameET = (EditText) findViewById(R.id.workoutNameET);
         WorkoutNameTxtView = (TextView) findViewById(R.id.workoutNameTxtView);
         workoutNameEditBtn = (ImageView) findViewById(R.id.workoutNameEditBtn);
-        workoutNameEditBtn.setColorFilter(ContextCompat.getColor(this, R.color.MiBodyOrange));
+
         //workoutRepeat = (EditText) findViewById(R.id.workoutRepeat);
         //workoutRepeatBtn = (ImageButton) findViewById(R.id.workoutRepeatBtn);
         AddExercise = (ImageView) findViewById(R.id.add_exercise);
@@ -148,14 +151,44 @@ public class AddWorkout extends AppCompatActivity {
                     WorkoutNameTxtView.setText(WorkoutNameET.getText().toString());
                     WorkoutNameTxtView.setVisibility(View.VISIBLE);
                     WorkoutNameET.setVisibility(View.GONE);
+                    workoutNameEditBtn.setScaleX(-1);
+                    workoutNameEditBtn.setScaleY(1);
+                    workoutNameEditBtn.setImageResource(R.drawable.pen_icon);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(WorkoutNameET.getWindowToken(), 0);
                 }else {
                     WorkoutNameTxtView.setVisibility(View.INVISIBLE);
                     WorkoutNameET.setText(WorkoutNameTxtView.getText().toString());
                     WorkoutNameET.setVisibility(View.VISIBLE);
+                    workoutNameEditBtn.setScaleX((float) 1.5);
+                    workoutNameEditBtn.setScaleY((float) 1.5);
+                    workoutNameEditBtn.setImageResource(R.drawable.true_mark_icon);
+
+                    WorkoutNameET.requestFocus();
+                    WorkoutNameET.selectAll();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 
                 }
+            }
+        });
+
+        WorkoutNameET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                Boolean action = false;
+                if (i == EditorInfo.IME_ACTION_DONE) {
+
+                    WorkoutNameTxtView.setText(WorkoutNameET.getText().toString());
+                    WorkoutNameTxtView.setVisibility(View.VISIBLE);
+                    WorkoutNameET.setVisibility(View.GONE);
+                    workoutNameEditBtn.setScaleX(-1);
+                    workoutNameEditBtn.setImageResource(R.drawable.pen_icon);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(WorkoutNameET.getWindowToken(), 0);
+                    action = true;
+                }
+                return action;
             }
         });
 
@@ -329,7 +362,7 @@ public class AddWorkout extends AppCompatActivity {
         repsMinusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Integer.parseInt(restTxtView.getText().toString()) > 0) {
+                if(Integer.parseInt(repsTxtView.getText().toString()) > 0) {
                     repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) - 1));
                     workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
                 }
@@ -366,6 +399,7 @@ public class AddWorkout extends AppCompatActivity {
             }
         });
 
+        /*
         repsTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -383,6 +417,7 @@ public class AddWorkout extends AppCompatActivity {
                 restEdtTxt.setVisibility(View.VISIBLE);
             }
         });
+        */
     }
 
     private void updateWorkoutExItemDetails(){

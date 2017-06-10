@@ -82,7 +82,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
         if (workoutsType.equals("predefined")) {
             addWorkoutBtn.setVisibility(View.GONE);
-            Toast.makeText(this, "Soon in PRO version", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Soon in PRO version", Toast.LENGTH_SHORT).show();
         }
         else {
             addWorkoutBtn.setVisibility(View.VISIBLE);
@@ -90,9 +90,6 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
             user_id = sharedPreferences.getString("user_id", "");
             loadWorkouts();
         }
-
-
-
 
         addWorkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +139,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                 hideDialog();
             }
+
         };
 
         databaseReference.addListenerForSingleValueEvent(valueEventListener);

@@ -8,7 +8,7 @@
     android:foregroundGravity="center"
     android:background="#fc3d39"
     android:orientation="vertical"
-    tools:context="com.mibody.app.ch.mibody.app.fragments.Exercises">
+    tools:context="ch.philopateer.mibody.fragments.Exercises">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/expandableListView"

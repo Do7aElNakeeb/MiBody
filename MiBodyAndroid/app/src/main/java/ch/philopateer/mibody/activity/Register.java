@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -250,7 +251,6 @@ public class Register extends AppCompatActivity {
                                     .child(firebaseAuth.getCurrentUser().getUid())
                                     .setValue(new UserData(name, email, gender, dob, weight, height, units, BMI));
 
-
                             photoReferenece = photoReferenece.child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
                             photoReferenece.putFile(photoPath)
                                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -269,9 +269,9 @@ public class Register extends AppCompatActivity {
                                                     .setPositiveButton(android.R.string.ok, null);
                                             AlertDialog dialog = builder.create();
                                             dialog.show();
-                                            return;
                                         }
                                     });
+
                             saveToSharedPrefs();
                             loginToHome();
 

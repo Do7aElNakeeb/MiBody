@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/MiBodyOrange"
-    tools:context="com.mibody.app.ch.mibody.app.activity.WorkoutsActivity">
+    tools:context="ch.philopateer.mibody.activity.WorkoutsActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"

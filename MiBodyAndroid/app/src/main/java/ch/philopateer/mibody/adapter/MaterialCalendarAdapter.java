@@ -214,4 +214,10 @@ public class MaterialCalendarAdapter extends BaseAdapter{
             }
         }
     }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
+    }
 }

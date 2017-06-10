@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.helper;
+package ch.philopateer.mibody.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -64,7 +64,7 @@ public class LandingVideosAdapter extends RecyclerView.Adapter<LandingVideosAdap
                         mpaint.setAntiAlias(true);
                         mpaint.setShader(new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
                         canvas.drawRoundRect((new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight())), 100, 100, mpaint);// Round Image Corner 100 100 100 100
-                        holder.videoThumbnail.setImageBitmap(imageRounded);
+                        holder.videoThumbnail.setImageBitmap(bitmap);
                     }
 
                     @Override

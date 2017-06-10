@@ -226,8 +226,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
 
-            Muscles muscles = new Muscles(cursor.getInt(0), cursor.getFloat(1),
-                    cursor.getFloat(2), cursor.getFloat(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6), cursor.getString(7));
+            Muscles muscles = new Muscles(cursor.getInt(0), cursor.getInt(1),
+                    cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7));
             musclesArrayList.add(muscles);
             cursor.moveToNext();
         }

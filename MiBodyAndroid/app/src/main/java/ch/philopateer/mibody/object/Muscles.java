@@ -7,22 +7,22 @@ package ch.philopateer.mibody.object;
 public class Muscles {
 
     public int id;
-    public float Triceps;
-    public float Quadriceps;
-    public float Chest;
-    public float Waist;
-    public float Calf;
-    public float Biceps;
+    public int Wrest;
+    public int Legs;
+    public int Chest;
+    public int Waist;
+    public int Calf;
+    public int Arm;
     public String updateTime;
 
-    public Muscles(int id, float Triceps, float Quadriceps, float Chest, float Waist, float Calf, float Biceps, String updateTime){
+    public Muscles(int id, int Wrest, int Legs, int Chest, int Waist, int Calf, int Arm, String updateTime){
         this.id = id;
-        this.Triceps = Triceps;
-        this.Quadriceps = Quadriceps;
+        this.Wrest = Wrest;
+        this.Legs = Legs;
         this.Chest = Chest;
         this.Waist = Waist;
         this.Calf = Calf;
-        this.Biceps = Biceps;
+        this.Arm = Arm;
         this.updateTime = updateTime;
     }
 }

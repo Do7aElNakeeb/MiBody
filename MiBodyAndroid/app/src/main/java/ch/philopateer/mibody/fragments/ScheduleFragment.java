@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -57,6 +58,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     TextView mMonthName;
     GridView mCalendar;
     TextView playedWorkoutsNoneTV;
+
+    LinearLayout backBtn;
 
     // Calendar Adapter
     private MaterialCalendarAdapter mMaterialCalendarAdapter;
@@ -104,6 +107,9 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             materialCalendar = new MaterialCalendar(this);
             materialCalendar.getInitialCalendarInfo();
             getSavedEventsForCurrentMonth(System.currentTimeMillis());
+
+            backBtn = (LinearLayout) rootView.findViewById(R.id.backBtnLL);
+            backBtn.setOnClickListener(this);
 
             // Previous ImageView
             mPrevious = (ImageView) rootView.findViewById(R.id.material_calendar_previous);
@@ -197,6 +203,10 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
 
                 case R.id.material_calendar_next:
                     materialCalendar.nextOnClick(mNext, mMonthName, mCalendar, mMaterialCalendarAdapter);
+                    break;
+
+                case R.id.backBtnLL:
+                    getActivity().finish();
                     break;
 
                 default:

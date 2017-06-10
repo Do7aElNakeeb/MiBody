@@ -43,7 +43,7 @@ public class Dimensions extends AppCompatActivity {
     RelativeLayout.LayoutParams params;
     RelativeLayout profileDimen;
 
-    float Waist = 0, Quadriceps = 0, Chest = 0, Triceps = 0, Calf = 0, Biceps = 0;
+    int Waist = 0, Legs = 0, Chest = 0, Wrest = 0, Calf = 0, Arm = 0;
     HashMap<String, Float> muscle = new HashMap<>(6);
 
     SharedPreferences prefs;
@@ -65,12 +65,12 @@ public class Dimensions extends AppCompatActivity {
 
         try {
             ArrayList<Muscles> musclesArrayList = sqLiteHandler.getMusclesUpdates(null);
-            Triceps = musclesArrayList.get(musclesArrayList.size() - 1).Triceps;
-            Quadriceps = musclesArrayList.get(musclesArrayList.size() - 1).Quadriceps;
+            Wrest = musclesArrayList.get(musclesArrayList.size() - 1).Wrest;
+            Legs = musclesArrayList.get(musclesArrayList.size() - 1).Legs;
             Chest = musclesArrayList.get(musclesArrayList.size() - 1).Chest;
             Waist = musclesArrayList.get(musclesArrayList.size() - 1).Waist;
             Calf = musclesArrayList.get(musclesArrayList.size() - 1).Calf;
-            Biceps = musclesArrayList.get(musclesArrayList.size() - 1).Biceps;
+            Arm = musclesArrayList.get(musclesArrayList.size() - 1).Arm;
         }
         catch (Exception e){
             Toast.makeText(Dimensions.this, "Update your muscles dimensions", Toast.LENGTH_SHORT).show();
@@ -79,18 +79,18 @@ public class Dimensions extends AppCompatActivity {
 
 /*
         Waist = prefs.getFloat("Waist", 0);
-        Quadriceps = prefs.getFloat("Quadriceps", 0);
+        Legs = prefs.getFloat("Legs", 0);
         Chest = prefs.getFloat("Chest", 0);
-        Triceps = prefs.getFloat("Triceps", 0);
+        Wrest = prefs.getFloat("Wrest", 0);
         Calf = prefs.getFloat("Calf", 0);
-        Biceps = prefs.getFloat("Biceps", 0);
+        Arm = prefs.getFloat("Arm", 0);
 
-        muscle.put("Triceps", (float) 0);
-        muscle.put("Quadriceps", (float) 0);
+        muscle.put("Wrest", (float) 0);
+        muscle.put("Legs", (float) 0);
         muscle.put("Chest", (float) 0);
         muscle.put("Waist", (float) 0);
         muscle.put("Calf", (float) 0);
-        muscle.put("Biceps", (float) 0);
+        muscle.put("Arm", (float) 0);
 */
 
         bodyImgView = (ImageView) findViewById(ch.philopateer.mibody.R.id.bodyImgView);
@@ -130,45 +130,45 @@ public class Dimensions extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
                 switch (muscleName.getText().toString()){
-                    case "Triceps":
+                    case "Wrest":
                         if(!editable.toString().equals("")) {
-                            Triceps = Float.valueOf(editable.toString());
+                            Wrest = Integer.valueOf(editable.toString());
                         }
                         break;
-                    case "Quadriceps":
+                    case "Legs":
                         if(!editable.toString().equals("")) {
-                            Quadriceps = Float.valueOf(editable.toString());
+                            Legs = Integer.valueOf(editable.toString());
                         }
                         break;
                     case "Chest":
                         if(!editable.toString().equals("")) {
-                            Chest = Float.valueOf(editable.toString());
+                            Chest = Integer.valueOf(editable.toString());
                         }
                         break;
                     case "Waist":
                         if(!editable.toString().equals("")) {
-                            Waist = Float.valueOf(editable.toString());
+                            Waist = Integer.valueOf(editable.toString());
                         }
                         break;
                     case "Calf":
                         if(!editable.toString().equals("")) {
-                            Calf = Float.valueOf(editable.toString());
+                            Calf = Integer.valueOf(editable.toString());
                         }
                         break;
-                    case "Biceps":
+                    case "Arm":
                         if(!editable.toString().equals("")) {
-                            Biceps = Float.valueOf(editable.toString());
+                            Arm = Integer.valueOf(editable.toString());
                         }
                         break;
                 }
 
                 ContentValues values = new ContentValues();
-                values.put(SQLiteHandler.MUSCLE_TRICEPS, Triceps);
-                values.put(SQLiteHandler.MUSCLE_QUADRICEPS, Quadriceps);
+                values.put(SQLiteHandler.MUSCLE_TRICEPS, Wrest);
+                values.put(SQLiteHandler.MUSCLE_QUADRICEPS, Legs);
                 values.put(SQLiteHandler.MUSCLE_CHEST, Chest);
                 values.put(SQLiteHandler.MUSCLE_WAIST, Waist);
                 values.put(SQLiteHandler.MUSCLE_CALF, Calf);
-                values.put(SQLiteHandler.MUSCLE_BICEPS, Biceps);
+                values.put(SQLiteHandler.MUSCLE_BICEPS, Arm);
                 sqLiteHandler.updateMuscle(values);
             }
         });
@@ -178,12 +178,12 @@ public class Dimensions extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Dimensions.this, Landing.class);
                 ContentValues values = new ContentValues();
-                values.put(SQLiteHandler.MUSCLE_TRICEPS, Triceps);
-                values.put(SQLiteHandler.MUSCLE_QUADRICEPS, Quadriceps);
+                values.put(SQLiteHandler.MUSCLE_TRICEPS, Wrest);
+                values.put(SQLiteHandler.MUSCLE_QUADRICEPS, Legs);
                 values.put(SQLiteHandler.MUSCLE_CHEST, Chest);
                 values.put(SQLiteHandler.MUSCLE_WAIST, Waist);
                 values.put(SQLiteHandler.MUSCLE_CALF, Calf);
-                values.put(SQLiteHandler.MUSCLE_BICEPS, Biceps);
+                values.put(SQLiteHandler.MUSCLE_BICEPS, Arm);
                 sqLiteHandler.updateMuscle(values);
                 sqLiteHandler.close();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -196,12 +196,12 @@ public class Dimensions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ContentValues values = new ContentValues();
-                values.put(SQLiteHandler.MUSCLE_TRICEPS, Triceps);
-                values.put(SQLiteHandler.MUSCLE_QUADRICEPS, Quadriceps);
+                values.put(SQLiteHandler.MUSCLE_TRICEPS, Wrest);
+                values.put(SQLiteHandler.MUSCLE_QUADRICEPS, Legs);
                 values.put(SQLiteHandler.MUSCLE_CHEST, Chest);
                 values.put(SQLiteHandler.MUSCLE_WAIST, Waist);
                 values.put(SQLiteHandler.MUSCLE_CALF, Calf);
-                values.put(SQLiteHandler.MUSCLE_BICEPS, Biceps);
+                values.put(SQLiteHandler.MUSCLE_BICEPS, Arm);
                 sqLiteHandler.updateMuscle(values);
                 sqLiteHandler.close();
                 finish();
@@ -253,12 +253,12 @@ public class Dimensions extends AppCompatActivity {
 
                 if (flag == 1) {
                     if (x <= bodyP1.getRight() && x >= bodyP1.getLeft()) {
-                        muscleName.setText("Triceps");
-                        muscleET.setText(String.valueOf(Triceps));
+                        muscleName.setText("Wrest");
+                        muscleET.setText(String.valueOf(Wrest));
                         Log.d("gotBlack", "1");
                     } else if (x <= bodyP2.getRight() && x >= bodyP2.getLeft()) {
-                        muscleName.setText("Quadriceps");
-                        muscleET.setText(String.valueOf(Quadriceps));
+                        muscleName.setText("Legs");
+                        muscleET.setText(String.valueOf(Legs));
                         Log.d("gotBlack", "2");
                     } else if (x <= bodyP3.getRight() && x >= bodyP3.getLeft()) {
                         muscleName.setText("Chest");
@@ -273,10 +273,11 @@ public class Dimensions extends AppCompatActivity {
                         muscleET.setText(String.valueOf(Calf));
                         Log.d("gotBlack", "5");
                     } else if (x <= bodyP6.getRight() && x >= bodyP6.getLeft()) {
-                        muscleName.setText("Biceps");
-                        muscleET.setText(String.valueOf(Biceps));
+                        muscleName.setText("Arm");
+                        muscleET.setText(String.valueOf(Arm));
                         Log.d("gotBlack", "6");
                     }
+                    muscleET.selectAll();
                     dimenLayoutToFlip.setVisibility(View.VISIBLE);
 
                     params.topMargin = y + bodyImgView.getTop() - dimenLayoutToFlip.getHeight();
