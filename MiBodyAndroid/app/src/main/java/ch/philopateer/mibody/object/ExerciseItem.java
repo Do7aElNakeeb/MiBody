@@ -1,10 +1,13 @@
 package ch.philopateer.mibody.object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by NakeebMac on 10/1/16.
  */
 
-public class ExerciseItem {
+public class ExerciseItem implements Parcelable{
 
     private String id;
     private String icon;
@@ -28,6 +31,28 @@ public class ExerciseItem {
         this.category = category;
     }
 
+
+    protected ExerciseItem(Parcel in) {
+        id = in.readString();
+        icon = in.readString();
+        image = in.readString();
+        GIF = in.readString();
+        description = in.readString();
+        name = in.readString();
+        category = in.readString();
+    }
+
+    public static final Creator<ExerciseItem> CREATOR = new Creator<ExerciseItem>() {
+        @Override
+        public ExerciseItem createFromParcel(Parcel in) {
+            return new ExerciseItem(in);
+        }
+
+        @Override
+        public ExerciseItem[] newArray(int size) {
+            return new ExerciseItem[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -83,5 +108,21 @@ public class ExerciseItem {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(icon);
+        parcel.writeString(image);
+        parcel.writeString(GIF);
+        parcel.writeString(description);
+        parcel.writeString(name);
+        parcel.writeString(category);
     }
 }

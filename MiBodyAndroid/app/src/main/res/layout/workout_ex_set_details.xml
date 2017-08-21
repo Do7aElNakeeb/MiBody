@@ -178,8 +178,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/workoutNameTxtView"
         android:layout_above="@id/workoutExerciseDetails"
+        android:layout_marginBottom="50dp"
         android:id="@+id/addWorkoutUserExercisesRV">
 
     </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workoutNameTxtView"
+        android:layout_above="@id/workoutExerciseDetails"
+        android:visibility="gone"
+        android:id="@+id/workoutExSetTubesRL">
+
+        <include
+            layout="@layout/workout_ex_set_tubes" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

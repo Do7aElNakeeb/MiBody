@@ -1,16 +1,22 @@
 package ch.philopateer.mibody.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +50,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
     String user_id = "NULL";
     String workoutsType = "";
     ArrayList<WorkoutItem> workoutItemArrayList;
-    SQLiteHandler sqLiteHandler;
+    //SQLiteHandler sqLiteHandler;
 
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
@@ -61,6 +67,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        /*
         sqLiteHandler = new SQLiteHandler(this);
 
         try {
@@ -69,6 +76,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.i("hello", "hello");
         }
+        */
 
         workoutTypeTxt = (TextView) findViewById(R.id.workoutsItemsType);
         addWorkoutBtn = (FloatingActionButton) findViewById(R.id.add_workout_btn);
@@ -95,6 +103,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), AddWorkout.class);
+                intent.putExtra("edit", false);
                 startActivity(intent);
             }
         });
@@ -103,18 +112,72 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
     private void loadWorkouts(){
 
+        // TODO Check connectivity
+
+        ConnectivityManager ConnectionManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=ConnectionManager.getActiveNetworkInfo();
+        if(networkInfo == null || !networkInfo.isConnected())
+        {
+            Toast.makeText(this, "Network Not Available", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
         pDialog.setMessage("Loading Workouts ...");
         showDialog();
 
         workoutItemArrayList = new ArrayList<WorkoutItem>();
         workoutsAdapter = new WorkoutsAdapter(getApplicationContext(), workoutItemArrayList, new WorkoutsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(WorkoutItem workoutItem) {
-                Intent intent = new Intent(getBaseContext(), WorkoutPlay.class);
-                intent.putExtra("WorkoutItem", workoutItem);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Log.d("exListNullCH", String.valueOf(workoutItem.exercisesList.size()));
-                startActivity(intent);
+            public void onItemClick(final WorkoutItem workoutItem, final int position, Boolean longClick) {
+
+                if (longClick){
+                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(WorkoutsItemsActivity.this);
+                    //builderSingle.setIcon(R.drawable.ic_launcher);
+                    builderSingle.setTitle(workoutItem.workoutName);
+
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(WorkoutsItemsActivity.this, android.R.layout.select_dialog_item);
+                    arrayAdapter.add("Edit");
+                    arrayAdapter.add("Remove");
+
+                    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String choice = arrayAdapter.getItem(which);
+
+                            switch (which){
+                                case 0:
+                                    Intent intent = new Intent(WorkoutsItemsActivity.this, AddWorkout.class);
+                                    intent.putExtra("workoutItem", workoutItem);
+                                    startActivity(intent);
+                                    break;
+                                case 1:
+                                    workoutItemArrayList.remove(position);
+                                    workoutsAdapter.notifyItemRemoved(position);
+                                    FirebaseDatabase.getInstance().getReference()
+                                            .child("users")
+                                            .child(firebaseAuth.getCurrentUser().getUid())
+                                            .child("workouts")
+                                            .child(workoutItem.workoutID)
+                                            .removeValue();
+                                    break;
+                            }
+
+                            Log.d("selectionIs", choice);
+                            dialog.dismiss();
+
+                        }
+                    });
+                    builderSingle.show();
+                }
+                else {
+
+                    Intent intent = new Intent(getBaseContext(), WorkoutPlay.class);
+                    intent.putExtra("WorkoutItem", workoutItem);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Log.d("exListNullCH", String.valueOf(workoutItem.exercisesList.size()));
+                    startActivity(intent);
+                }
             }
         });
 

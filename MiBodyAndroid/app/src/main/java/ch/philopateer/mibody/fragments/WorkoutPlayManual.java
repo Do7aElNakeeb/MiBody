@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,14 +34,19 @@ import org.json.JSONArray;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.activity.StatisticsActivity;
+import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.object.WorkoutExItem;
 import ch.philopateer.mibody.object.WorkoutItem;
 import ch.philopateer.mibody.helper.WorkoutPlayExItemsAdapter;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,31 +61,53 @@ import java.util.TimeZone;
 public class WorkoutPlayManual extends Fragment {
 
     RecyclerView workoutsPlayItemsRV;
-    TextView workoutName, exerciseName, exerciseReps, processActionTV, counterHintTV;
+    TextView workoutName, exerciseName, exerciseReps, processActionTV, counterHintTV, elapsedTimeTV, elapsedTimePlayStopTV;
+    ImageView elapsedTimePlayStopIV;
+    Boolean isPlaying = false;
 
     CardView processActionCV;
     ProgressBar processActionPB;
+
+    TextToSpeech textToSpeech;
 
     int targertPos = 0;
     RelativeLayout saveBtn;
     public WorkoutItem workoutItem;
     WorkoutPlayExItemsAdapter workoutPlayExItemsAdapter;
     public ArrayList<Integer> achExReps;
+    public ArrayList<Long> achExTime;
     int focusedItem = -1;
+
+    GifImageView mGigImageView;
+    GifDrawable gifDrawable = null;
 
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
+
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime, exTime = 0L ;
+
+    Handler handler;
+
+    int Seconds, Minutes, MilliSeconds ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.workout_play_fragment, container, false);
 
+
+        initTxtToSpeech();
+        handler = new Handler();
+
         // init Firebase authentication and database
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         workoutsPlayItemsRV = (RecyclerView) view.findViewById(R.id.workoutPlayItemsRV);
+
+        mGigImageView = (GifImageView) view.findViewById(R.id.exGIF2);
+
+
         workoutName = (TextView) view.findViewById(R.id.workoutName);
         exerciseName = (TextView) view.findViewById(R.id.exerciseName);
         exerciseReps = (TextView) view.findViewById(R.id.exerciseReps);
@@ -85,6 +116,10 @@ public class WorkoutPlayManual extends Fragment {
         processActionTV = (TextView) view.findViewById(R.id.processActionTV);
         counterHintTV = (TextView) view.findViewById(R.id.counterHintTV);
         processActionPB = (ProgressBar) view.findViewById(R.id.processActionPB);
+
+        elapsedTimeTV = (TextView) view.findViewById(R.id.elapsedTimeTV);
+        elapsedTimePlayStopTV = (TextView) view.findViewById(R.id.elapsedTimePlayStopTV);
+        elapsedTimePlayStopIV = (ImageView) view.findViewById(R.id.elapsedTimePlayStopIV);
 
         saveBtn = (RelativeLayout) view.findViewById(R.id.save_btn);
 
@@ -95,12 +130,13 @@ public class WorkoutPlayManual extends Fragment {
         workoutsPlayItemsRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         achExReps = new ArrayList<Integer>();
+        achExTime = new ArrayList<Long>();
 
         for (int i = 0; i < workoutItem.exercisesList.size(); i++){
             achExReps.add(workoutItem.exercisesList.get(i).reps);
+            achExTime.add(workoutItem.exercisesList.get(i).exTime);
 
             Log.d("RepsObjAch", String.valueOf(achExReps.get(i)) + " - " + String.valueOf(workoutItem.exercisesList.get(i).reps));
-            Log.d("RepsObjAch2", String.valueOf(achExReps.get(i)) + " - " + String.valueOf(workoutItem.exercisesList.get(i).reps));
         }
 
         workoutPlayExItemsAdapter = new WorkoutPlayExItemsAdapter(getActivity(), size.x, workoutItem.exercisesList, achExReps);
@@ -153,6 +189,9 @@ public class WorkoutPlayManual extends Fragment {
         workoutsPlayItemsRV.setOnFlingListener(snapHelper);
         workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
 
+
+        loadGIF(workoutItem.exercisesList.get(0).name);
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,11 +203,15 @@ public class WorkoutPlayManual extends Fragment {
 
         exerciseName.setText(workoutItem.exercisesList.get(0).name);
         counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(0).name + " exercise");
+        speak("Press START to begin " + workoutItem.exercisesList.get(0).name + " exercise");
 
         processActionCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (processActionTV.getText().toString().equals("START")){
+
+                    exTime = 0L;
                     focusedItem++;
                     workoutsPlayItemsRV.scrollToPosition(focusedItem + 1);
                     exerciseName.setText(workoutItem.exercisesList.get(focusedItem).name);
@@ -178,13 +221,16 @@ public class WorkoutPlayManual extends Fragment {
                     workoutPlayExItemsAdapter.setItemAction(0);
                     processActionTV.setText("REST");
                     counterHintTV.setText("Press REST to begin rest time");
+                    speak("Press REST to begin rest time");
 
                 }
                 else if (processActionTV.getText().toString().equals("REST")){
 
+                    achExTime.set(focusedItem, exTime);
                     workoutPlayExItemsAdapter.setItemAction(1);
                     processActionPB.setMax(workoutItem.exercisesList.get(focusedItem).restTime);
                     counterHintTV.setText("Modify exercise reps unless they matches the objective");
+                    speak("Modify exercise reps unless they matches the objective");
 
                     new CountDownTimer(workoutItem.exercisesList.get(focusedItem).restTime * 1000, 1000){
 
@@ -204,18 +250,48 @@ public class WorkoutPlayManual extends Fragment {
                             if (focusedItem == workoutItem.exercisesList.size() - 1){
                                 processActionTV.setText("DONE");
                                 counterHintTV.setText("Press DONE to finish workout and get statistics");
+                                speak("Press DONE to finish workout and get statistics");
                             }
                             else {
                                 processActionTV.setText("START");
+                                loadGIF(workoutItem.exercisesList.get(focusedItem + 1).name);
                                 workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
                                 exerciseName.setText(workoutItem.exercisesList.get(focusedItem + 1).name);
                                 counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
+                                speak("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
                             }
                         }
                     }.start();
                 }
                 else if (processActionTV.getText().toString().equals("DONE")){
+
                     addWorkoutToCalender();
+                }
+            }
+        });
+
+
+        elapsedTimePlayStopIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (isPlaying){
+                    elapsedTimePlayStopIV.setImageResource(R.drawable.play_icon2);
+                    elapsedTimePlayStopTV.setText("PLAY");
+                    isPlaying = false;
+
+                    TimeBuff += MillisecondTime;
+
+                    handler.removeCallbacks(runnable);
+                }
+                else {
+                    elapsedTimePlayStopIV.setImageResource(R.drawable.pause_icon);
+                    elapsedTimePlayStopTV.setText("PAUSE");
+                    isPlaying = true;
+
+                    StartTime = SystemClock.uptimeMillis();
+                    handler.postDelayed(runnable, 0);
+
                 }
             }
         });
@@ -224,7 +300,6 @@ public class WorkoutPlayManual extends Fragment {
     }
 
     private void addWorkoutToCalender(){
-
 
         achExReps = workoutPlayExItemsAdapter.achWorkoutExItemArrayList;
 
@@ -291,7 +366,80 @@ public class WorkoutPlayManual extends Fragment {
 
     }
 
+    private void initTxtToSpeech() {
+        textToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = textToSpeech.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "This Language is not supported");
+                    }
+
+                    speak("Hello, Press START to begin " + workoutItem.exercisesList.get(0).name + " exercise");
+
+                } else {
+                    Log.e("TTS", "Initilization Failed!");
+                }
+            }
+        });
+    }
+
+    private void speak(String text){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }else{
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+    public Runnable runnable = new Runnable() {
+
+        public void run() {
+
+            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+
+            UpdateTime = TimeBuff + MillisecondTime;
+
+            Seconds = (int) (UpdateTime / 1000);
+
+            Minutes = Seconds / 60;
+
+            Seconds = Seconds % 60;
+
+            exTime = Seconds;
+
+            MilliSeconds = (int) (UpdateTime % 1000);
+
+            elapsedTimeTV.setText("" + Minutes + ":"
+                    + String.format("%02d", Seconds) + "mins");
+
+            handler.postDelayed(this, 0);
+        }
+
+    };
+
+    private void loadGIF(String name){
+
+        try {
+            gifDrawable = new GifDrawable(getResources(), AppConfig.exercises_gifs[Arrays.asList(AppConfig.exercises_names).indexOf(name)]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mGigImageView.setImageDrawable(gifDrawable);
+    }
+
     public WorkoutPlayManual(WorkoutItem workoutItem){
         this.workoutItem = workoutItem;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
     }
 }

@@ -12,14 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.activity.StatisticsActivity;
 import ch.philopateer.mibody.fragments.ScheduleFragment;
-import ch.philopateer.mibody.helper.WorkoutExItemAdapter;
-import ch.philopateer.mibody.object.WorkoutExItem;
 import ch.philopateer.mibody.object.WorkoutItem;
 
 /**

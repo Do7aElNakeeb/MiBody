@@ -1,67 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:layout_gravity="center"
     android:background="@drawable/exercises_details_bg">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/pageTitle"
-        android:layout_marginTop="10dp"
-        android:textSize="20dp"
-        android:layout_marginBottom="-15dp"
-        android:textColor="#fc3d39"
-        android:text="Exercises"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:id="@+id/exName"
-        android:textSize="50dp"
-        android:textColor="@color/black"
-        android:lines="1"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:text="ExerciseName"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/exImg"
-        android:src="@mipmap/ic_launcher"/>
-
-
-    <ImageView
-        android:id="@+id/exGIF"
-        android:layout_gravity="center"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:src="@drawable/mibody_logo"
-        android:layout_marginBottom="5dp"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"/>
+        android:layout_height="match_parent"
+        android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_margin="10dp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum"
-        android:id="@+id/exDescription"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:id="@+id/pageTitle"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:layout_marginBottom="-15dp"
+            android:gravity="center"
+            android:textColor="#fc3d39"
+            android:text="Exercises"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:id="@+id/exName"
+            android:layout_marginTop="16dp"
+            android:textSize="40sp"
+            android:textColor="@color/black"
+            android:lines="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="ExerciseName"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:adjustViewBounds="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/exImg"
+            android:src="@drawable/mibody_logo"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/exDetailsTL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/black"
+            android:layout_gravity="center|bottom"
+            app:tabIndicatorColor="@color/MiBodyOrange"
+            app:tabSelectedTextColor="@color/MiBodyOrange"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/exDetailsVP"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="8">
+
+        </android.support.v4.view.ViewPager>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/exGIF2"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/mibody_logo"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/exGIF"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/mibody_logo"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"/>
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum"
+            android:id="@+id/exDescription"/>
+
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

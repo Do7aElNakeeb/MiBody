@@ -22,7 +22,9 @@
 
     <dimen name="exercise_item_margin">10dp</dimen>
 
-    <dimen name="rope_circle_diameter">20dp</dimen>
+    <dimen name="rope_circle_diameter">30dp</dimen>
+    <dimen name="rope_bar_height">170dp</dimen>
+    <dimen name="rope_bar_width">20dp</dimen>
 
     <dimen name="body_dimen_width">80dp</dimen>
     <dimen name="body_dimen_height">110dp</dimen>

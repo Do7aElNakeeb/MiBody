@@ -15,9 +15,10 @@
     <color name="MiBodyGrey2">#8f000000</color>
 
     <color name="MiBodyGrey3">#5a5a5a</color>
-    <color name="MiBodyGrey4">#7f7e80</color>
+    <color name="MiBodyGrey4">#c4c2c3</color>
     <color name="MiBodyRed">#e31f31</color>
     <color name="MiBodyRed2">#e04943</color>
+    <color name="MiBodyRed3">#8e0511</color>
 
     <!-- Material Calendar -->
     <color name="calendar_month_text_color">@android:color/holo_blue_dark</color>

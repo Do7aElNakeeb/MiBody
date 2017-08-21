@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ch.philopateer.mibody.activity.WorkoutsActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/exercises_details_bg"
+        android:scaleType="centerCrop"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="55dp">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:text="Predefined Workouts"
+                android:textColor="@color/MiBodyOrange"/>
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:text="4"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:background="@drawable/circle_stroke"
+                android:textColor="@color/MiBodyRed"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:text="Workout Name"
+                android:textColor="#000"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/advancedCV"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/landing_menu_item_margin"
+                android:layout_marginRight="@dimen/landing_menu_item_margin"
+                android:layout_marginBottom="10dp"
+                card_view:cardCornerRadius="35dp"
+                card_view:cardUseCompatPadding="false"
+                card_view:cardBackgroundColor="@color/MiBodyOrange">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/arrow_dashed_icon"/>
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/arrow_dashed_icon"/>
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="70dp"
+                            android:scaleX="-1"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/arrow_dashed_icon"/>
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="70dp"
+                            android:scaleX="-1"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/arrow_dashed_icon"/>
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/arrow_dashed_icon"/>
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/arrow_dashed_icon"/>
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:tint="@color/MiBodyWhite"
+                            android:src="@drawable/pullup"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="GIF"
+                    android:textSize="17sp"
+                    android:textColor="@color/MiBodyRed3"
+                    android:background="@drawable/rect_red"/>
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Video"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/MiBodyRed3"
+                    android:background="@android:color/transparent"/>
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/MiBodyRed3"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/exGIF"
+                android:layout_gravity="center"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/mibody_logo"
+                android:adjustViewBounds="true"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"/>
+
+            <fragment
+                android:id="@+id/exVideo"
+                android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum"
+                android:id="@+id/exDescription"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MiBodyOrange"
+        android:text="Let's GO !"
+        android:textAllCaps="false"
+        android:textColor="@color/MiBodyWhite"/>
+
+</RelativeLayout>

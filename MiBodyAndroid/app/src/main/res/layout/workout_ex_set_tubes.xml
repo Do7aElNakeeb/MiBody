@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            android:text="Choose your tube kind"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="55dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/rope_circle_diameter"
+                    android:gravity="center"
+                    android:text="RED"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/rope_circle_diameter"
+                    android:gravity="center"
+                    android:text="BLACK"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/rope_circle_diameter"
+                    android:gravity="center"
+                    android:text="GREY"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/rope_circle_diameter"
+                    android:gravity="center"
+                    android:text="NONE"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="1"
+                        android:textSize="20sp"
+                        android:textColor="@color/MiBodyGrey2"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="2"
+                        android:textSize="20sp"
+                        android:textColor="@color/MiBodyGrey2"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="3"
+                        android:textSize="20sp"
+                        android:textColor="@color/MiBodyGrey2"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="5"
+                            android:layout_gravity="center"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="@dimen/rope_bar_width"
+                                android:layout_height="@dimen/rope_bar_height"
+                                android:alpha="0.4"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/details_rgb_bg"/>
+
+                            <RadioGroup
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_red1"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_red"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_black1"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:src="@drawable/ropes_dot_black"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_grey1"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_grey"/>
+
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_none1"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_none_selected"/>
+
+                            </RadioGroup>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="5"
+                            android:layout_gravity="center"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="@dimen/rope_bar_width"
+                                android:layout_height="@dimen/rope_bar_height"
+                                android:alpha="0.4"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/details_rgb_bg"/>
+
+                            <RadioGroup
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_red2"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_red"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_black2"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:src="@drawable/ropes_dot_black"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_grey2"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:src="@drawable/ropes_dot_grey"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_none2"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_none_selected"/>
+
+                            </RadioGroup>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="5"
+                            android:layout_gravity="center"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="@dimen/rope_bar_width"
+                                android:layout_height="@dimen/rope_bar_height"
+                                android:alpha="0.4"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/details_rgb_bg"/>
+
+                            <RadioGroup
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_red3"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_red"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_black3"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:src="@drawable/ropes_dot_black"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_grey3"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:src="@drawable/ropes_dot_grey"/>
+
+                                <ImageView
+                                    android:layout_width="@dimen/rope_circle_diameter"
+                                    android:layout_height="@dimen/rope_circle_diameter"
+                                    android:id="@+id/ropes_none3"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ropes_dot_none_selected"/>
+
+                            </RadioGroup>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/workoutExSetTubesDoneIV"
+        android:layout_width="@dimen/rope_circle_diameter"
+        android:layout_height="@dimen/rope_circle_diameter"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/true_mark_icon"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
+        android:tint="@color/MiBodyGreen"/>
+
+</RelativeLayout>

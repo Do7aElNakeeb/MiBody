@@ -41,24 +41,52 @@
                 android:textStyle="bold"
                 android:gravity="center" />
 
-            <android.support.v7.widget.CardView
+            <RelativeLayout
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:id="@+id/ExerciseCV"
-                card_view:cardElevation="0dp"
-                android:layout_gravity="center"
-                card_view:cardBackgroundColor="@color/MiBodyGrey3"
-                card_view:cardCornerRadius="30dp">
-                <ImageView
-                    android:id="@+id/ExerciseIcon"
-                    android:tint="#FFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                android:layout_height="110dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/ExerciseCV"
+                    card_view:cardElevation="0dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/drop_icon"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"/>
-            </android.support.v7.widget.CardView>
+                    android:layout_alignParentBottom="true"
+                    card_view:cardBackgroundColor="@color/MiBodyGrey3"
+                    card_view:cardCornerRadius="30dp">
+                    <ImageView
+                        android:id="@+id/ExerciseIcon"
+                        android:tint="#FFF"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/drop_icon"
+                        android:scaleType="fitCenter"
+                        android:padding="10dp"/>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/exRepsCV"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardBackgroundColor="@color/MiBodyGrey3"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/exRepsTV"
+                        android:layout_gravity="center"
+                        android:textColor="@color/MiBodyWhite"
+                        android:text="0"
+                        android:lines="1"/>
+
+                </android.support.v7.widget.CardView>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/exName"

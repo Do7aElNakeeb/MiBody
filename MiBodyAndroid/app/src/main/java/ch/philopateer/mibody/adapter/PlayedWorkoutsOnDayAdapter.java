@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.fragments.ScheduleFragment;
-import ch.philopateer.mibody.helper.OnItemClickListener;
-import ch.philopateer.mibody.helper.WorkoutExItemAdapter;
 import ch.philopateer.mibody.object.WorkoutItem;
 
 /**

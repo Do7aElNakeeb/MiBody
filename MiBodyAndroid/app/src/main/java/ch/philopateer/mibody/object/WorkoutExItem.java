@@ -11,16 +11,18 @@ import org.json.JSONObject;
 
 public class WorkoutExItem {
 
-    public String name;
+    public String name = "Drop here";
     public String exerciseImage;
-    public String rope1 = "B";
-    public String rope2 = "B";
-    public String rope3 = "B";
-    public int reps;
-    public int restTime;
-    public int exReps;
+    public String rope1 = "N";
+    public String rope2 = "N";
+    public String rope3 = "N";
+    public int reps = 0;
+    public int restTime = 0;
+    public int exReps = 1;
+    public long exTime = 0;
+    public boolean repsTimeBool = false;
 
-    public WorkoutExItem(String name, String exerciseImage, String rope1, String rope2, String rope3, int reps, int restTime, int exReps) {
+    public WorkoutExItem(String name, String exerciseImage, String rope1, String rope2, String rope3, int reps, int restTime, int exReps, long exTime, boolean repsTimeBool) {
         this.name = name;
         this.exerciseImage = exerciseImage;
         this.rope1 = rope1;
@@ -29,6 +31,8 @@ public class WorkoutExItem {
         this.reps = reps;
         this.restTime = restTime;
         this.exReps = exReps;
+        this.exTime = exTime;
+        this.repsTimeBool = repsTimeBool;
     }
 
     public WorkoutExItem(){
@@ -46,6 +50,8 @@ public class WorkoutExItem {
             obj.put("reps", String.valueOf(reps));
             obj.put("restTime", String.valueOf(restTime));
             obj.put("exReps", String.valueOf(exReps));
+            obj.put("exTime", String.valueOf(exTime));
+            obj.put("repsTimeBool", String.valueOf(repsTimeBool));
         } catch (JSONException e) {
             Log.d( "JSONObject", "DefaultListItem.toString JSONException: "+e.getMessage());
         }

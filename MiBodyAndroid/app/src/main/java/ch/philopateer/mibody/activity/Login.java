@@ -448,7 +448,6 @@ public class Login extends AppCompatActivity {
                                                     }
                                                 });
 
-
                                         loginToHome();
 
                                     }

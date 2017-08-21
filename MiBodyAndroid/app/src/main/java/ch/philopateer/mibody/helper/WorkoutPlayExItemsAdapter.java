@@ -68,6 +68,7 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
             final WorkoutExItem workoutExItem = workoutExItemArrayList.get(position - 1);
             achExReps = achWorkoutExItemArrayList.get(position-1);
 
+            /*
             holder.exIcon.setColorFilter(ContextCompat.getColor(context, R.color.MiBodyWhite));
             new Picasso.Builder(context)
                     .downloader(new OkHttpDownloader(context, Integer.MAX_VALUE))
@@ -75,13 +76,21 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
                     .load(AppConfig.URL_SERVER + "ExIcon/" + workoutExItem.exerciseImage)
                     .placeholder(AppConfig.exercises_icons[Arrays.asList(AppConfig.exercises_names).indexOf(workoutExItem.name)])
                     .into(holder.exIcon);
-
+*/
             Log.d("exImageHere", String.valueOf(workoutExItem.name));
 
             holder.exReps.setText(String.valueOf(workoutExItem.reps));
             holder.exRepsCounter.setText(String.valueOf(achExReps));
             holder.exProgressBar.setMax(workoutExItem.reps);
             holder.exProgressBar.setProgress(achExReps);
+
+            if (workoutExItem.exReps < 1){
+                holder.exRepsCV.setVisibility(View.GONE);
+            }
+            else {
+                holder.exRepsTV.setText(String.valueOf(workoutExItem.exReps));
+                holder.exRepsCV.setVisibility(View.VISIBLE);
+            }
 
 
             if(itemAction == 0) {
@@ -177,8 +186,8 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        CardView exDot1, exDot11, exDot2, exDot22, counterMinusCV, counterPlusCV;
-        TextView exRepsCounter, exReps;
+        CardView exDot1, exDot11, exDot2, exDot22, counterMinusCV, counterPlusCV, exRepsCV;
+        TextView exRepsCounter, exReps, exRepsTV;
         EditText workoutExRepsCountET;
         ImageView exIcon;
         ProgressBar exProgressBar;
@@ -193,11 +202,13 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
             exDot22 = (CardView) itemView.findViewById(R.id.exDot22);
             counterMinusCV = (CardView) itemView.findViewById(R.id.counterMinusCV);
             counterPlusCV = (CardView) itemView.findViewById(R.id.counterPlusCV);
+            exRepsCV = (CardView) itemView.findViewById(R.id.exRepsCV);
 
             workoutExRepsCountET = (EditText) itemView.findViewById(R.id.workoutExRepsCountET);
             exProgressBar = (ProgressBar) itemView.findViewById(R.id.exProgressBar);
             exRepsCounter = (TextView) itemView.findViewById(R.id.workoutExRepsCount);
             exReps = (TextView) itemView.findViewById(R.id.workoutExerciseReps);
+            exRepsTV = (TextView) itemView.findViewById(R.id.exRepsTV);
         }
     }
 

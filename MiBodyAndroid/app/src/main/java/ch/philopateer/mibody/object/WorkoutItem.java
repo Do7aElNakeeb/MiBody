@@ -52,6 +52,7 @@ public class WorkoutItem implements Parcelable{
         result.put("workoutID", workoutID);
         result.put("workoutName", workoutName);
         result.put("exercisesJSON", exercisesJSON);
+        result.put("workoutReps", workoutReps);
 
         return result;
     }
@@ -92,8 +93,10 @@ public class WorkoutItem implements Parcelable{
                     int reps = Integer.parseInt(obj.get("reps").toString());
                     int restTime = Integer.parseInt(obj.get("restTime").toString());
                     int exReps = Integer.parseInt(obj.get("exReps").toString());
+                    int exTime = Integer.parseInt(obj.get("exTime").toString());
+                    boolean repsTimeBool = Boolean.parseBoolean(obj.get("repsTimeBool").toString());
 
-                    exercisesList.add(new WorkoutExItem(name, image, rope1, rope2, rope3, reps, restTime, exReps));
+                    exercisesList.add(new WorkoutExItem(name, image, rope1, rope2, rope3, reps, restTime, exReps, exTime, repsTimeBool));
 
                 }
 

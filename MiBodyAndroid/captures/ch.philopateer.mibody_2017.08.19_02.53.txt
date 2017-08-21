@@ -1,0 +1,379 @@
+TASK ch.philopateer.mibody id=51 userId=0
+  ACTIVITY ch.philopateer.mibody/.activity.AddWorkout fbde5be pid=11654
+    Local FragmentActivity f8e476f State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mHost=android.support.v4.app.FragmentActivity$HostCallbacks@1a83d18
+      mContainer=android.support.v4.app.FragmentActivity$HostCallbacks@1a83d18
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.DecorView{fcf8371 V.E..... ... 0,0-1080,1920}
+        android.widget.LinearLayout{816e54e V.E..... ... 0,0-1080,1794}
+          android.view.ViewStub{fcd9556 G.E..... ... 0,0-0,0 #1020186 android:id/action_mode_bar_stub}
+          android.widget.FrameLayout{b5cb849 V.E..... ... 0,63-1080,1794}
+            android.support.v7.widget.FitWindowsLinearLayout{ff85e50 V.E..... ... 0,0-1080,1731 #7f0f0075 app:id/action_bar_root}
+              android.support.v7.widget.ViewStubCompat{48cf9d7 G.E..... ... 0,0-0,0 #7f0f0076 app:id/action_mode_bar_stub}
+              android.support.v7.widget.ContentFrameLayout{fd84c13 V.E..... ... 0,0-1080,1731 #1020002 android:id/content}
+                android.widget.RelativeLayout{e5e1b02 V.E..... ... 0,0-1080,1731 #7f0f01a4 app:id/addWorkoutRL}
+                  android.widget.LinearLayout{77012c4 V.E..... ... 0,0-1080,1731}
+                    android.widget.RelativeLayout{807e5ad V.E..... ... 0,0-1080,1731 #7f0f01a5 app:id/personalisedWorkoutHeader}
+                      android.support.v7.widget.AppCompatImageView{425b0e2 V.ED.... ... 1015,26-1054,65 #7f0f01a6 app:id/save_btn_arrow}
+                      android.support.v7.widget.AppCompatTextView{bd5c73 VFED..C. ... 888,26-1015,77 #7f0f01a7 app:id/save_btn}
+                      android.support.v7.widget.AppCompatTextView{6bd9730 V.ED.... ... 0,77-1080,123 #7f0f01a8 app:id/WorkoutType}
+                      android.support.v7.widget.AppCompatTextView{1ea2fa9 V.ED.... ... 383,123-697,186 #7f0f01a9 app:id/workoutNameTxtView}
+                      android.support.v7.widget.AppCompatEditText{f1f92e GFED..CL ... 0,0-0,0 #7f0f01aa app:id/workoutNameET}
+                      android.support.v7.widget.AppCompatImageView{8874ccf VFED..C. ... 723,123-776,176 #7f0f01ab app:id/workoutNameEditBtn}
+                    android.widget.LinearLayout{21cf65c G.E..... ... 0,1266-1080,1731 #7f0f01ac app:id/dragExLL}
+                      android.widget.RelativeLayout{8d1d65 V.E..... ... 0,0-1080,58}
+                        android.support.v7.widget.AppCompatTextView{c287a3a V.ED.... ... 378,3-702,54 #7f0f01ad app:id/exercises_set_txt}
+                        android.support.v7.widget.AppCompatImageView{555e6eb GFED..C. ... 0,0-0,0 #7f0f01ae app:id/add_exercise}
+                      android.support.v7.widget.AppCompatImageView{6b11c48 V.ED.... ... 0,58-1080,116}
+                      android.widget.LinearLayout{7b72ae1 V.E..... ... 0,116-1080,465}
+                        android.support.v7.widget.RecyclerView{3140006 VFED.... ... 0,1-1080,349 #7f0f01af app:id/addWorkoutExercisesRV}
+                          android.widget.RelativeLayout{22a06c7 V.E..... ... 26,26-223,322}
+                            android.widget.LinearLayout{edfb4f4 V.E..... ... 13,0-184,296 #7f0f00cb app:id/ExerciseItemLL}
+                              android.support.v7.widget.AppCompatTextView{71a941d V.ED.... ... 0,38-171,81 #7f0f00cc app:id/exerciseName1}
+                              android.support.v7.widget.CardView{ae01692 V.E....L ... 0,86-171,257 #7f0f00cd app:id/exerciseCV}
+                                android.support.v7.widget.AppCompatImageView{e858ec0 V.ED.... ... 0,0-171,171 #7f0f00ce app:id/exerciseIcon}
+                              android.support.v7.widget.AppCompatTextView{f364863 G.ED.... ... 0,0-0,0 #7f0f00cf app:id/exerciseName2}
+                          android.widget.RelativeLayout{3bd2c60 V.E..... ... 223,26-420,322}
+                            android.widget.LinearLayout{d515519 V.E..... ... 13,0-184,296 #7f0f00cb app:id/ExerciseItemLL}
+                              android.support.v7.widget.AppCompatTextView{de509de V.ED.... ... 0,38-171,81 #7f0f00cc app:id/exerciseName1}
+                              android.support.v7.widget.CardView{33b07bf V.E....L ... 0,86-171,257 #7f0f00cd app:id/exerciseCV}
+                                android.support.v7.widget.AppCompatImageView{28a354a V.ED.... ... 0,0-171,171 #7f0f00ce app:id/exerciseIcon}
+                              android.support.v7.widget.AppCompatTextView{938ae8c G.ED.... ... 0,0-0,0 #7f0f00cf app:id/exerciseName2}
+                          android.widget.RelativeLayout{e9929d5 V.E..... ... 420,26-617,322}
+                            android.widget.LinearLayout{1b3e5ea V.E..... ... 13,0-184,296 #7f0f00cb app:id/ExerciseItemLL}
+                              android.support.v7.widget.AppCompatTextView{6a260db V.ED.... ... 0,38-171,81 #7f0f00cc app:id/exerciseName1}
+                              android.support.v7.widget.CardView{1082778 V.E....L ... 0,86-171,257 #7f0f00cd app:id/exerciseCV}
+                                android.support.v7.widget.AppCompatImageView{c411784 V.ED.... ... 0,0-171,171 #7f0f00ce app:id/exerciseIcon}
+                              android.support.v7.widget.AppCompatTextView{b4f8e51 G.ED.... ... 0,0-0,0 #7f0f00cf app:id/exerciseName2}
+                          android.widget.RelativeLayout{1e276b6 V.E..... ... 617,26-814,322}
+                            android.widget.LinearLayout{45c2fb7 V.E..... ... 13,0-184,296 #7f0f00cb app:id/ExerciseItemLL}
+                              android.support.v7.widget.AppCompatTextView{544324 V.ED.... ... 0,38-171,81 #7f0f00cc app:id/exerciseName1}
+                              android.support.v7.widget.CardView{22dbe8d V.E....L ... 0,86-171,257 #7f0f00cd app:id/exerciseCV}
+                                android.support.v7.widget.AppCompatImageView{ddcd7ee V.ED.... ... 0,0-171,171 #7f0f00ce app:id/exerciseIcon}
+                              android.support.v7.widget.AppCompatTextView{b974842 G.ED.... ... 0,0-0,0 #7f0f00cf app:id/exerciseName2}
+                          android.widget.RelativeLayout{c7a1053 V.E..... ... 814,26-1011,322}
+                            android.widget.LinearLayout{4246d90 V.E..... ... 13,0-184,296 #7f0f00cb app:id/ExerciseItemLL}
+                              android.support.v7.widget.AppCompatTextView{a44b689 V.ED.... ... 0,38-171,81 #7f0f00cc app:id/exerciseName1}
+                              android.support.v7.widget.CardView{5d5a68e V.E....L ... 0,86-171,257 #7f0f00cd app:id/exerciseCV}
+                                android.support.v7.widget.AppCompatImageView{5d70508 V.ED.... ... 0,0-171,171 #7f0f00ce app:id/exerciseIcon}
+                              android.support.v7.widget.AppCompatTextView{48b5eaf G.ED.... ... 0,0-0,0 #7f0f00cf app:id/exerciseName2}
+                          android.widget.RelativeLayout{8ad2bc V.E..... ... 1011,26-1208,322}
+                            android.widget.LinearLayout{b93245 V.E..... ... 13,0-184,296 #7f0f00cb app:id/ExerciseItemLL}
+                              android.support.v7.widget.AppCompatTextView{2899d9a V.ED.... ... 0,38-171,81 #7f0f00cc app:id/exerciseName1}
+                              android.support.v7.widget.CardView{1b936cb V.E....L ... 0,86-171,257 #7f0f00cd app:id/exerciseCV}
+                                android.support.v7.widget.AppCompatImageView{dd8b952 V.ED.... ... 0,0-171,171 #7f0f00ce app:id/exerciseIcon}
+                              android.support.v7.widget.AppCompatTextView{6905ea8 G.ED.... ... 0,0-0,0 #7f0f00cf app:id/exerciseName2}
+                  android.widget.RelativeLayout{63fadc1 V.E..... ... 0,1060-1080,1731 #7f0f01b0 app:id/workoutExerciseDetails}
+                    android.widget.LinearLayout{453f966 V.E..... ... 0,0-1080,671}
+                      android.widget.LinearLayout{8a274a7 V.E..... ... 0,0-1080,671}
+                        android.widget.LinearLayout{ce0bd54 V.E..... ... 487,0-592,53}
+                          android.support.v7.widget.AppCompatImageView{85864fd V.ED.... ... 0,0-52,53}
+                          android.support.v7.widget.AppCompatImageView{51645f2 V.ED.... ... 52,0-105,53}
+                        android.widget.LinearLayout{ef7b443 V.E..... ... 0,53-1080,671}
+                          android.widget.LinearLayout{7365ac0 V.E..... ... 0,0-1080,618}
+                            android.widget.LinearLayout{24b53f9 V.E..... ... 0,0-1080,378}
+                              android.widget.LinearLayout{93ecf3e VFE...C. ... 0,0-480,378 #7f0f01bf app:id/workoutExSetTubesLL}
+                                android.support.v7.widget.AppCompatTextView{ad7519f V.ED.... ... 53,26-427,76}
+                                android.widget.LinearLayout{88662ec V.E..... ... 53,76-427,126}
+                                  android.support.v7.widget.AppCompatTextView{1e436b5 V.ED.... ... 0,0-125,50}
+                                  android.support.v7.widget.AppCompatTextView{bd4a14a V.ED.... ... 125,0-250,50}
+                                  android.support.v7.widget.AppCompatTextView{be968bb V.ED.... ... 250,0-374,50}
+                                android.widget.LinearLayout{becc1d8 V.E..... ... 53,126-427,378}
+                                  android.widget.LinearLayout{bee8931 V.E..... ... 0,0-124,252}
+                                    android.widget.RelativeLayout{f438816 V.E..... ... 22,0-101,252}
+                                      android.support.v7.widget.AppCompatImageView{a3bd597 V.ED.... ... 26,0-52,252}
+                                      android.support.v7.widget.AppCompatImageView{582384 V.ED.... ... 0,86-79,165 #7f0f01c0 app:id/exTubeIV1}
+                                  android.widget.LinearLayout{c71876d V.E..... ... 124,0-249,252}
+                                    android.widget.RelativeLayout{ee80fa2 V.E..... ... 23,0-102,252}
+                                      android.support.v7.widget.AppCompatImageView{6de3433 V.ED.... ... 26,0-52,252}
+                                      android.support.v7.widget.AppCompatImageView{2f5f3f0 V.ED.... ... 0,86-79,165 #7f0f01c1 app:id/exTubeIV2}
+                                  android.widget.LinearLayout{eac2d69 V.E..... ... 249,0-374,252}
+                                    android.widget.RelativeLayout{d5b83ee V.E..... ... 23,0-102,252}
+                                      android.support.v7.widget.AppCompatImageView{a3de08f V.ED.... ... 26,0-52,252}
+                                      android.support.v7.widget.AppCompatImageView{45e5f1c V.ED.... ... 0,86-79,165 #7f0f01c2 app:id/exTubeIV3}
+                              android.widget.LinearLayout{8d13725 V.E..... ... 480,0-1080,378}
+                                android.widget.LinearLayout{b7ff0fa V.E..... ... 0,26-600,97}
+                                  android.support.v7.widget.AppCompatTextView{c41f6ab V.ED.... ... 130,10-213,61}
+                                  android.support.v7.widget.SwitchCompat{4805108 VFED..C. ... 239,0-361,71}
+                                  android.support.v7.widget.AppCompatTextView{78320a1 V.ED.... ... 387,10-470,61}
+                                android.support.v7.widget.AppCompatTextView{44c22c6 G.ED.... ... 0,0-0,0}
+                                android.widget.RelativeLayout{2275287 V.E..... ... 0,97-600,378}
+                                  android.support.v7.widget.AppCompatImageView{14d75b4 V.ED.... ... 168,9-431,272 #7f0f01c3 app:id/reps_counter_arrow}
+                                  android.support.v7.widget.AppCompatTextView{51025dd VFED..CL ... 263,53-337,228 #7f0f01c4 app:id/reps_txtview}
+                                  android.support.v7.widget.AppCompatEditText{957a552 GFED..CL ... 0,0-0,0 #7f0f01c5 app:id/reps_edttxt}
+                                  android.support.v7.widget.AppCompatImageView{e1c9023 VFED..C. ... 76,32-142,248 #7f0f01c6 app:id/reps_minus_btn}
+                                  android.support.v7.widget.AppCompatImageView{4263920 VFED..C. ... 457,20-523,260 #7f0f01c7 app:id/reps_plus_btn}
+                            android.widget.LinearLayout{86e42d9 V.E..... ... 0,404-1080,618}
+                              android.widget.LinearLayout{c26c49e V.E..... ... 0,0-1080,43}
+                                android.support.v7.widget.AppCompatTextView{c9e0b7f V.ED.... ... 0,0-540,43}
+                                android.support.v7.widget.AppCompatTextView{a05c74c V.ED.... ... 540,0-1080,43}
+                              android.widget.LinearLayout{7f73395 V.E..... ... 0,43-1080,188}
+                                android.widget.RelativeLayout{368caa V.E..... ... 0,24-511,121}
+                                  android.support.v7.widget.CardView{b91e09b V.E..... ... 190,0-321,97 #7f0f01c8 app:id/exerciseRepsPlusCV}
+                                    android.widget.LinearLayout{26e0c38 V.E..... ... 37,13-94,84}
+                                      android.support.v7.widget.AppCompatTextView{be47411 V.ED.... ... 0,0-27,71}
+                                      android.support.v7.widget.AppCompatTextView{1c8c976 V.ED.... ... 27,0-57,71 #7f0f01c9 app:id/exercise_reps_txtview}
+                                  android.support.v7.widget.AppCompatImageView{723eb77 VFED..C. ... 98,35-137,61 #7f0f01ca app:id/exReps_minus_btn}
+                                  android.support.v7.widget.AppCompatImageView{113b3e4 VFED..C. ... 374,29-413,68 #7f0f01cb app:id/exReps_plus_btn}
+                                android.widget.RelativeLayout{c8b404d V.E..... ... 511,0-1080,145}
+                                  android.support.v7.widget.AppCompatImageView{d700702 V.ED.... ... 13,59-52,85 #7f0f01cc app:id/rest_minus_btn}
+                                  android.support.v7.widget.AppCompatImageView{861c813 V.ED.... ... 504,53-543,92 #7f0f01cd app:id/rest_plus_btn}
+                                  android.widget.ProgressBar{e4a2a50 V.ED.... ... 52,51-504,93 #7f0f01ce app:id/restProgressBar}
+                                  android.support.v7.widget.AppCompatImageView{8589449 V.ED.... ... 52,0-504,145 #7f0f01cf app:id/restTimeBattary}
+                                  android.widget.LinearLayout{45b914e V.E..... ... 236,46-332,99}
+                                    android.support.v7.widget.AppCompatEditText{196d26f GFED..CL ... 0,0-0,0 #7f0f01d0 app:id/rest_time_edttxt}
+                                    android.support.v7.widget.AppCompatTextView{22f9b7c V.ED.... ... 0,0-22,53 #7f0f01d1 app:id/rest_time_txtview}
+                                    android.support.v7.widget.AppCompatTextView{d8d2c05 V.ED.... ... 22,0-96,53}
+                  android.support.v7.widget.RecyclerView{ad5244d GFED.... ... 0,506-1080,929 #7f0f01b1 app:id/addWorkoutUserExercisesRV}
+                    android.widget.LinearLayout{1fe467 I.E..... ... -170,0-370,423 #7f0f0099 app:id/addWorkoutLL}
+                      android.support.v7.widget.CardView{963745a V.E..... ... 0,198-26,224 #7f0f009a app:id/exDot1}
+                      android.widget.LinearLayout{468268b V.E..... ... 39,0-302,423 #7f0f009b app:id/LLtoMove}
+                        android.support.v7.widget.AppCompatTextView{698f368 V.ED.... ... 119,0-143,57 #7f0f009c app:id/exNumber}
+                        android.widget.RelativeLayout{3b98381 V.E..... ... 0,70-263,359}
+                          android.support.v7.widget.CardView{2d47c26 V.E..... ... 0,26-263,289 #7f0f009d app:id/ExerciseCV}
+                            android.support.v7.widget.AppCompatImageView{db0a067 V.ED.... ... 0,0-263,263 #7f0f009e app:id/ExerciseIcon}
+                          android.support.v7.widget.CardView{bbdde14 G.E..... ... 0,0-0,0 #7f0f009f app:id/exRepsCV}
+                            android.support.v7.widget.AppCompatTextView{f9d6bd V.ED.... ... 0,0-0,0 #7f0f00a0 app:id/exRepsTV}
+                        android.support.v7.widget.AppCompatTextView{cfc34b2 V.ED.... ... 0,372-263,423 #7f0f00a1 app:id/exName}
+                      android.support.v7.widget.CardView{31cdc03 V.E..... ... 315,198-341,224 #7f0f00a2 app:id/exDot2}
+                    android.widget.LinearLayout{c86a7e4 VFE...C. ... 370,0-711,423 #7f0f0099 app:id/addWorkoutLL}
+                      android.support.v7.widget.CardView{ba4c780 V.E..... ... 0,198-26,224 #7f0f009a app:id/exDot1}
+                      android.widget.LinearLayout{57a2f77 V.E..... ... 39,0-302,423 #7f0f009b app:id/LLtoMove}
+                        android.support.v7.widget.AppCompatTextView{6f221b9 V.ED.... ... 119,0-143,57 #7f0f009c app:id/exNumber}
+                        android.widget.RelativeLayout{e3d9d76 V.E..... ... 0,70-263,359}
+                          android.support.v7.widget.CardView{8981811 V.E..... ... 0,26-263,289 #7f0f009d app:id/ExerciseCV}
+                            android.support.v7.widget.AppCompatImageView{6af9005 V.ED.... ... 0,0-263,263 #7f0f009e app:id/ExerciseIcon}
+                          android.support.v7.widget.CardView{974e9fe G.E..... ... 0,0-0,0 #7f0f009f app:id/exRepsCV}
+                            android.support.v7.widget.AppCompatTextView{e87355f V.ED.... ... 0,0-0,0 #7f0f00a0 app:id/exRepsTV}
+                        android.support.v7.widget.AppCompatTextView{84edbac V.ED.... ... 0,372-263,423 #7f0f00a1 app:id/exName}
+                      android.support.v7.widget.CardView{38a2075 V.E..... ... 315,198-341,224 #7f0f00a2 app:id/exDot2}
+                    android.widget.LinearLayout{4f14fac VFE...C. ... 711,0-1000,423 #7f0f0099 app:id/addWorkoutLL}
+                      android.support.v7.widget.CardView{731a80a G.E..... ... 0,198-26,224 #7f0f009a app:id/exDot1}
+                      android.widget.LinearLayout{f1af95f V.E..... ... 13,0-276,423 #7f0f009b app:id/LLtoMove}
+                        android.support.v7.widget.AppCompatTextView{313c87b V.ED.... ... 119,0-143,57 #7f0f009c app:id/exNumber}
+                        android.widget.RelativeLayout{cad3dfe V.E..... ... 0,70-263,359}
+                          android.support.v7.widget.CardView{54745b9 V.E..... ... 0,26-263,289 #7f0f009d app:id/ExerciseCV}
+                            android.support.v7.widget.AppCompatImageView{12df353 V.ED.... ... 0,0-263,263 #7f0f009e app:id/ExerciseIcon}
+                          android.support.v7.widget.CardView{a40698 G.E..... ... 0,0-0,0 #7f0f009f app:id/exRepsCV}
+                            android.support.v7.widget.AppCompatTextView{1694ef1 V.ED.... ... 0,0-0,0 #7f0f00a0 app:id/exRepsTV}
+                        android.support.v7.widget.AppCompatTextView{f4a3ad6 V.ED.... ... 0,372-263,423 #7f0f00a1 app:id/exName}
+                      android.support.v7.widget.CardView{80c7157 G.E..... ... 315,198-341,224 #7f0f00a2 app:id/exDot2}
+                    android.widget.LinearLayout{8e38ffd VFE...C. ... 1000,0-1289,423 #7f0f0099 app:id/addWorkoutLL}
+                      android.support.v7.widget.CardView{81ef444 G.E..... ... 0,0-0,0 #7f0f009a app:id/exDot1}
+                      android.widget.LinearLayout{741b454 V.E..... ... 13,0-276,423 #7f0f009b app:id/LLtoMove}
+                        android.support.v7.widget.AppCompatTextView{432e92d V.ED.... ... 119,0-143,57 #7f0f009c app:id/exNumber}
+                        android.widget.RelativeLayout{2a0e7a7 V.E..... ... 0,70-263,359}
+                          android.support.v7.widget.CardView{4485866 V.E..... ... 0,26-263,289 #7f0f009d app:id/ExerciseCV}
+                            android.support.v7.widget.AppCompatImageView{2872e62 V.ED.... ... 0,0-263,263 #7f0f009e app:id/ExerciseIcon}
+                          android.support.v7.widget.CardView{57ccbf3 G.E..... ... 0,0-0,0 #7f0f009f app:id/exRepsCV}
+                            android.support.v7.widget.AppCompatTextView{d3910b0 V.ED.... ... 0,0-0,0 #7f0f00a0 app:id/exRepsTV}
+                        android.support.v7.widget.AppCompatTextView{c81eb29 V.ED.... ... 0,372-263,423 #7f0f00a1 app:id/exName}
+                      android.support.v7.widget.CardView{3adceae G.E..... ... 0,0-0,0 #7f0f00a2 app:id/exDot2}
+                  android.widget.RelativeLayout{e8e344f V.E..... ... 0,387-1080,1060 #7f0f01b2 app:id/workoutExSetTubesRL}
+                    android.widget.RelativeLayout{a9687dc V.E..... ... 0,0-1080,673}
+                      android.widget.LinearLayout{fa510e5 V.E..... ... 0,26-1080,673}
+                        android.support.v7.widget.AppCompatTextView{a8c27ba V.ED.... ... 0,0-1080,57}
+                        android.widget.LinearLayout{5a3c66b V.E..... ... 158,83-922,647}
+                          android.widget.LinearLayout{ef245c8 V.E..... ... 0,144-191,564}
+                            android.support.v7.widget.AppCompatTextView{f1ad661 V.ED.... ... 0,0-191,79}
+                            android.support.v7.widget.AppCompatTextView{bc50586 V.ED.... ... 0,105-191,184}
+                            android.support.v7.widget.AppCompatTextView{6365e47 V.ED.... ... 0,210-191,289}
+                            android.support.v7.widget.AppCompatTextView{7c9f674 V.ED.... ... 0,315-191,394}
+                          android.widget.LinearLayout{bcd779d V.E..... ... 191,0-764,564}
+                            android.widget.LinearLayout{15bf412 V.E..... ... 0,0-573,92}
+                              android.support.v7.widget.AppCompatTextView{7097e3 V.ED.... ... 0,0-191,92}
+                              android.support.v7.widget.AppCompatTextView{aca05e0 V.ED.... ... 191,0-382,92}
+                              android.support.v7.widget.AppCompatTextView{10ef099 V.ED.... ... 382,0-573,92}
+                            android.widget.LinearLayout{13f5e V.E..... ... 0,118-573,564}
+                              android.widget.LinearLayout{28acf3f V.E..... ... 0,0-191,446}
+                                android.widget.RelativeLayout{9f9a00c V.E..... ... 56,0-135,446}
+                                  android.support.v7.widget.AppCompatImageView{354fd55 V.ED.... ... 13,0-66,446}
+                                  android.widget.RadioGroup{51df36a V.E..... ... 0,26-79,420}
+                                    android.support.v7.widget.AppCompatImageView{be7205b VFED..C. ... 0,0-79,79 #7f0f01b3 app:id/ropes_red1}
+                                    android.support.v7.widget.AppCompatImageView{ea6b0f8 VFED..C. ... 0,105-79,184 #7f0f01b4 app:id/ropes_black1}
+                                    android.support.v7.widget.AppCompatImageView{eb519d1 VFED..C. ... 0,210-79,289 #7f0f01b5 app:id/ropes_grey1}
+                                    android.support.v7.widget.AppCompatImageView{99fdc36 VFED..C. ... 0,315-79,394 #7f0f01b6 app:id/ropes_none1}
+                              android.widget.LinearLayout{5ed6737 V.E..... ... 191,0-382,446}
+                                android.widget.RelativeLayout{711e4a4 V.E..... ... 56,0-135,446}
+                                  android.support.v7.widget.AppCompatImageView{120820d V.ED.... ... 13,0-66,446}
+                                  android.widget.RadioGroup{58585c2 V.E..... ... 0,26-79,420}
+                                    android.support.v7.widget.AppCompatImageView{ea73fd3 VFED..C. ... 0,0-79,79 #7f0f01b7 app:id/ropes_red2}
+                                    android.support.v7.widget.AppCompatImageView{2daa710 VFED..C. ... 0,105-79,184 #7f0f01b8 app:id/ropes_black2}
+                                    android.support.v7.widget.AppCompatImageView{c603209 VFED..C. ... 0,210-79,289 #7f0f01b9 app:id/ropes_grey2}
+                                    android.support.v7.widget.AppCompatImageView{2a3c0e VFED..C. ... 0,315-79,394 #7f0f01ba app:id/ropes_none2}
+                              android.widget.LinearLayout{11c062f V.E..... ... 382,0-573,446}
+                                android.widget.RelativeLayout{a2b243c V.E..... ... 56,0-135,446}
+                                  android.support.v7.widget.AppCompatImageView{bd0e5c5 V.ED.... ... 13,0-66,446}
+                                  android.widget.RadioGroup{9520b1a V.E..... ... 0,26-79,420}
+                                    android.support.v7.widget.AppCompatImageView{76cd64b VFED..C. ... 0,0-79,79 #7f0f01bb app:id/ropes_red3}
+                                    android.support.v7.widget.AppCompatImageView{ba44828 VFED..C. ... 0,105-79,184 #7f0f01bc app:id/ropes_black3}
+                                    android.support.v7.widget.AppCompatImageView{9df1941 VFED..C. ... 0,210-79,289 #7f0f01bd app:id/ropes_grey3}
+                                    android.support.v7.widget.AppCompatImageView{6f5bee6 VFED..C. ... 0,315-79,394 #7f0f01be app:id/ropes_none3}
+                      android.support.v7.widget.AppCompatImageView{2b08c27 V.ED.... ... 948,13-1027,92}
+        android.view.View{d09bed4 V.ED.... ... 0,1794-1080,1920 #1020030 android:id/navigationBarBackground}
+        android.view.View{143087d V.ED.... ... 0,0-1080,63 #102002f android:id/statusBarBackground}
+
+  ACTIVITY ch.philopateer.mibody/.activity.WorkoutsItemsActivity 47956c2 pid=11654
+    Local FragmentActivity 760e282 State:
+      mCreated=truemResumed=false mStopped=true mReallyStopped=true
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mHost=android.support.v4.app.FragmentActivity$HostCallbacks@3cee372
+      mContainer=android.support.v4.app.FragmentActivity$HostCallbacks@3cee372
+      mCurState=2 mStateSaved=true mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.DecorView{48fc3c3 I.E..... ... 0,0-1080,1920}
+        android.widget.LinearLayout{aadf440 V.E..... ... 0,0-1080,1794}
+          android.view.ViewStub{5fcaf79 G.E..... ... 0,0-0,0 #1020186 android:id/action_mode_bar_stub}
+          android.widget.FrameLayout{aa3c4be V.E..... ... 0,63-1080,1794}
+            android.support.v7.widget.FitWindowsLinearLayout{6a0d91f V.E..... ... 0,0-1080,1731 #7f0f0075 app:id/action_bar_root}
+              android.support.v7.widget.ViewStubCompat{19e146c G.E..... ... 0,0-0,0 #7f0f0076 app:id/action_mode_bar_stub}
+              android.support.v7.widget.ContentFrameLayout{20fca35 V.E..... ... 0,0-1080,1731 #1020002 android:id/content}
+                android.widget.RelativeLayout{a536eca V.E..... ... 0,0-1080,1731}
+                  android.widget.LinearLayout{b83e83b V.E..... ... 53,53-1027,1678}
+                    android.widget.RelativeLayout{8e0b58 V.E..... ... 0,0-974,221}
+                      android.support.v7.widget.AppCompatTextView{1ffd4b1 V.ED.... ... 0,0-974,71 #7f0f01f0 app:id/workoutsItemsPage}
+                      android.support.v7.widget.AppCompatTextView{ea1ad96 V.ED.... ... 0,97-974,168 #7f0f01f1 app:id/workoutsItemsType}
+                    android.support.v7.widget.RecyclerView{5becd17 VFED.... F.. 0,221-974,1625 #7f0f01f2 app:id/workoutsRV}
+                      android.widget.LinearLayout{b848504 VFE...CL ... 0,0-974,154}
+                        android.widget.LinearLayout{d0c0aed V.E..... ... 0,0-974,87}
+                          android.widget.LinearLayout{9c30d22 V.E..... ... 0,0-350,87}
+                            android.widget.TextView{5923b3 V.ED.... ... 26,13-324,74 #7f0f01ed app:id/workoutsItemName}
+                          android.widget.HorizontalScrollView{e46ed70 VFEDH... ... 350,0-974,87}
+                            android.widget.LinearLayout{52b68e9 V.E..... ... 0,0-214,87}
+                              android.widget.TextView{aa8d96e V.ED.... ... 26,22-214,65 #7f0f01ee app:id/workoutsItemExercises}
+                        android.widget.FrameLayout{538480f V.E..... ... 0,100-974,101}
+                      android.widget.LinearLayout{985709c I.E..... ... 0,154-974,308}
+                        android.widget.LinearLayout{ac8aaa5 V.E..... ... 0,0-974,87}
+                          android.widget.LinearLayout{c0d1e7a V.E..... ... 0,0-257,87}
+                            android.widget.TextView{d3b562b V.ED.... ... 26,13-231,74 #7f0f01ed app:id/workoutsItemName}
+                          android.widget.HorizontalScrollView{6c6fa88 VFEDH... ... 257,0-974,87}
+                            android.widget.LinearLayout{3e4c21 V.E..... ... 0,0-272,87}
+                              android.widget.TextView{83ea846 V.ED.... ... 26,22-272,65 #7f0f01ee app:id/workoutsItemExercises}
+                        android.widget.FrameLayout{6172a07 V.E..... ... 0,100-974,101}
+                      android.widget.LinearLayout{f153734 I.E..... ... 0,308-974,462}
+                        android.widget.LinearLayout{912895d V.E..... ... 0,0-974,87}
+                          android.widget.LinearLayout{dad02d2 V.E..... ... 0,0-257,87}
+                            android.widget.TextView{9f25fa3 V.ED.... ... 26,13-231,74 #7f0f01ed app:id/workoutsItemName}
+                          android.widget.HorizontalScrollView{6892a0 VFEDH... ... 257,0-974,87}
+                            android.widget.LinearLayout{f35e59 V.E..... ... 0,0-272,87}
+                              android.widget.TextView{347a1e V.ED.... ... 26,22-272,65 #7f0f01ee app:id/workoutsItemExercises}
+                        android.widget.FrameLayout{4c152ff V.E..... ... 0,100-974,101}
+                      android.widget.LinearLayout{dd438cc I.E..... ... 0,462-974,616}
+                        android.widget.LinearLayout{6728715 V.E..... ... 0,0-974,87}
+                          android.widget.LinearLayout{32a1a2a V.E..... ... 0,0-257,87}
+                            android.widget.TextView{362201b V.ED.... ... 26,13-231,74 #7f0f01ed app:id/workoutsItemName}
+                          android.widget.HorizontalScrollView{67215b8 VFEDH... ... 257,0-974,87}
+                            android.widget.LinearLayout{5817f91 V.E..... ... 0,0-272,87}
+                              android.widget.TextView{827aef6 V.ED.... ... 26,22-272,65 #7f0f01ee app:id/workoutsItemExercises}
+                        android.widget.FrameLayout{878a2f7 V.E..... ... 0,100-974,101}
+                  android.support.v7.widget.AppCompatImageView{f0ed564 V.ED.... ... 0,1337-1080,1731 #7f0f01f3 app:id/workouts_gradient}
+                  android.support.design.widget.FloatingActionButton{dad83cd VFED..C. ... 828,1479-975,1626 #7f0f01f4 app:id/add_workout_btn}
+        android.view.View{e97c482 V.ED.... ... 0,1794-1080,1920 #1020030 android:id/navigationBarBackground}
+        android.view.View{30a7793 V.ED.... ... 0,0-1080,63 #102002f android:id/statusBarBackground}
+
+  ACTIVITY ch.philopateer.mibody/.activity.WorkoutsActivity d498512 pid=11654
+    Local FragmentActivity e09a699 State:
+      mCreated=truemResumed=false mStopped=true mReallyStopped=true
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mHost=android.support.v4.app.FragmentActivity$HostCallbacks@a95e3d0
+      mContainer=android.support.v4.app.FragmentActivity$HostCallbacks@a95e3d0
+      mCurState=2 mStateSaved=true mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.DecorView{1b8fc9 I.E..... ... 0,0-1080,1920}
+        android.widget.LinearLayout{1a6ce V.E..... ... 0,0-1080,1794}
+          android.view.ViewStub{2daf9ef G.E..... ... 0,0-0,0 #1020186 android:id/action_mode_bar_stub}
+          android.widget.FrameLayout{d3d6cfc V.E..... ... 0,0-1080,1794}
+            android.support.v7.widget.FitWindowsLinearLayout{1445f85 V.E..... ... 0,0-1080,1794 #7f0f0075 app:id/action_bar_root}
+              android.support.v7.widget.ViewStubCompat{51561da G.E..... ... 0,0-0,0 #7f0f0076 app:id/action_mode_bar_stub}
+              android.support.v7.widget.ContentFrameLayout{687460b V.E..... ... 0,0-1080,1794 #1020002 android:id/content}
+                android.support.design.widget.CoordinatorLayout{6725ce8 V.ED.... ... 0,0-1080,1794}
+                  android.widget.LinearLayout{265f510 V.E..... ... 0,63-1080,1253}
+                    android.support.v7.widget.AppCompatTextView{a706f01 V.ED.... ... 0,53-1080,124}
+                    android.support.v7.widget.AppCompatTextView{f77c1a6 V.ED.... ... 0,177-1080,228}
+                    android.support.v7.widget.CardView{f6237e7 VFE...C. ... 66,307-1014,622 #7f0f0097 app:id/predefinedCV}
+                      android.support.v7.widget.AppCompatImageView{d845f94 V.ED.... ... 0,0-948,315}
+                    android.support.v7.widget.AppCompatTextView{6f3fa3d V.ED.... ... 0,648-1080,709}
+                    android.support.v7.widget.CardView{44e5232 VFE...C. ... 66,788-1014,1103 #7f0f0098 app:id/personalisedCV}
+                      android.support.v7.widget.AppCompatImageView{7106b83 V.ED.... ... 0,0-948,315}
+                    android.support.v7.widget.AppCompatTextView{d11e100 V.ED.... ... 0,1129-1080,1190}
+        android.view.View{92afd39 V.ED.... ... 0,1794-1080,1920 #1020030 android:id/navigationBarBackground}
+        android.view.View{38b5f7e V.ED.... ... 0,0-1080,63 #102002f android:id/statusBarBackground}
+
+  ACTIVITY ch.philopateer.mibody/.activity.Landing 907655a pid=11654
+    Local FragmentActivity ed8b17f State:
+      mCreated=truemResumed=false mStopped=true mReallyStopped=true
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mHost=android.support.v4.app.FragmentActivity$HostCallbacks@2e43cdf
+      mContainer=android.support.v4.app.FragmentActivity$HostCallbacks@2e43cdf
+      mCurState=2 mStateSaved=true mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.DecorView{9340d2c I.E..... ... 0,0-1080,1920}
+        android.widget.LinearLayout{33533f5 V.E..... ... 0,0-1080,1794}
+          android.view.ViewStub{7f9f58a G.E..... ... 0,0-0,0 #1020186 android:id/action_mode_bar_stub}
+          android.widget.FrameLayout{f9c7fb V.E..... ... 0,63-1080,1794}
+            android.support.v7.widget.FitWindowsLinearLayout{c6ad018 V.E..... ... 0,0-1080,1731 #7f0f0075 app:id/action_bar_root}
+              android.support.v7.widget.ViewStubCompat{f721a71 G.E..... ... 0,0-0,0 #7f0f0076 app:id/action_mode_bar_stub}
+              android.support.v7.widget.ContentFrameLayout{c09e056 V.E..... ... 0,0-1080,1731 #1020002 android:id/content}
+                android.widget.RelativeLayout{b12e8d7 V.E..... ... 0,0-1080,1731}
+                  com.sothree.slidinguppanel.SlidingUpPanelLayout{748d5c4 V.ED.... ... 0,0-1080,1731 #7f0f00e1 app:id/sliding_layout}
+                    android.widget.LinearLayout{4bcecad V.E..... ... 0,0-1080,1731}
+                      android.support.v7.widget.AppCompatTextView{f5babe2 V.ED.... ... 0,79-1080,150 #7f0f00e3 app:id/homeTitle}
+                      android.widget.LinearLayout{b333b73 V.E..... ... 0,203-1080,912}
+                        android.support.v7.widget.AppCompatButton{edf8a30 GFED..C. ... 0,0-0,0 #7f0f00e4 app:id/previousVideo}
+                        android.support.v7.widget.CardView{268a6a9 V.E..... ... 0,0-1080,709}
+                          android.support.v7.widget.RecyclerView{90ca42e VFED.... F.. 6,8-1074,701 #7f0f00e5 app:id/landingVideosRV}
+                            android.widget.RelativeLayout{dfc1bcf V.E..... ... 0,0-1068,693}
+                              android.widget.RelativeLayout{5eb195c V.E..... ... 0,0-1068,693}
+                                android.support.v7.widget.AppCompatImageView{ffc0465 V.ED.... ... 0,0-1068,693 #7f0f00f5 app:id/videoThumbnail}
+                                android.support.v7.widget.AppCompatImageView{2c2d53a VFED..C. ... 0,0-1068,693 #7f0f00f6 app:id/videoPlayBtn}
+                        android.support.v7.widget.AppCompatButton{ec8a5eb GFED..C. ... 0,0-0,0 #7f0f00e6 app:id/nextVideo}
+                      android.support.v7.widget.AppCompatTextView{cbe6f48 V.ED..C. ... 0,1017-1080,1088}
+                    android.widget.LinearLayout{cad81e1 V.E...C. ... 0,1390-1080,2279}
+                      android.support.v7.widget.AppCompatImageView{8790b06 V.ED.... ... 474,0-605,18}
+                      android.widget.LinearLayout{989b5c7 V.E..... ... 0,44-1080,889}
+                        android.widget.LinearLayout{3ef37f4 V.E..... ... 0,1-1080,845}
+                          android.widget.LinearLayout{a9f5b1d V.E..... ... 0,26-1080,264}
+                            android.widget.LinearLayout{90ad192 V.E..... ... 0,0-360,238}
+                              android.support.v7.widget.AppCompatTextView{e61e763 V.ED.... ... 0,0-360,51}
+                              android.support.v7.widget.CardView{dc1df60 VFE...C. ... 90,59-269,238 #7f0f00ea app:id/landingExercisesBtn}
+                                android.support.v7.widget.AppCompatImageView{1db8c19 V.ED.... ... 0,0-179,179}
+                            android.widget.LinearLayout{38074de V.E..... ... 360,0-720,238}
+                              android.support.v7.widget.AppCompatTextView{30196bf V.ED.... ... 0,0-360,51}
+                              android.support.v7.widget.CardView{a55918c VFE...C. ... 90,59-269,238 #7f0f00eb app:id/landingWorkoutsBtn}
+                                android.support.v7.widget.AppCompatImageView{70fd0d5 V.ED.... ... 0,0-179,179}
+                            android.widget.LinearLayout{d1b00ea V.E..... ... 720,0-1080,238}
+                              android.support.v7.widget.AppCompatTextView{dc2dfdb V.ED.... ... 0,0-360,51}
+                              android.support.v7.widget.CardView{a903a78 VFE...C. ... 90,59-269,238 #7f0f00ec app:id/landingProfileBtn}
+                                android.support.v7.widget.AppCompatImageView{209a551 V.ED.... ... 0,0-179,179}
+                          android.widget.LinearLayout{c2041b6 V.E..... ... 0,303-1080,541}
+                            android.widget.LinearLayout{6859eb7 G.E..... ... 0,0-0,0}
+                              android.support.v7.widget.AppCompatTextView{5ca8624 V.ED.... ... 0,0-0,0}
+                              android.support.v7.widget.CardView{ff2458d V.E..... ... 0,0-0,0 #7f0f00ed app:id/landingShopBtn}
+                                android.support.v7.widget.AppCompatImageView{366c342 V.ED.... ... 0,0-0,0}
+                            android.widget.LinearLayout{94b6f53 G.E..... ... 0,0-0,0}
+                              android.support.v7.widget.AppCompatTextView{e3be090 V.ED.... ... 0,0-0,0}
+                              android.support.v7.widget.CardView{d4aad89 V.E..... ... 0,0-0,0 #7f0f00ee app:id/landingNewsBtn}
+                                android.support.v7.widget.AppCompatImageView{aa1d18e V.ED.... ... 0,0-0,0}
+                            android.widget.LinearLayout{693adaf V.E..... ... 0,0-1080,238}
+                              android.support.v7.widget.AppCompatTextView{2675bc V.ED.... ... 0,0-1080,51}
+                              android.support.v7.widget.CardView{3a79945 VFE...C. ... 66,59-1014,238 #7f0f00ef app:id/landingSettingsBtn}
+                                android.support.v7.widget.AppCompatImageView{f6d789a V.ED.... ... 0,0-948,179}
+                          android.widget.LinearLayout{d7775cb V.E..... ... 0,580-1080,818}
+                            android.widget.LinearLayout{7c331a8 V.E..... ... 0,0-1080,238}
+                              android.support.v7.widget.AppCompatTextView{72d84c1 V.ED.... ... 0,0-1080,51}
+                              android.support.v7.widget.CardView{b1a8466 V.E..... ... 66,59-1014,238}
+                                android.widget.LinearLayout{b85a3a7 V.E..... ... 0,0-948,179}
+                                  android.support.v7.widget.AppCompatImageView{9edc054 VFED..C. ... 26,26-205,153 #7f0f00f0 app:id/landingSiteBtn}
+                                  android.support.v7.widget.AppCompatImageView{fccabfd VFED..C. ... 205,26-384,153 #7f0f00f1 app:id/landingFbBtn}
+                                  android.support.v7.widget.AppCompatImageView{93a80f2 VFED..C. ... 384,26-563,153 #7f0f00f2 app:id/landingInstaBtn}
+                                  android.support.v7.widget.AppCompatImageView{e5ed343 VFED..C. ... 563,26-742,153 #7f0f00f3 app:id/landingTwitterBtn}
+                                  android.support.v7.widget.AppCompatImageView{b908dc0 VFED..C. ... 742,26-922,153 #7f0f00f4 app:id/landingUTubeBtn}
+        android.view.View{a3d0af9 V.ED.... ... 0,1794-1080,1920 #1020030 android:id/navigationBarBackground}
+        android.view.View{aebba3e V.ED.... ... 0,0-1080,63 #102002f android:id/statusBarBackground}

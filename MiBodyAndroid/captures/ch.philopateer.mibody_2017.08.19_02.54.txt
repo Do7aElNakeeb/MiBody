@@ -1,0 +1,49 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 7193993 Realtime: 7193993
+
+** MEMINFO in pid 11654 [ch.philopateer.mibody] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    82903    82616        0        0   104832   102139     2692
+  Dalvik Heap     4181     4148        0        0     5537     2769     2768
+ Dalvik Other     3140     3140        0        0                           
+        Stack     3508     3508        0        0                           
+       Ashmem       10        0        0        0                           
+    Other dev       10        0        8        0                           
+     .so mmap     3800      232      548        0                           
+    .apk mmap     1219        0      232        0                           
+    .ttf mmap      215        0       40        0                           
+    .dex mmap    12973       20     8252        0                           
+    .oat mmap     1449        0       20        0                           
+    .art mmap     4174     3908       28        0                           
+   Other mmap      138        4        0        0                           
+      Unknown     1306     1300        0        0                           
+        TOTAL   119026    98876     9128        0   110369   104908     5460
+ 
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     8084
+         Native Heap:    82616
+                Code:     9344
+               Stack:     3508
+            Graphics:        0
+       Private Other:     4452
+              System:    11022
+ 
+               TOTAL:   119026       TOTAL SWAP PSS:        0
+ 
+ Objects
+               Views:      405         ViewRootImpl:        4
+         AppContexts:       10           Activities:        5
+              Assets:        4        AssetManagers:        5
+       Local Binders:       65        Proxy Binders:       28
+       Parcel memory:       62         Parcel count:      220
+    Death Recipients:        1      OpenSSL Sockets:        1
+            WebViews:        0
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+ 

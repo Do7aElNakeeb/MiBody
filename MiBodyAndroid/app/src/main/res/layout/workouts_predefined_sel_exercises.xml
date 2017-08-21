@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ch.philopateer.mibody.activity.WorkoutsActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/exercises_details_bg"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:text="Predefined Workouts"
+            android:textColor="@color/MiBodyOrange"/>
+
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_stroke">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="3"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:textColor="@color/MiBodyRed"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Your Exercises"
+            android:textColor="#000"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/advancedCV"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/landing_menu_item_margin"
+            android:layout_marginRight="@dimen/landing_menu_item_margin"
+            android:layout_marginBottom="10dp"
+            card_view:cardCornerRadius="@dimen/landing_menu_item_cornerradius"
+            card_view:cardUseCompatPadding="false"
+            card_view:cardBackgroundColor="@color/MiBodyWhite">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="10dp"
+            android:alpha="0.4"
+            android:background="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:text="Featured Exercises"
+            android:textColor="@color/black"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/intermediateCV"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/landing_menu_item_margin"
+            android:layout_marginRight="@dimen/landing_menu_item_margin"
+            android:layout_marginBottom="10dp"
+            card_view:cardCornerRadius="@dimen/landing_menu_item_cornerradius"
+            card_view:cardUseCompatPadding="false"
+            card_view:cardBackgroundColor="@color/MiBodyWhite">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

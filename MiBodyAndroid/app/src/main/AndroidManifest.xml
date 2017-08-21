@@ -98,6 +98,13 @@
         </activity>
 
         <activity
+            android:name=".fragments.ExerciseDetails"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+
+        </activity>
+
+        <activity
             android:name=".activity.WorkoutsActivity"
             android:screenOrientation="portrait"
             android:label="Workouts">

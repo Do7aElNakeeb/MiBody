@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.helper;
+package ch.philopateer.mibody.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ch.philopateer.mibody.helper.ItemTouchHelperAdapter;
+import ch.philopateer.mibody.helper.ItemTouchHelperViewHolder;
+import ch.philopateer.mibody.helper.OnStartDragListener;
 import ch.philopateer.mibody.object.ExerciseItem;
 import ch.philopateer.mibody.object.WorkoutExItem;
 
@@ -140,7 +143,7 @@ public class AddWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRemoved(position);
     }
 
-    class ExercisesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+    class ExercisesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
         public TextView title;
         public ImageView imageView;

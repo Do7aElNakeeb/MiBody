@@ -67,7 +67,7 @@ public class WorkoutFragment extends Fragment{
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                     LayoutInflater inflater = getActivity().getLayoutInflater();
-                    View dialogView = inflater.inflate(R.layout.custom_workout, null);
+                    View dialogView = inflater.inflate(R.layout.workout_ex_set_details, null);
                     builder.setView(dialogView);
 
                     EditText WorkoutName;
@@ -155,7 +155,7 @@ public class WorkoutFragment extends Fragment{
 
             WorkoutsAdapter adapter = new WorkoutsAdapter(this.getActivity(), workoutItemArrayList, new WorkoutsAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(WorkoutItem workoutItem) {
+                public void onItemClick(WorkoutItem workoutItem, int position, Boolean longClick) {
 
                 }
             });

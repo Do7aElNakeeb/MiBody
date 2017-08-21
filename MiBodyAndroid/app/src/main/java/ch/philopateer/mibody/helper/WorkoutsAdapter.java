@@ -1,10 +1,13 @@
 package ch.philopateer.mibody.helper;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
@@ -26,7 +29,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
 
 
     public interface OnItemClickListener {
-        void onItemClick(WorkoutItem workoutItem);
+        void onItemClick(WorkoutItem workoutItem, int position, Boolean longClick);
     }
 
 
@@ -74,7 +77,15 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemClickListener.onItemClick(workoutItem);
+                    onItemClickListener.onItemClick(workoutItem, holder.getAdapterPosition(), false);
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                   onItemClickListener.onItemClick(workoutItem, holder.getAdapterPosition(), true);
+                   return true;
                 }
             });
         }
