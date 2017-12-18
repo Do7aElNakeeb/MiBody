@@ -117,6 +117,12 @@
         </activity>
 
         <activity
+            android:name=".activity.WorkoutsPredefined"
+            android:screenOrientation="portrait"
+            android:label="Predefined Workouts">
+        </activity>
+
+        <activity
             android:name=".activity.Dimensions"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"

@@ -26,7 +26,7 @@ public class WorkoutPlay extends AppCompatActivity {
         intent = getIntent();
         Bundle bundle = getIntent().getExtras();
         workoutItem = intent.getParcelableExtra("WorkoutItem");
-        workoutItem = new WorkoutItem(workoutItem.workoutID, workoutItem.workoutName, workoutItem.workoutReps, workoutItem.exercisesJSON, workoutItem.workoutType);
+        workoutItem = new WorkoutItem(workoutItem.workoutID, workoutItem.workoutName, workoutItem.workoutReps, workoutItem.exercisesJSON, workoutItem.workoutType, workoutItem.wTime);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

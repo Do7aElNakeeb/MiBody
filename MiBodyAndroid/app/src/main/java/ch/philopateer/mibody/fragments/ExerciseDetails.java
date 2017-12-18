@@ -2,29 +2,20 @@ package ch.philopateer.mibody.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
-import ch.philopateer.mibody.helper.ViewPagerAdapter;
+import ch.philopateer.mibody.adapter.ViewPagerAdapter;
 import ch.philopateer.mibody.object.ExerciseItem;
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -66,11 +57,14 @@ public class ExerciseDetails extends AppCompatActivity {
         exerciseName = (TextView) findViewById(R.id.exName);
         exerciseImg = (ImageView) findViewById(R.id.exImg);
 
-        new Picasso.Builder(this)
-                .downloader(new OkHttpDownloader(this, Integer.MAX_VALUE))
-                .build()
-                .load(AppConfig.URL_SERVER + "ExImage/" + exerciseItem.getImage())
-                .placeholder(AppConfig.exercises_imgs[Arrays.asList(AppConfig.exercises_names).indexOf(exerciseItem.getName())]).into(exerciseImg);
+        Picasso.with(this)
+//                .downloader(new OkHttpDownloader(this, Integer.MAX_VALUE))
+//                .build()
+//                .load(AppConfig.URL_SERVER + "ExImage/" + exerciseItem.getImage())
+                .load(AppConfig.exercises_imgs[Arrays.asList(AppConfig.exercises_names).indexOf(exerciseItem.getName())])
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_STORE)
+                .into(exerciseImg);
 
 
         exerciseName.setText(exerciseItem.getName());
@@ -161,4 +155,9 @@ public class ExerciseDetails extends AppCompatActivity {
         this.position = position;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

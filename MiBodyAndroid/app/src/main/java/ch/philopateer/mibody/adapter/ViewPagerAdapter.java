@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.helper;
+package ch.philopateer.mibody.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

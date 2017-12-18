@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,13 +27,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,15 +44,12 @@ import ch.philopateer.mibody.fragments.RegisterOne;
 import ch.philopateer.mibody.fragments.RegisterThree;
 import ch.philopateer.mibody.fragments.RegisterTwo;
 import ch.philopateer.mibody.helper.SessionManager;
-import ch.philopateer.mibody.helper.ViewPagerAdapter;
+import ch.philopateer.mibody.adapter.ViewPagerAdapter;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
 import ch.philopateer.mibody.object.UserData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by NakeebMac on 10/1/16.
@@ -73,6 +68,7 @@ public class Register extends AppCompatActivity {
     String mobile;
     String password;
     String weight;
+    String err = "";
 
     private Uri fileUri; // file url to store image/video
     private Bitmap bitmap;
@@ -95,6 +91,8 @@ public class Register extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
     StorageReference photoReferenece;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +239,9 @@ public class Register extends AppCompatActivity {
 
         pDialog.setMessage("Registering with Mail");
         showDialog();
+
+
+
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -251,31 +252,66 @@ public class Register extends AppCompatActivity {
                                     .child(firebaseAuth.getCurrentUser().getUid())
                                     .setValue(new UserData(name, email, gender, dob, weight, height, units, BMI));
 
-                            photoReferenece = photoReferenece.child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
-                            photoReferenece.putFile(photoPath)
-                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            hideDialog();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            hideDialog();
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
-                                            builder.setMessage(e.getMessage())
-                                                    .setTitle("Error!")
-                                                    .setPositiveButton(android.R.string.ok, null);
-                                            AlertDialog dialog = builder.create();
-                                            dialog.show();
-                                        }
-                                    });
 
+                            if (photoPath != null) {
+
+                                photoReferenece = photoReferenece.child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
+                                photoReferenece.putFile(photoPath)
+                                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                hideDialog();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                hideDialog();
+//
+//
+//
+//                                            AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+//                                            builder.setMessage("")
+//                                                    .setTitle("Error!")
+//                                                    .setPositiveButton(android.R.string.ok, null);
+//                                            AlertDialog dialog = builder.create();
+//                                            dialog.show();
+                                            }
+                                        });
+                            }
                             saveToSharedPrefs();
                             loginToHome();
+                            hideDialog();
 
                         } else {
+
+                            err = "";
+
+                            switch (((FirebaseAuthException) task.getException()).getErrorCode()){
+
+                                case "ERROR_INVALID_EMAIL":
+                                    err = "Please enter a valid email!";
+                                    break;
+
+                                case "ERROR_WRONG_PASSWORD":
+                                    err = "Wrong password or the user use another login method.";
+                                    break;
+
+                                case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
+                                    err = "Wrong password!";
+                                    break;
+
+                                case "ERROR_USER_NOT_FOUND":
+                                    err = "This user isn't existed, You can create a new account.";
+                                    break;
+
+                                case "ERROR_WEAK_PASSWORD":
+                                    err = "Please enter a valid password!";
+                                    break;
+                            }
+                            if (err.isEmpty())
+                                err = task.getException().getMessage();
+
                             //Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
                             builder.setMessage(task.getException().getMessage())
@@ -283,6 +319,7 @@ public class Register extends AppCompatActivity {
                                     .setPositiveButton(android.R.string.ok, null);
                             AlertDialog dialog = builder.create();
                             dialog.show();
+                            hideDialog();
                         }
                     }
                 });

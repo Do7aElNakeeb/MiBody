@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import ch.philopateer.mibody.R;
 
@@ -27,8 +28,8 @@ public class WorkoutsActivity extends AppCompatActivity {
         predefined.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), WorkoutsItemsActivity.class);
-                intent.putExtra("type", "predefined");
+                Intent intent = new Intent(getBaseContext(), WorkoutsPredefined.class);
+                //intent.putExtra("type", "predefined");
                 startActivity(intent);
             }
         });
@@ -39,6 +40,13 @@ public class WorkoutsActivity extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), WorkoutsItemsActivity.class);
                 intent.putExtra("type", "personalised");
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.backBtnLL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

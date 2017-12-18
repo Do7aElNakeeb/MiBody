@@ -1,8 +1,6 @@
 package ch.philopateer.mibody.activity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -13,25 +11,21 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
@@ -39,9 +33,13 @@ import com.squareup.picasso.Target;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
+import ch.philopateer.mibody.fragments.StatisticsGraph;
+import ch.philopateer.mibody.fragments.StatisticsResults;
+import ch.philopateer.mibody.adapter.ViewPagerAdapter;
 import ch.philopateer.mibody.object.WorkoutExItem;
-import ch.philopateer.mibody.helper.StatisticsExAdapter;
+import ch.philopateer.mibody.adapter.StatisticsExAdapter;
 import ch.philopateer.mibody.object.WorkoutItem;
+import me.relex.circleindicator.CircleIndicator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,9 +50,12 @@ import java.util.Calendar;
 
 public class StatisticsActivity extends AppCompatActivity{
 
+    // TODO time graph
+
     private ProgressDialog pDialog;
 
-    RelativeLayout dimensionsBtn, homeBtn;
+    RelativeLayout homeBtn;
+    LinearLayout homeBtnLL;
     ImageView filterBtn, userImage;
     TextView nameTV, heightTV, heightUnitTV, weightTv, weightUnitTV, ageTV, imcTV;
     RecyclerView exercisesStatisticsRV, performStatisticsRV;
@@ -64,23 +65,32 @@ public class StatisticsActivity extends AppCompatActivity{
 
     FrameLayout blackFL;
     LinearLayout filterMenuLL;
-    TextView filterExTxt, filterMusTxt;
 
     SharedPreferences prefs;
 
-    int maxReps = 0;
+    int maxReps = 0, maxTIme = 0;
     ArrayList<WorkoutExItem> workoutExItemArrayListObj;
     ArrayList<Integer> workoutExItemArrayListAch;
     
     FirebaseAuth firebaseAuth;
     StorageReference photoReference;
 
-    WorkoutItem workoutItem = null;
+    public WorkoutItem workoutItem = null;
+
+    long actTotalTime = 0;
+    int wTime = 0;
+
+    int resultQuote = 0;
+
+    ViewPager statisticsVP;
+    CircleIndicator circleIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics_activity);
+
+        prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle.containsKey("workoutItemStats")) {
@@ -89,166 +99,70 @@ public class StatisticsActivity extends AppCompatActivity{
             Log.d("workoutItemExArSize2", String.valueOf(workoutItem.exercisesList.size()));
         }
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        photoReference = FirebaseStorage.getInstance().getReference();
-
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
-        prefs = getSharedPreferences("UserDetails", MODE_PRIVATE);
-
-        dimensionsBtn = (RelativeLayout) findViewById(R.id.dimensionBtn);
-        homeBtn = (RelativeLayout) findViewById(R.id.homeBtn);
-        filterBtn = (ImageView) findViewById(R.id.statisticsFilterBtn);
-        userImage = (ImageView) findViewById(R.id.userIV);
-        nameTV = (TextView) findViewById(R.id.userNameTxtView);
-        heightTV = (TextView) findViewById(R.id.userHeightTxtView);
-        heightUnitTV = (TextView) findViewById(R.id.userHeightUnitTxtView);
-        weightTv = (TextView) findViewById(R.id.userWeightTxtView);
-        weightUnitTV = (TextView) findViewById(R.id.userWeightUnitTxtView);
-        ageTV = (TextView) findViewById(R.id.ageTxtView);
-        imcTV = (TextView) findViewById(R.id.imcTxtView);
-        yAxisFL = (FrameLayout) findViewById(R.id.yAxisFL);
-
-        blackFL = (FrameLayout) findViewById(R.id.blackLayout);
-        filterMenuLL = (LinearLayout) findViewById(R.id.statisticsFilterMenuLL);
-        filterExTxt = (TextView) findViewById(R.id.statisticsFbyEx);
-        filterMusTxt = (TextView) findViewById(R.id.statisticsFbyMuscle);
-
-        exercisesStatisticsRV = (RecyclerView) findViewById(R.id.exercisesStatisticsRV);
-        performStatisticsRV = (RecyclerView) findViewById(R.id.performStatisticsRV);
-
-        updateUserDetails();
         initExStatisticsRV();
 
-        dimensionsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StatisticsActivity.this, Dimensions.class);
-                //startActivity(intent);
-                finish();
-            }
-        });
+        statisticsVP = (ViewPager) findViewById(R.id.statisticsVP);
+        circleIndicator = (CircleIndicator) findViewById(R.id.page_indicator);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        filterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (filterMenuLL.getVisibility() == View.VISIBLE){
-                    blackFL.setVisibility(View.GONE);
-                    filterMenuLL.setVisibility(View.GONE);
-                    filterBtn.setImageResource(R.drawable.filter_icon);
-                }
-                else {
-                    blackFL.setVisibility(View.VISIBLE);
-                    filterMenuLL.setVisibility(View.VISIBLE);
-                    filterBtn.setImageResource(R.drawable.filter_icon_white);
-                }
-            }
-        });
+        Log.d("wTime0", String.valueOf(wTime));
 
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StatisticsActivity.this, Landing.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
-
-        blackFL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                blackFL.setVisibility(View.GONE);
-                filterMenuLL.setVisibility(View.GONE);
-                filterBtn.setImageResource(R.drawable.filter_icon);
-            }
-        });
-
-        filterExTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(StatisticsActivity.this, "Exercise Statistics", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        filterMusTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(StatisticsActivity.this, "Muscle Statistics", Toast.LENGTH_SHORT).show();
-            }
-        });
+        viewPagerAdapter.addFragment(new StatisticsResults((int) actTotalTime, Integer.parseInt(prefs.getString("weight", "75")), workoutItem.wTime, resultQuote), "1");
+        viewPagerAdapter.addFragment(new StatisticsGraph(workoutItem, maxReps, maxTIme), "2");
+        statisticsVP.setAdapter(viewPagerAdapter);
+        circleIndicator.setViewPager(statisticsVP);
 
 
     }
 
     private void initExStatisticsRV(){
 
-        pDialog.setMessage("Loading ...");
-        showDialog();
-        workoutExItemArrayListAch = new ArrayList<Integer>();
-        workoutExItemArrayListObj = new ArrayList<WorkoutExItem>();
-        /*
-        SharedPreferences objPrefs = getSharedPreferences("ExObjStatistics", Context.MODE_PRIVATE);
-
-        SharedPreferences achPrefs = getSharedPreferences("ExAchStatistics", Context.MODE_PRIVATE);
-*/
+        int actTotReps = 0, exTotReps = 0, actTotTime = 0, exTotTime = 0;
 
         for (int i = 0; i < workoutItem.exercisesList.size(); i++){
+
+
+            actTotalTime += workoutItem.exercisesList.get(i).actualExTime;
+
+            if (workoutItem.exercisesList.get(i).repsTimeBool) {
+                actTotTime += workoutItem.exercisesList.get(i).actualExTime;
+                exTotTime += workoutItem.exercisesList.get(i).exTime;
+            }
+            else {
+                actTotReps += workoutItem.exercisesList.get(i).actualReps;
+                exTotReps += workoutItem.exercisesList.get(i).reps;
+            }
 
             if (workoutItem.exercisesList.get(i).reps >= maxReps) {
                 maxReps = workoutItem.exercisesList.get(i).reps;
             }
-            if (workoutItem.exercisesList.get(i).exReps >= maxReps) {
-                maxReps = workoutItem.exercisesList.get(i).exReps;
+            if (workoutItem.exercisesList.get(i).actualReps >= maxReps) {
+                maxReps = workoutItem.exercisesList.get(i).actualReps;
             }
 
-            //workoutExItemArrayListObj.add(new WorkoutExItem(AppConfig.exercises_names[i], "", "", "", "", objPrefs.getInt(AppConfig.exercises_names[i], 0), 0, 0));
-            //workoutExItemArrayListAch.add(workoutItem.exercisesList.get(i).exReps);
-
-            if(workoutItem.exercisesList.size() != 0) {
-                /*
-            workoutExItemArrayListObj.get(i).name = AppConfig.exercises_names[i];
-            workoutExItemArrayListObj.get(i).reps = objPrefs.getInt(AppConfig.exercises_names[i], 0);
-            workoutExItemArrayListAch.set(i, achPrefs.getInt(AppConfig.exercises_names[i], 0));
-            */
-
-
+            if (workoutItem.exercisesList.get(i).actualExTime >= maxTIme) {
+                maxTIme = (int) workoutItem.exercisesList.get(i).actualExTime;
             }
 
         }
-/*
-        for (int i=0; i< workoutExItemArrayListAch.size(); i++){
-            workoutExItemArrayListAch.set(i, workoutExItemArrayListAch.get(i));
-            if (workoutExItemArrayListAch.get(i) >= maxReps){
-                maxReps = workoutExItemArrayListAch.get(i);
-            }
+
+        if (actTotReps > exTotReps && actTotTime == exTotTime){
+            resultQuote = 0;
         }
-*/
-        yAxisFL.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                yAxisFL.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                statisticsExAdapter = new StatisticsExAdapter(StatisticsActivity.this, yAxisFL.getHeight(), maxReps, workoutItem.exercisesList);
-                exercisesStatisticsRV.setLayoutManager(new LinearLayoutManager(StatisticsActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                exercisesStatisticsRV.setAdapter(statisticsExAdapter);
-                hideDialog();
-                return true;
-            }
-        });
+        else if (actTotReps == exTotReps && actTotTime == exTotTime){
+            resultQuote = 1;
+        }
+        else {
+            resultQuote = 2;
+        }
 
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+    public ViewPager getViewPager() {
+        if (null == statisticsVP) {
+            statisticsVP = (ViewPager) findViewById(R.id.viewpager);
+        }
+        return statisticsVP;
     }
 
     private void updateUserDetails(){
@@ -271,6 +185,7 @@ public class StatisticsActivity extends AppCompatActivity{
             heightUnitTV.setText("Inch");
         }
     }
+
 
     private void photoCircled(){
 

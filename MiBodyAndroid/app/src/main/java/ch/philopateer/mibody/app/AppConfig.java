@@ -1,5 +1,7 @@
 package ch.philopateer.mibody.app;
 
+import android.util.SparseIntArray;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public class AppConfig {
             "Leg raise",
             "Lunge",
             "Squat",
-            "dip",
+            "Dip",
             "Calf raise"
     };
 
@@ -111,6 +113,46 @@ public class AppConfig {
             R.raw.calfraises_gif
     };
 
+    public static final Map<Integer, Integer> heartRates;
+    static
+    {
+        
+        heartRates = new HashMap<Integer, Integer>();
+        heartRates.put(20, 170);
+        heartRates.put(30, 162);
+        heartRates.put(35, 157);
+        heartRates.put(40, 153);
+        heartRates.put(45, 149);
+        heartRates.put(50, 145);
+        heartRates.put(55, 140);
+        heartRates.put(60, 136);
+        heartRates.put(65, 132);
+        heartRates.put(70, 128);
+    }
+
+    public static final SparseIntArray heartRatesSA;
+    static
+    {
+
+        heartRatesSA = new SparseIntArray();
+        heartRatesSA.put(20, 170);
+        heartRatesSA.put(30, 162);
+        heartRatesSA.put(35, 157);
+        heartRatesSA.put(40, 153);
+        heartRatesSA.put(45, 149);
+        heartRatesSA.put(50, 145);
+        heartRatesSA.put(55, 140);
+        heartRatesSA.put(60, 136);
+        heartRatesSA.put(65, 132);
+        heartRatesSA.put(70, 128);
+    }
+
+    public static String resultsQuote[] = {
+      "WOW, This’s beyond your goal",
+            "Congrats, you’ve done it",
+            "Hard luck next time"
+    };
+
     // Video Thumbnail Url
     public static String VideoThumbnail = "http://img.youtube.com/vi/";
 
@@ -120,5 +162,16 @@ public class AppConfig {
 
     // Google App API Key
     public static String Google_API_KEY = "AIzaSyCn0E7XmM87YpnHPZq6TMaQ5NBcnKPsWLU";
+
+
+    public static double MIN_WEIGHT = 30;
+    public static double MAX_WEIGHT = 300;
+
+    public static double MIN_HEIGHT = 50;
+    public static double MAX_HEIGHT = 400;
+
+
+    public static double MAX_REST = 5;
+    public static double MAX_REPS = 1;
 
 }

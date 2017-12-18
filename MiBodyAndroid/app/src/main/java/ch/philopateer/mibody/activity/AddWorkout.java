@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -73,7 +75,7 @@ public class AddWorkout extends AppCompatActivity {
     boolean repsTimeBool = false;
 
     int WorkoutExItemsRVHeight;
-    RelativeLayout workoutExDetailsLayout, addWorkoutRL, workoutExSetTubesRL;
+    RelativeLayout addWorkoutRL, workoutExSetTubesRL;
     ImageView b1, b2, b3, r1, r2, r3, g1, g2, g3, n1, n2, n3, exTubeIV1, exTubeIV2, exTubeIV3;
     TextView repsTxtView, restTxtView, exRepsTV;
     EditText repsEdtTxt, restEdtTxt;
@@ -101,11 +103,13 @@ public class AddWorkout extends AppCompatActivity {
     WorkoutItem workoutItem;
     boolean editMode = false;
 
+    Snackbar snackbar;
+    CoordinatorLayout workoutExDetailsLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.workout_ex_set_details);
-
 
         WorkoutNameET = (EditText) findViewById(R.id.workoutNameET);
         WorkoutNameTxtView = (TextView) findViewById(R.id.workoutNameTxtView);
@@ -218,6 +222,13 @@ public class AddWorkout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (workoutExItemArrayList.size() == 1 && workoutExItemArrayList.get(0).name.equals("Drop here")){
+
+                    Toast.makeText(AddWorkout.this, "You should have one exercise at least", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
                 JSONArray jsonArray = new JSONArray();
                 for (int i=0; i < workoutExItemArrayList.size()-1; i++) {
                     jsonArray.put(workoutExItemArrayList.get(i).getJSONObject());
@@ -225,7 +236,7 @@ public class AddWorkout extends AppCompatActivity {
                 }
                 Log.d ("JSONObjectSQL", jsonArray.toString());
 
-                addWorkout(new WorkoutItem("", WorkoutNameTxtView.getText().toString(), workoutReps, String.valueOf(jsonArray), "personalised"));
+                addWorkout(new WorkoutItem("", WorkoutNameTxtView.getText().toString(), workoutReps, String.valueOf(jsonArray), "personalised", 0));
                 Log.d("SjsonToServer", String.valueOf(jsonArray));
                 Log.d("jsonToServer", jsonArray.toString());
                 finish();
@@ -235,7 +246,7 @@ public class AddWorkout extends AppCompatActivity {
 
     private void initWorkoutExDetails(){
 
-        workoutExDetailsLayout = (RelativeLayout) findViewById(R.id.workoutExerciseDetails);
+        workoutExDetailsLayout = findViewById(R.id.workoutExerciseDetails);
         workoutExDetailsLayout.setVisibility(View.INVISIBLE);
         workoutExSetTubesRL = (RelativeLayout) findViewById(R.id.workoutExSetTubesRL);
         workoutExSetTubesLL = (LinearLayout) findViewById(R.id.workoutExSetTubesLL);
@@ -417,9 +428,22 @@ public class AddWorkout extends AppCompatActivity {
         repsMinusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Integer.parseInt(repsTxtView.getText().toString()) > 0) {
+                if(Integer.parseInt(repsTxtView.getText().toString()) > 1) {
                     repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) - 1));
                     workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+
+                    if (workoutExItemArrayList.get(selectedItem).repsTimeBool){
+                        workoutExItemArrayList.get(selectedItem).exTime = Integer.parseInt(repsTxtView.getText().toString().trim());
+                    }
+                    else {
+                        workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+                    }
+                }
+                else {
+//                    Toast.makeText(AddWorkout.this, "You should do one rep at least", Toast.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(workoutExDetailsLayout, "You should do one rep at least", Snackbar.LENGTH_SHORT);
+
+                    snackbar.show();
                 }
             }
         });
@@ -427,17 +451,34 @@ public class AddWorkout extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 repsTxtView.setText(String.valueOf(Integer.parseInt(repsTxtView.getText().toString()) + 1));
-                workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+
+                if (workoutExItemArrayList.get(selectedItem).repsTimeBool){
+                    workoutExItemArrayList.get(selectedItem).exTime = Integer.parseInt(repsTxtView.getText().toString().trim());
+                }
+                else {
+                    workoutExItemArrayList.get(selectedItem).reps = Integer.parseInt(repsTxtView.getText().toString().trim());
+                }
+
             }
         });
 
         restMinusBtn.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(Integer.parseInt(restTxtView.getText().toString()) > 0){
+                if(Integer.parseInt(restTxtView.getText().toString()) > 5){
                     restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) - 1));
                     restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
                     workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
+                }
+                else {
+//                    Toast.makeText(AddWorkout.this, "You should have 5 seconds rest minimum", Toast.LENGTH_SHORT).show();
+
+
+                    if (snackbar != null && !snackbar.isShown()){
+                        snackbar = Snackbar.make(workoutExDetailsLayout, "You should have 5 seconds rest minimum", Snackbar.LENGTH_SHORT);
+
+                        snackbar.show();
+                    }
                 }
                 return true;
             }
@@ -448,7 +489,16 @@ public class AddWorkout extends AppCompatActivity {
                 if(Integer.parseInt(restTxtView.getText().toString()) < 200) {
                     restTxtView.setText(String.valueOf(Integer.parseInt(restTxtView.getText().toString()) + 1));
                     restTimePB.setProgress(Integer.parseInt(restTxtView.getText().toString()));
+
                     workoutExItemArrayList.get(selectedItem).restTime = Integer.parseInt(restTxtView.getText().toString().trim());
+                }
+                else {
+//                    Toast.makeText(AddWorkout.this, "You should have 200 seconds rest maximum", Toast.LENGTH_SHORT).show();
+                    if (snackbar != null && !snackbar.isShown()){
+                        snackbar = Snackbar.make(workoutExDetailsLayout, "You should have 200 seconds rest maximum", Snackbar.LENGTH_SHORT);
+
+                        snackbar.show();
+                    }
                 }
                 return true;
             }
@@ -462,6 +512,7 @@ public class AddWorkout extends AppCompatActivity {
                     exRepsTV.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).exReps));
                     workoutExItemAdapter.notifyDataSetChanged();
                 }
+
             }
         });
 
@@ -612,7 +663,13 @@ public class AddWorkout extends AppCompatActivity {
         }
 
         workoutExItemArrayList.get(selectedItem).name = workoutExItemAdapter.workoutExItemArrayList.get(selectedItem).name;
-        repsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).reps));
+
+        if (workoutExItemArrayList.get(selectedItem).repsTimeBool){
+            repsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).exTime));
+        }
+        else {
+            repsTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).reps));
+        }
         restTxtView.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).restTime));
         restTimePB.setProgress(workoutExItemArrayList.get(selectedItem).restTime);
         exRepsTV.setText(String.valueOf(workoutExItemArrayList.get(selectedItem).exReps));

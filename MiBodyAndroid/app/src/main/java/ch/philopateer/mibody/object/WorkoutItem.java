@@ -26,6 +26,7 @@ public class WorkoutItem implements Parcelable{
     public ArrayList<WorkoutExItem> exercisesList;
     public int workoutReps;
     public String workoutType;
+    public int wTime = 0;
 
     public WorkoutItem(String workoutName, ArrayList<WorkoutExItem> exercisesList, int workoutReps){
         this.workoutName = workoutName;
@@ -53,16 +54,18 @@ public class WorkoutItem implements Parcelable{
         result.put("workoutName", workoutName);
         result.put("exercisesJSON", exercisesJSON);
         result.put("workoutReps", workoutReps);
+        result.put("wTime", wTime);
 
         return result;
     }
 
-    public WorkoutItem(String workoutID, String workoutName, int workoutReps, String exercisesJSON, String workoutType){
+    public WorkoutItem(String workoutID, String workoutName, int workoutReps, String exercisesJSON, String workoutType, int wTime){
         this.workoutID = workoutID;
         this.workoutName = workoutName;
         this.workoutReps = workoutReps;
         this.exercisesJSON = exercisesJSON;
         this.workoutType = workoutType;
+        this.wTime = wTime;
 
         JSONtoArray();
 
@@ -91,12 +94,18 @@ public class WorkoutItem implements Parcelable{
                     String rope2 = obj.get("rope2").toString();
                     String rope3 = obj.get("rope3").toString();
                     int reps = Integer.parseInt(obj.get("reps").toString());
+                    int actualReps = Integer.parseInt(obj.get("actualReps").toString());
                     int restTime = Integer.parseInt(obj.get("restTime").toString());
                     int exReps = Integer.parseInt(obj.get("exReps").toString());
                     int exTime = Integer.parseInt(obj.get("exTime").toString());
+
+                    int actualExTime = 0;
+                    if (obj.has("actualExTime")){
+                        actualExTime = Integer.parseInt(obj.get("actualExTime").toString());
+                    }
                     boolean repsTimeBool = Boolean.parseBoolean(obj.get("repsTimeBool").toString());
 
-                    exercisesList.add(new WorkoutExItem(name, image, rope1, rope2, rope3, reps, restTime, exReps, exTime, repsTimeBool));
+                    exercisesList.add(new WorkoutExItem(name, image, rope1, rope2, rope3, reps, actualReps, restTime, exReps, exTime, actualExTime, repsTimeBool));
 
                 }
 
@@ -115,6 +124,7 @@ public class WorkoutItem implements Parcelable{
         workoutReps = in.readInt();
         exercisesJSON = in.readString();
         workoutType = in.readString();
+        wTime = in.readInt();
     }
 
     public static final Creator<WorkoutItem> CREATOR = new Creator<WorkoutItem>() {
@@ -141,5 +151,6 @@ public class WorkoutItem implements Parcelable{
         parcel.writeInt(workoutReps);
         parcel.writeString(exercisesJSON);
         parcel.writeString(workoutType);
+        parcel.writeInt(wTime);
     }
 }

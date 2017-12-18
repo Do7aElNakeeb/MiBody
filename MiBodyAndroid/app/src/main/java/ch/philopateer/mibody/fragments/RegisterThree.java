@@ -19,7 +19,12 @@ import android.widget.Toast;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.activity.Register;
+import ch.philopateer.mibody.app.AppConfig;
+import ch.philopateer.mibody.helper.Utils;
 import ch.philopateer.mibody.listener.OnBtnClickListener;
+
+import static ch.philopateer.mibody.helper.Utils.cmToInch;
+import static ch.philopateer.mibody.helper.Utils.kgToLbs;
 
 /**
  * Created by mamdouhelnakeeb on 1/8/17.
@@ -114,6 +119,7 @@ public class RegisterThree extends Fragment {
             public void afterTextChanged(Editable editable) {
 
                 if (!editable.toString().equals("") && !heightET.getText().toString().equals("")) {
+
                     //weightET.setText(editable.toString());
                     weight = Float.parseFloat(weightET.getText().toString());
                     height = Float.parseFloat(heightET.getText().toString());
@@ -142,6 +148,7 @@ public class RegisterThree extends Fragment {
             public void afterTextChanged(Editable editable) {
 
                 if (!weightET.getText().toString().equals("") && !editable.toString().equals("")) {
+
                     //heightET.setText(editable.toString());
                     weight = Float.parseFloat(weightET.getText().toString());
                     height = Float.parseFloat(heightET.getText().toString());
@@ -172,6 +179,57 @@ public class RegisterThree extends Fragment {
                     Toast.makeText(getActivity(),"Please enter height", Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                if (units == 0){
+                    if (Double.parseDouble(weight) > AppConfig.MAX_WEIGHT){
+                        weightET.setText("");
+                        Toast.makeText(getActivity(), "Your weight should be less than " + Double.toString(AppConfig.MAX_WEIGHT) +" kg", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else if (Double.parseDouble(weight) < AppConfig.MIN_WEIGHT){
+                        weightET.setText("");
+                        Toast.makeText(getActivity(), "Your weight should be more than " + Double.toString(AppConfig.MIN_WEIGHT) +" kg", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                else if (units == 1){
+                    if (Double.parseDouble(weight) > kgToLbs(AppConfig.MAX_WEIGHT)){
+                        weightET.setText("");
+                        Toast.makeText(getActivity(), "Your weight should be less than " + Double.toString(kgToLbs(AppConfig.MAX_WEIGHT)) +" lbs", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else if (Double.parseDouble(weight) < kgToLbs(AppConfig.MIN_WEIGHT)){
+                        weightET.setText("");
+                        Toast.makeText(getActivity(), "Your weight should be more than " + Double.toString(kgToLbs(AppConfig.MIN_WEIGHT)) +" lbs", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                if (units == 0){
+                    if (Double.parseDouble(height) > AppConfig.MAX_HEIGHT){
+                        heightET.setText("");
+                        Toast.makeText(getActivity(), "Your height should be less than " + Double.toString(AppConfig.MAX_HEIGHT) +" cm", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else if (Double.parseDouble(height) < AppConfig.MIN_HEIGHT){
+                        heightET.setText("");
+                        Toast.makeText(getActivity(), "Your height should be more than " + Double.toString(AppConfig.MIN_WEIGHT) +" cm", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                else if (units == 1){
+                    if (Double.parseDouble(height) > cmToInch(AppConfig.MAX_HEIGHT)){
+                        heightET.setText("");
+                        Toast.makeText(getActivity(), "Your height should be less than " + Double.toString(cmToInch(AppConfig.MAX_HEIGHT)) +" inch", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else if (Double.parseDouble(height) < cmToInch(AppConfig.MIN_HEIGHT)){
+                        heightET.setText("");
+                        Toast.makeText(getActivity(), "Your height should be more than " + Double.toString(cmToInch(AppConfig.MIN_HEIGHT)) +" inch", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
 
                 ((Register)getActivity()).registerWithMail();
                 //onBtnClickListener.onBtnClick();
@@ -241,4 +299,6 @@ public class RegisterThree extends Fragment {
         }
         return BMI.substring(0, BMI.indexOf('.') + 2);
     }
+
+
 }

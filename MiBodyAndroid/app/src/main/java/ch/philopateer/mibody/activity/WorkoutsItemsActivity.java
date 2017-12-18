@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -55,6 +56,9 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
 
+
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +82,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
         }
         */
 
-        workoutTypeTxt = (TextView) findViewById(R.id.workoutsItemsType);
-        addWorkoutBtn = (FloatingActionButton) findViewById(R.id.add_workout_btn);
-        workoutsRV = (RecyclerView) findViewById(R.id.workoutsRV);
-        workoutsRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        workoutsRV.setItemAnimator(new DefaultItemAnimator());
+        initViews();
 
         Intent intent = getIntent();
         workoutsType = intent.getStringExtra("type");
@@ -108,23 +108,28 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
             }
         });
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                loadWorkouts();
+            }
+        });
     }
 
-    private void loadWorkouts(){
+    private void initViews(){
 
-        // TODO Check connectivity
+        workoutTypeTxt = (TextView) findViewById(R.id.workoutsItemsType);
+        addWorkoutBtn = (FloatingActionButton) findViewById(R.id.add_workout_btn);
+        workoutsRV = (RecyclerView) findViewById(R.id.workoutsRV);
+        workoutsRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        workoutsRV.setItemAnimator(new DefaultItemAnimator());
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
-        ConnectivityManager ConnectionManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo=ConnectionManager.getActiveNetworkInfo();
-        if(networkInfo == null || !networkInfo.isConnected())
-        {
-            Toast.makeText(this, "Network Not Available", Toast.LENGTH_SHORT).show();
-            return;
 
-        }
+    }
 
-        pDialog.setMessage("Loading Workouts ...");
-        showDialog();
+    private void initAdapter(){
 
         workoutItemArrayList = new ArrayList<WorkoutItem>();
         workoutsAdapter = new WorkoutsAdapter(getApplicationContext(), workoutItemArrayList, new WorkoutsAdapter.OnItemClickListener() {
@@ -181,26 +186,50 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void loadWorkouts(){
+
+
+        ConnectivityManager ConnectionManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=ConnectionManager.getActiveNetworkInfo();
+        if(networkInfo == null || !networkInfo.isConnected())
+        {
+            Toast.makeText(this, "Network Not Available", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+//        pDialog.setMessage("Loading Workouts ...");
+//        showDialog();
+
+        initAdapter();
+        swipeRefreshLayout.setRefreshing(true);
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 workoutItemArrayList.clear();
+
                 for (DataSnapshot workoutsSnapShot : dataSnapshot.child("workouts").getChildren()){
                     WorkoutItem workoutItem = workoutsSnapShot.getValue(WorkoutItem.class);
-                    WorkoutItem workoutItem1 = new WorkoutItem(workoutItem.workoutID, workoutItem.workoutName, 1, workoutItem.exercisesJSON, "personalized");
+                    WorkoutItem workoutItem1 = new WorkoutItem(workoutItem.workoutID, workoutItem.workoutName, 1, workoutItem.exercisesJSON, "personalized", workoutItem.wTime);
                     workoutItemArrayList.add(workoutItem1);
                 }
 
                 workoutsRV.setAdapter(workoutsAdapter);
 
-                hideDialog();
+//                hideDialog();
+
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                hideDialog();
+//                hideDialog();
+
+                swipeRefreshLayout.setRefreshing(false);
             }
 
         };
@@ -265,7 +294,7 @@ public class WorkoutsItemsActivity extends AppCompatActivity {
 
                             }
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
+
                             e.printStackTrace();
                         }
 

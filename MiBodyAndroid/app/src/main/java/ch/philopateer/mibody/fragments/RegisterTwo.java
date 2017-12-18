@@ -97,7 +97,7 @@ public class RegisterTwo extends Fragment {
         DoBPicker.setYear(1995);
 
         DoBPicker.setYearStart(1970);
-        DoBPicker.setYearEnd(2000);
+        DoBPicker.setYearEnd(1996);
 
         if (!dob.equals("")) {
             updateFields();

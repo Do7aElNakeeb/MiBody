@@ -131,6 +131,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             mNext = (ImageView) rootView.findViewById(R.id.material_calendar_next);
             if (mNext != null) {
                 mNext.setOnClickListener(this);
+
+                if (materialCalendar.mMonth == Calendar.getInstance().get(Calendar.MONTH)){
+                    System.out.print("hmada");
+                    mNext.setAlpha((float) 0.1);
+                }
+                else {
+                    System.out.print("msh hmada");
+                }
             }
 
             // GridView for custom Calendar
@@ -199,10 +207,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             switch (view.getId()) {
                 case R.id.material_calendar_previous:
                     materialCalendar.previousOnClick(mPrevious, mMonthName, mCalendar, mMaterialCalendarAdapter);
+                    mNext.setAlpha((float) 1);
                     break;
 
                 case R.id.material_calendar_next:
                     materialCalendar.nextOnClick(mNext, mMonthName, mCalendar, mMaterialCalendarAdapter);
+                    if (materialCalendar.mMonth == Calendar.getInstance().get(Calendar.MONTH)){
+                        mNext.setAlpha((float) 0.1);
+                    }
                     break;
 
                 case R.id.backBtnLL:

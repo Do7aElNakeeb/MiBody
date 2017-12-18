@@ -297,7 +297,10 @@
                     android:maxLines="1"
                     android:background="@android:color/transparent"
                     android:inputType="numberDecimal"
+                    android:textSize="13sp"
                     android:id="@+id/muscleET"
+                    android:maxEms="5"
+                    android:maxLength="5"
                     android:padding="0dp"/>
 
                 <View

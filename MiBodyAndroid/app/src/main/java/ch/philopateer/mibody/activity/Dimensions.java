@@ -43,7 +43,7 @@ public class Dimensions extends AppCompatActivity {
     RelativeLayout.LayoutParams params;
     RelativeLayout profileDimen;
 
-    int Waist = 0, Legs = 0, Chest = 0, Wrest = 0, Calf = 0, Arm = 0;
+    double Waist = 0, Legs = 0, Chest = 0, Wrest = 0, Calf = 0, Arm = 0;
     HashMap<String, Float> muscle = new HashMap<>(6);
 
     SharedPreferences prefs;
@@ -119,45 +119,58 @@ public class Dimensions extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                if (charSequence.length() > 5){
+
+                    Toast.makeText(Dimensions.this, "Please enter a valid dimension", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
 
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
+                String str = editable.toString();
+
+                if (!editable.toString().isEmpty() && editable.toString().equals(".")){
+                    str = "0.0";
+                }
+
                 switch (muscleName.getText().toString()){
                     case "Wrest":
                         if(!editable.toString().equals("")) {
-                            Wrest = Integer.valueOf(editable.toString());
+                            Wrest = Double.valueOf(str);
                         }
                         break;
                     case "Legs":
                         if(!editable.toString().equals("")) {
-                            Legs = Integer.valueOf(editable.toString());
+                            Legs = Double.valueOf(str);
                         }
                         break;
                     case "Chest":
                         if(!editable.toString().equals("")) {
-                            Chest = Integer.valueOf(editable.toString());
+                            Chest = Double.valueOf(str);
                         }
                         break;
                     case "Waist":
                         if(!editable.toString().equals("")) {
-                            Waist = Integer.valueOf(editable.toString());
+                            Waist = Double.valueOf(str);
                         }
                         break;
                     case "Calf":
                         if(!editable.toString().equals("")) {
-                            Calf = Integer.valueOf(editable.toString());
+                            Calf = Double.valueOf(str);
                         }
                         break;
                     case "Arm":
                         if(!editable.toString().equals("")) {
-                            Arm = Integer.valueOf(editable.toString());
+                            Arm = Double.valueOf(str);
                         }
                         break;
                 }
@@ -254,27 +267,27 @@ public class Dimensions extends AppCompatActivity {
                 if (flag == 1) {
                     if (x <= bodyP1.getRight() && x >= bodyP1.getLeft()) {
                         muscleName.setText("Wrest");
-                        muscleET.setText(String.valueOf(Wrest));
+                        muscleET.setText(String.valueOf((int) Math.ceil(Wrest)));
                         Log.d("gotBlack", "1");
                     } else if (x <= bodyP2.getRight() && x >= bodyP2.getLeft()) {
                         muscleName.setText("Legs");
-                        muscleET.setText(String.valueOf(Legs));
+                        muscleET.setText(String.valueOf((int) Math.ceil(Legs)));
                         Log.d("gotBlack", "2");
                     } else if (x <= bodyP3.getRight() && x >= bodyP3.getLeft()) {
                         muscleName.setText("Chest");
-                        muscleET.setText(String.valueOf(Chest));
+                        muscleET.setText(String.valueOf((int) Math.ceil(Chest)));
                         Log.d("gotBlack", "3");
                     } else if (x <= bodyP4.getRight() && x >= bodyP4.getLeft()) {
                         muscleName.setText("Waist");
-                        muscleET.setText(String.valueOf(Waist));
+                        muscleET.setText(String.valueOf((int) Math.ceil(Waist)));
                         Log.d("gotBlack", "4");
                     } else if (x <= bodyP5.getRight() && x >= bodyP5.getLeft()) {
                         muscleName.setText("Calf");
-                        muscleET.setText(String.valueOf(Calf));
+                        muscleET.setText(String.valueOf((int) Math.ceil(Calf)));
                         Log.d("gotBlack", "5");
                     } else if (x <= bodyP6.getRight() && x >= bodyP6.getLeft()) {
                         muscleName.setText("Arm");
-                        muscleET.setText(String.valueOf(Arm));
+                        muscleET.setText(String.valueOf((int) Math.ceil(Arm)));
                         Log.d("gotBlack", "6");
                     }
                     muscleET.selectAll();

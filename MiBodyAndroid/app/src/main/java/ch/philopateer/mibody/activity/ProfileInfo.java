@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -70,7 +71,11 @@ import java.util.concurrent.ExecutionException;
 
 import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
+import ch.philopateer.mibody.helper.Utils;
 import ch.philopateer.mibody.object.UserData;
+
+import static ch.philopateer.mibody.helper.Utils.cmToInch;
+import static ch.philopateer.mibody.helper.Utils.kgToLbs;
 
 /**
  * Created by mamdouhelnakeeb on 3/9/17.
@@ -142,6 +147,13 @@ public class ProfileInfo extends AppCompatActivity {
 
         genderSpinner.setAdapter(genderAdapter);
 
+
+        findViewById(R.id.backBtnLL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         /*
         target = new Target() {
@@ -272,6 +284,75 @@ public class ProfileInfo extends AppCompatActivity {
 
                 if (editMode) {
 
+                    if (!Utils.isValidEmaill(emailET.getText().toString().trim())){
+                        Toast.makeText(ProfileInfo.this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!Utils.isValidName(nameET.getText().toString().trim())){
+                        Toast.makeText(ProfileInfo.this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if(TextUtils.isEmpty(weightET.getText().toString())){
+                        Toast.makeText(ProfileInfo.this,"Please enter weight",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if(TextUtils.isEmpty(heightET.getText().toString())){
+                        Toast.makeText(ProfileInfo.this,"Please enter height", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    if (getSharedPreferences("UserDetails", MODE_PRIVATE).getString("units", "0").equals("0")){
+                        if (Double.parseDouble(weightET.getText().toString()) > AppConfig.MAX_WEIGHT){
+                            weightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your weight should be less than " + Double.toString(AppConfig.MAX_WEIGHT) +" kg", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else if (Double.parseDouble(weightET.getText().toString()) < AppConfig.MIN_WEIGHT){
+                            weightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your weight should be more than " + Double.toString(AppConfig.MIN_WEIGHT) +" kg", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                    else if (getSharedPreferences("UserDetails", MODE_PRIVATE).getString("units", "0").equals("1")){
+                        if (Double.parseDouble(weightET.getText().toString()) > kgToLbs(AppConfig.MAX_WEIGHT)){
+                            weightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your weight should be less than " + Double.toString(kgToLbs(AppConfig.MAX_WEIGHT)) +" lbs", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else if (Double.parseDouble(weightET.getText().toString()) < kgToLbs(AppConfig.MIN_WEIGHT)){
+                            weightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your weight should be more than " + Double.toString(kgToLbs(AppConfig.MIN_WEIGHT)) +" lbs", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+                    if (getSharedPreferences("UserDetails", MODE_PRIVATE).getString("units", "0").equals("0")){
+                        if (Double.parseDouble(heightET.getText().toString()) > AppConfig.MAX_HEIGHT){
+                            heightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your height should be less than " + Double.toString(AppConfig.MAX_HEIGHT) +" cm", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else if (Double.parseDouble(heightET.getText().toString()) < AppConfig.MIN_HEIGHT){
+                            heightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your height should be more than " + Double.toString(AppConfig.MIN_WEIGHT) +" cm", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                    else if (getSharedPreferences("UserDetails", MODE_PRIVATE).getString("units", "0").equals("1")){
+                        if (Double.parseDouble(heightET.getText().toString()) > cmToInch(AppConfig.MAX_HEIGHT)){
+                            heightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your height should be less than " + Double.toString(cmToInch(AppConfig.MAX_HEIGHT)) +" inch", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else if (Double.parseDouble(heightET.getText().toString()) < cmToInch(AppConfig.MIN_HEIGHT)){
+                            heightET.setText("");
+                            Toast.makeText(ProfileInfo.this, "Your height should be more than " + Double.toString(cmToInch(AppConfig.MIN_HEIGHT)) +" inch", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                    
                     profileEditIV.setImageResource(R.drawable.pen_icon);
                     profileEditIV.setScaleX(-1);
                     profileEditIV.setScaleY(1);

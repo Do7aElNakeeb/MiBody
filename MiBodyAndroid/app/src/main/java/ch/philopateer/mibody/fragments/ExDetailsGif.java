@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -24,14 +26,16 @@ public class ExDetailsGif extends Fragment {
 
     public String exName;
 
+    GifDrawable gifDrawable = null;
+    GifImageView mGigImageView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.exercise_details_gif_fragment, null);
 
-        GifImageView mGigImageView = (GifImageView) view.findViewById(R.id.exGIF2);
+        mGigImageView = (GifImageView) view.findViewById(R.id.exGIF2);
 
-        GifDrawable gifDrawable = null;
         try {
             gifDrawable = new GifDrawable(getResources(), AppConfig.exercises_gifs[Arrays.asList(AppConfig.exercises_names).indexOf(exName)]);
 
@@ -40,7 +44,23 @@ public class ExDetailsGif extends Fragment {
         }
         mGigImageView.setImageDrawable(gifDrawable);
 
+        gifDrawable = null;
+
+//        Glide.with(getActivity())
+//                .load(AppConfig.exercises_gifs[Arrays.asList(AppConfig.exercises_names).indexOf(exName)])
+//                .asGif()
+//                .crossFade()
+//                .skipMemoryCache(true)
+//                .into(mGigImageView);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mGigImageView.setImageDrawable(null);
+
     }
 }

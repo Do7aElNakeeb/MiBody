@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import ch.philopateer.mibody.fragments.Exercises;
 import ch.philopateer.mibody.fragments.WorkoutFragment;
-import ch.philopateer.mibody.helper.ViewPagerAdapter;
+import ch.philopateer.mibody.adapter.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

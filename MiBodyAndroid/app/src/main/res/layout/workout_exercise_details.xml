@@ -275,6 +275,7 @@
                             android:layout_height="0dp"
                             android:layout_gravity="center"
                             android:layout_weight="5">
+
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
@@ -287,8 +288,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/reps_txtview"
                                 android:layout_marginTop="25dp"
-                                android:inputType="number"
-                                android:text="8"
+                                android:text="1"
                                 android:textColor="@color/MiBodyOrange"
                                 android:layout_centerInParent="true"
                                 android:textSize="50sp"/>
@@ -343,7 +343,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:paddingBottom="10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -480,7 +479,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="55dp"
                         android:gravity="center">
 
                         <RelativeLayout
@@ -498,10 +497,11 @@
                                 card_view:cardBackgroundColor="@color/MiBodyOrange">
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
                                     android:layout_marginBottom="5dp"
                                     android:layout_marginTop="5dp"
+                                    android:gravity="center"
                                     android:layout_gravity="center">
 
                                     <TextView
@@ -525,11 +525,14 @@
                             </android.support.v7.widget.CardView>
 
                             <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="10dp"
+                                android:layout_width="30dp"
+                                android:padding="7.5dp"
+                                android:layout_height="match_parent"
                                 android:id="@+id/exReps_minus_btn"
                                 android:layout_toLeftOf="@id/exerciseRepsPlusCV"
+                                android:layout_toStartOf="@id/exerciseRepsPlusCV"
                                 android:layout_marginRight="20dp"
+                                android:layout_marginEnd="20dp"
                                 android:src="@drawable/workout_wx_minus_btn"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="5dp"
@@ -539,13 +542,16 @@
                                 android:layout_gravity="center"/>
 
                             <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
+                                android:layout_width="30dp"
+                                android:padding="7.5dp"
+                                android:layout_height="match_parent"
                                 android:id="@+id/exReps_plus_btn"
                                 android:adjustViewBounds="true"
                                 android:layout_centerVertical="true"
                                 android:layout_toRightOf="@id/exerciseRepsPlusCV"
+                                android:layout_toEndOf="@id/exerciseRepsPlusCV"
                                 android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginBottom="1dp"
@@ -560,33 +566,33 @@
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="10dp"
+                                android:layout_width="20dp"
+                                android:padding="2.5dp"
+                                android:layout_height="match_parent"
                                 android:id="@+id/rest_minus_btn"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentLeft="true"
                                 android:src="@drawable/workout_wx_minus_btn"
                                 android:layout_centerVertical="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
                                 android:layout_marginBottom="1dp"
                                 android:gravity="center"
                                 android:layout_gravity="center"/>
 
                             <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
+                                android:layout_width="20dp"
+                                android:padding="2.5dp"
+                                android:layout_height="match_parent"
                                 android:id="@+id/rest_plus_btn"
                                 android:adjustViewBounds="true"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
                                 android:layout_marginBottom="1dp"
                                 android:src="@drawable/workout_ex_plus_btn"
                                 android:layout_gravity="center"
@@ -598,10 +604,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:paddingStart="20dp"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
-                                android:paddingEnd="20dp"
+                                android:paddingStart="15dp"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingEnd="15dp"
                                 android:layout_toRightOf="@id/rest_minus_btn"
                                 android:layout_toEndOf="@id/rest_minus_btn"
                                 android:layout_toLeftOf="@id/rest_plus_btn"
@@ -612,9 +618,9 @@
 
                             <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:adjustViewBounds="true"
-                                android:padding="10dp"
+                                android:padding="5dp"
                                 android:id="@+id/restTimeBattary"
                                 android:layout_toRightOf="@id/rest_minus_btn"
                                 android:layout_toEndOf="@id/rest_minus_btn"

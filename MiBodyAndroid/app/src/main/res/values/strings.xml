@@ -15,6 +15,7 @@
     <string name="btn_link_to_register">Not a member?...Sign up now!</string>
     <string name="btn_link_to_login">Already registered?...Login!</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_user_exists">This user is already exists!</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

@@ -2,12 +2,14 @@ package ch.philopateer.mibody.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PagerSnapHelper;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -26,9 +28,8 @@ import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
 import ch.philopateer.mibody.fragments.Exercises;
-import ch.philopateer.mibody.fragments.ExercisesFragment;
 import ch.philopateer.mibody.helper.SQLiteHandler;
-import ch.philopateer.mibody.helper.ViewPagerAdapter;
+import ch.philopateer.mibody.adapter.ViewPagerAdapter;
 import ch.philopateer.mibody.object.ExerciseItem;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -40,14 +41,17 @@ public class ExercisesActivity extends AppCompatActivity {
 
     private static final String TAG = ExercisesActivity.class.getSimpleName();
     private ProgressDialog pDialog;
-    SQLiteHandler sqLiteHandler;
+//    SQLiteHandler sqLiteHandler;
 
     ArrayList<ExerciseItem> exerciseItemArrayList;
     String exercisesCategory = "";
 
     ViewPager exerciseViewPager;
+    ViewPagerAdapter adapter;
     CircleIndicator circleIndicator;
     PagerSnapHelper pagerSnapHelper;
+
+    LinearLayout backBtnLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,37 +68,47 @@ public class ExercisesActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 */
         circleIndicator = (CircleIndicator) findViewById(R.id.page_indicator);
+        backBtnLL = findViewById(R.id.backBtnLL);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        sqLiteHandler = new SQLiteHandler(this);
-
-        try {
-            sqLiteHandler.open();
-
-        } catch (Exception e) {
-            Log.i("SQLexception", "can't open SQL");
-        }
+//        sqLiteHandler = new SQLiteHandler(this);
+//
+//        try {
+//            sqLiteHandler.open();
+//
+//        } catch (Exception e) {
+//            Log.i("SQLexception", "can't open SQL");
+//        }
 
         exerciseViewPager = (ViewPager) findViewById(R.id.exercisesViewpager);
 
         exerciseItemArrayList = new ArrayList<ExerciseItem>();
 
-        loadExercises();
+
+
+        backBtnLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                finish();
+
+            }
+        });
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+    private void setupViewPager() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         ArrayList<ExerciseItem> tempExerciseItems = new ArrayList<ExerciseItem>();
 
         for (int i = 0; i<= exerciseItemArrayList.size(); i++){
             if((i % 9 == 0 || i == exerciseItemArrayList.size()) && i != 0){
                 Exercises exercises = new Exercises();
-                exercises.setArrayList(tempExerciseItems, viewPager.getHeight());
+                exercises.setArrayList(tempExerciseItems, exerciseViewPager.getHeight());
                 adapter.addFragment(exercises, "ExPage" + String.valueOf(i));
                 tempExerciseItems = new ArrayList<ExerciseItem>();
                 Log.d("ExPage Added", String.valueOf(i));
@@ -106,9 +120,9 @@ public class ExercisesActivity extends AppCompatActivity {
             }
         }
 
-        viewPager.setAdapter(adapter);
+        exerciseViewPager.setAdapter(adapter);
 
-        circleIndicator.setViewPager(viewPager);
+        circleIndicator.setViewPager(exerciseViewPager);
 
     }
 
@@ -168,13 +182,12 @@ public class ExercisesActivity extends AppCompatActivity {
                                     ExerciseItem exerciseItem = new ExerciseItem(id , ExerciseName, ExerciseIcon, ExerciseImage, ExerciseGIF, ExerciseDescription, ExerciseCategory);
 
                                     exerciseItemArrayList.add(exerciseItem);
-                                    sqLiteHandler.addExercise(exerciseItem);
+//                                    sqLiteHandler.addExercise(exerciseItem);
 
                                 }
-                                setupViewPager(exerciseViewPager);
+                                setupViewPager();
                             }
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -185,7 +198,7 @@ public class ExercisesActivity extends AppCompatActivity {
                 Log.e(TAG, "Error: " + error.getMessage());
 
                 exerciseItemArrayList = new ArrayList<ExerciseItem>();
-                exerciseItemArrayList = sqLiteHandler.getExercises(null);
+//                exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
                 if (exerciseItemArrayList.size() == 0) {
                     for (int i=0; i<AppConfig.exercises_names.length; i++){
@@ -197,7 +210,7 @@ public class ExercisesActivity extends AppCompatActivity {
                                 AppConfig.exercises_discreptions[i], ""));
                     }
                 }
-                setupViewPager(exerciseViewPager);
+                setupViewPager();
 
                 //Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
@@ -221,6 +234,33 @@ public class ExercisesActivity extends AppCompatActivity {
 
     }
 
+    private void loadLocExercises(){
+
+        exerciseItemArrayList = new ArrayList<ExerciseItem>();
+
+        if (exerciseItemArrayList.size() == 0) {
+            for (int i=0; i<AppConfig.exercises_names.length; i++){
+                exerciseItemArrayList.add(i, new ExerciseItem(String.valueOf(i),
+                        AppConfig.exercises_names[i],
+                        AppConfig.exercises_names[i] + ".png",
+                        AppConfig.exercises_names[i]+ ".png",
+                        "",
+                        AppConfig.exercises_discreptions[i], ""));
+            }
+        }
+        exerciseViewPager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                exerciseViewPager.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                setupViewPager();
+
+                return true;
+            }
+        });
+
+    }
 
     private void showDialog() {
         if (!pDialog.isShowing())
@@ -235,8 +275,22 @@ public class ExercisesActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        loadExercises();
-        Log.d("resuemd", "yep");
+        exerciseViewPager = findViewById(R.id.exercisesViewpager);
+
+        loadLocExercises();
+        Log.d("resumed", "yep");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.d("paused", "yep");
+
+        exerciseViewPager.removeAllViews();
+        exerciseViewPager.setAdapter(null);
+        adapter = null;
+
     }
 
 }

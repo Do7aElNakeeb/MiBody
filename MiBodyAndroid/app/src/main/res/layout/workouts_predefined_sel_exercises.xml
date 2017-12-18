@@ -67,6 +67,7 @@
             card_view:cardBackgroundColor="@color/MiBodyWhite">
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/filteredExRV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -105,6 +106,7 @@
             card_view:cardBackgroundColor="@color/MiBodyWhite">
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/featuredExRV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

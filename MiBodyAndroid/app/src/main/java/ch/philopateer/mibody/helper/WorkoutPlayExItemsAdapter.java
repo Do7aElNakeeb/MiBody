@@ -46,7 +46,8 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
         this.context = context;
         this.scrSize = scrSize;
         this.workoutExItemArrayList = workoutExItemArrayList;
-        this.achWorkoutExItemArrayList = achWorkoutExItemArrayList;
+        this.achWorkoutExItemArrayList = new ArrayList<Integer>();
+        this.achWorkoutExItemArrayList.addAll(achWorkoutExItemArrayList);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
+
 
             final WorkoutExItem workoutExItem = workoutExItemArrayList.get(position - 1);
             achExReps = achWorkoutExItemArrayList.get(position-1);
@@ -96,6 +98,7 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
             if(itemAction == 0) {
                 holder.counterMinusCV.setVisibility(View.GONE);
                 holder.counterPlusCV.setVisibility(View.GONE);
+
             }
 
             if (position == focusedItem) {
@@ -138,10 +141,9 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
                             holder.exRepsCounter.setText(String.valueOf(Integer.parseInt(holder.exRepsCounter.getText().toString()) + 1));
                             holder.exProgressBar.setProgress(Integer.parseInt(holder.exRepsCounter.getText().toString()));
 
-                            achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1,
-                                    Integer.parseInt(holder.exRepsCounter.getText().toString()));
+                            achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1, Integer.parseInt(holder.exRepsCounter.getText().toString()));
 
-                            Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
+                            //Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
                         }
                     }
                 });
@@ -153,10 +155,9 @@ public class WorkoutPlayExItemsAdapter extends RecyclerView.Adapter<WorkoutPlayE
                             holder.exRepsCounter.setText(String.valueOf(Integer.parseInt(holder.exRepsCounter.getText().toString()) - 1));
                             holder.exProgressBar.setProgress(Integer.parseInt(holder.exRepsCounter.getText().toString()));
 
-                            achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1,
-                                    Integer.parseInt(holder.exRepsCounter.getText().toString()));
+                            achWorkoutExItemArrayList.set(holder.getAdapterPosition() - 1, Integer.parseInt(holder.exRepsCounter.getText().toString()));
 
-                            Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
+                            //Log.d("achExRepsAdapter", String.valueOf(achWorkoutExItemArrayList.get(holder.getAdapterPosition() - 1)));
                         }
                     }
                 });

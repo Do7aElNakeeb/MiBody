@@ -155,7 +155,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
 
-            WorkoutItem workoutItem = new WorkoutItem(cursor.getString(0), cursor.getString(1), Integer.valueOf(cursor.getString(2)), cursor.getString(3), cursor.getString(4));
+            WorkoutItem workoutItem = new WorkoutItem(cursor.getString(0), cursor.getString(1), Integer.valueOf(cursor.getString(2)), cursor.getString(3), cursor.getString(4), 0);
             workoutItems.add(workoutItem);
             cursor.moveToNext();
         }
@@ -267,7 +267,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return new WorkoutItem(cursor.getString(0), cursor.getString(1), Integer.valueOf(cursor.getString(2)), cursor.getString(3), cursor.getString(4));
+        return new WorkoutItem(cursor.getString(0), cursor.getString(1), Integer.valueOf(cursor.getString(2)), cursor.getString(3), cursor.getString(4), 0);
     }
 
     /**

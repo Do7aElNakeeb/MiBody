@@ -25,7 +25,7 @@
             android:layout_marginBottom="-15dp"
             android:gravity="center"
             android:textColor="#fc3d39"
-            android:text="Exercises"/>
+            android:text="Exercise"/>
 
         <TextView
             android:layout_width="wrap_content"

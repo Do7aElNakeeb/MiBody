@@ -1,4 +1,4 @@
-package ch.philopateer.mibody.helper;
+package ch.philopateer.mibody.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ch.philopateer.mibody.R;
-import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.object.WorkoutExItem;
 
 import java.util.ArrayList;
@@ -23,14 +23,15 @@ import java.util.ArrayList;
 public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapter.ViewHolder> {
 
     Context context;
-    private int rvHeight, maxReps;
+    private int rvHeight, maxReps, maxTime;
     private ArrayList<WorkoutExItem> workoutExItemArrayListObj;
    // private ArrayList<Integer> workoutExItemArrayListAch;
 
-    public StatisticsExAdapter(Context context, int rvHeight, int maxReps, ArrayList<WorkoutExItem> workoutExItemArrayListObj){
+    public StatisticsExAdapter(Context context, int rvHeight, int maxReps, int maxTime, ArrayList<WorkoutExItem> workoutExItemArrayListObj){
         this.context = context;
         this.rvHeight = rvHeight;
         this.maxReps = maxReps;
+        this.maxTime = maxTime;
         this.workoutExItemArrayListObj = workoutExItemArrayListObj;
     }
     @Override
@@ -47,10 +48,13 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
         RelativeLayout.LayoutParams achParams2 = (RelativeLayout.LayoutParams) holder.FLgrey.getLayoutParams();
 
 
-        int workoutExItemObj = workoutExItemArrayListObj.get(position).reps;
-        int workoutExItemAch = workoutExItemArrayListObj.get(position).exReps;
+        RelativeLayout.LayoutParams exTimeParam = (RelativeLayout.LayoutParams) holder.exTimeIV.getLayoutParams();
 
-        if (workoutExItemObj != 0){
+        int workoutExItemObj = workoutExItemArrayListObj.get(position).reps;
+        int workoutExItemAch = workoutExItemArrayListObj.get(position).actualReps;
+        int workoutExItemTime = (int) workoutExItemArrayListObj.get(position).actualExTime;
+
+//        if (workoutExItemObj != 0){
             Log.d("ObjAch", String.valueOf(rvHeight) + " - " + String.valueOf(workoutExItemObj) + " - " + String.valueOf(workoutExItemAch) + " - " + String.valueOf(maxReps));
             if (maxReps > 0) {
 
@@ -60,6 +64,10 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
 
                 objParams.height = (int) ((float) rvHeight * ((float) workoutExItemObj / (float) maxReps) * (float)9 / (float)10);
                 objParams2.height = objParams.height / 2;
+
+                exTimeParam.bottomMargin = (int) ((float) rvHeight * ((float) workoutExItemTime  / (float) maxTime) * (float)9 / (float)10);
+
+                holder.exTimeTV.setText(String.valueOf(workoutExItemTime) + " Sec");
                 Log.d("objStats2", String.valueOf(((float) workoutExItemObj / (float) maxReps) * (float)9 / (float)10));
             }
             else {
@@ -72,9 +80,10 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
             holder.FLred.setLayoutParams(objParams2);
             holder.achievedFL.setLayoutParams(achParams);
             holder.FLgrey.setLayoutParams(achParams2);
+        holder.exTimeIV.setLayoutParams(exTimeParam);
             holder.statisticsExName.setText(workoutExItemArrayListObj.get(position).name);
             holder.itemView.setVisibility(View.VISIBLE);
-        }
+//        }
 
     }
 
@@ -86,7 +95,8 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         FrameLayout objectiveFL, FLred, FLgrey, achievedFL;
-        TextView statisticsExName, objText, achText;
+        TextView statisticsExName, objText, achText, exTimeTV;
+        ImageView exTimeIV;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -94,9 +104,12 @@ public class StatisticsExAdapter extends RecyclerView.Adapter<StatisticsExAdapte
             FLred = (FrameLayout) itemView.findViewById(R.id.FLred2);
             FLgrey = (FrameLayout) itemView.findViewById(R.id.FLgrey4);
             achievedFL = (FrameLayout) itemView.findViewById(R.id.achievedFL);
+            exTimeIV = (ImageView) itemView.findViewById(R.id.exTimeIV);
+
             statisticsExName = (TextView) itemView.findViewById(R.id.statisticsExName);
             objText = (TextView) itemView.findViewById(R.id.objText);
             achText = (TextView) itemView.findViewById(R.id.achText);
+            exTimeTV = (TextView) itemView.findViewById(R.id.exTimeTV);
         }
     }
 }

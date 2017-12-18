@@ -28,6 +28,7 @@ import ch.philopateer.mibody.R;
 import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
 import ch.philopateer.mibody.helper.SessionManager;
+import ch.philopateer.mibody.helper.Utils;
 import ch.philopateer.mibody.object.UserData;
 
 import com.facebook.AccessToken;
@@ -37,6 +38,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
@@ -51,6 +53,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -205,9 +211,51 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        findViewById(R.id.forgetPassTV).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String email = editTextEmail.getText().toString().trim();
+
+                if (email.isEmpty()){
+
+                    Toast.makeText(Login.this, "Please enter your email!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Utils.isValidEmaill(email)){
+
+                    Toast.makeText(Login.this, "Please enter a valid email!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                firebaseAuth.sendPasswordResetEmail(editTextEmail.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+
+                                    Toast.makeText(Login.this, "Reset email is successfully sent to your email", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
     }
 
     private void loginWithMail(final String email, final String password){
+
+        if (!Utils.isValidEmaill(email)){
+            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!Utils.isValidPassword(password)){
+            Toast.makeText(this, "Please enter a valid password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         pDialog.setMessage("Login with Email");
         showDialog();
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -219,9 +267,43 @@ public class Login extends AppCompatActivity {
                             saveToSharedPrefs();
                             loginToHome();
                         } else {
+                            String err = "";
+
+//                            try {
+//                                throw task.getException();
+//                            } catch(FirebaseAuthInvalidCredentialsException e) {
+//                                err = getString(R.string.error_invalid_email);
+//                            }
+//
+//                            catch(Exception e) {
+//                                Log.e(TAG, e.getMessage());
+//                            }
+
+                            switch (((FirebaseAuthException) task.getException()).getErrorCode()){
+
+                                case "ERROR_INVALID_EMAIL":
+                                    err = "Please enter a valid email!";
+                                    break;
+
+                                case "ERROR_WRONG_PASSWORD":
+                                    err = "Wrong password or the user use another login method.";
+                                    break;
+
+                                case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
+                                    err = "Wrong password!";
+                                    break;
+
+                                case "ERROR_USER_NOT_FOUND":
+                                    err = "This user isn't existed, You can create a new account.";
+                                    break;
+                            }
+
+                            if (err.isEmpty())
+                                err = task.getException().getMessage();
                             //Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                            builder.setMessage(task.getException().getMessage())
+
+                            builder.setMessage(err)
                                     .setTitle("Error!")
                                     .setPositiveButton(android.R.string.ok, null);
                             AlertDialog dialog = builder.create();
@@ -387,8 +469,12 @@ public class Login extends AppCompatActivity {
                                     // Get facebook data from login
                                     try {
 
+                                        String photoUrl = "";
+
                                         if (object.has("id")) {
                                             editor.putString("fbID", object.getString("id"));
+
+                                            photoUrl = AppConfig.fbPhotoURL + object.getString("id") + AppConfig.fbPhotoConginf;
                                             Log.d("id", object.getString("id"));
                                         }
 
@@ -425,28 +511,31 @@ public class Login extends AppCompatActivity {
                                         session.setLogin("1");
                                         editor.apply();
 
-                                        String photoUrl = AppConfig.fbPhotoURL + prefs.getString("fbID", "") + AppConfig.fbPhotoConginf;
 
-                                        photoReference = FirebaseStorage.getInstance().getReference().child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
-                                        photoReference.putFile(Uri.parse(photoUrl))
-                                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                                    @Override
-                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        if (!photoUrl.isEmpty()){
 
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
+                                            photoReference = FirebaseStorage.getInstance().getReference().child("userImages/" + firebaseAuth.getCurrentUser().getUid() + ".jpg");
+                                            photoReference.putFile(Uri.parse(photoUrl))
+                                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                                                        builder.setMessage(e.getMessage())
-                                                                .setTitle("Error!")
-                                                                .setPositiveButton(android.R.string.ok, null);
-                                                        AlertDialog dialog = builder.create();
-                                                        dialog.show();
-                                                    }
-                                                });
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                                                            builder.setMessage(e.getMessage())
+                                                                    .setTitle("Error!")
+                                                                    .setPositiveButton(android.R.string.ok, null);
+                                                            AlertDialog dialog = builder.create();
+//                                                            dialog.show();
+                                                        }
+                                                    });
+
+                                        }
 
                                         loginToHome();
 

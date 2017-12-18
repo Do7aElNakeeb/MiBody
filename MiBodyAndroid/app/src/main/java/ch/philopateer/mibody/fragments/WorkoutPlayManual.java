@@ -3,7 +3,10 @@ package ch.philopateer.mibody.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,6 +14,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -22,9 +26,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -60,10 +66,13 @@ import java.util.TimeZone;
 
 public class WorkoutPlayManual extends Fragment {
 
+    // TODO timer for time setted exercies
+
     RecyclerView workoutsPlayItemsRV;
     TextView workoutName, exerciseName, exerciseReps, processActionTV, counterHintTV, elapsedTimeTV, elapsedTimePlayStopTV;
     ImageView elapsedTimePlayStopIV;
-    Boolean isPlaying = false;
+    Boolean isPlaying = false, isExPlaying = false;
+    Boolean sameEx = false;
 
     CardView processActionCV;
     ProgressBar processActionPB;
@@ -74,9 +83,9 @@ public class WorkoutPlayManual extends Fragment {
     RelativeLayout saveBtn;
     public WorkoutItem workoutItem;
     WorkoutPlayExItemsAdapter workoutPlayExItemsAdapter;
-    public ArrayList<Integer> achExReps;
+    public ArrayList<Integer> achExReps, actualExReps, exRepsCounterArr;
     public ArrayList<Long> achExTime;
-    int focusedItem = -1;
+    int focusedItem = 0;
 
     GifImageView mGigImageView;
     GifDrawable gifDrawable = null;
@@ -84,20 +93,27 @@ public class WorkoutPlayManual extends Fragment {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
 
-    long MillisecondTime, StartTime, TimeBuff, UpdateTime, exTime = 0L ;
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
+    int wTime = 0;
 
-    Handler handler;
+    long exMilliSec, exStartTime, exTimeBuff, exTime = 0L ;
 
-    int Seconds, Minutes, MilliSeconds ;
+    Handler handler, exTimeHandler;
+
+    int Seconds, Minutes, MilliSeconds;
+
+    MediaPlayer mediaPlayer;
+
+    LinearLayout workoutPauseTimeResumeLL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.workout_play_fragment, container, false);
 
-
-        initTxtToSpeech();
+        initSounds();
         handler = new Handler();
+        exTimeHandler = new Handler();
 
         // init Firebase authentication and database
         firebaseAuth = FirebaseAuth.getInstance();
@@ -106,7 +122,6 @@ public class WorkoutPlayManual extends Fragment {
         workoutsPlayItemsRV = (RecyclerView) view.findViewById(R.id.workoutPlayItemsRV);
 
         mGigImageView = (GifImageView) view.findViewById(R.id.exGIF2);
-
 
         workoutName = (TextView) view.findViewById(R.id.workoutName);
         exerciseName = (TextView) view.findViewById(R.id.exerciseName);
@@ -123,6 +138,8 @@ public class WorkoutPlayManual extends Fragment {
 
         saveBtn = (RelativeLayout) view.findViewById(R.id.save_btn);
 
+        workoutPauseTimeResumeLL = (LinearLayout) view.findViewById(R.id.blackLL);
+
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -130,12 +147,17 @@ public class WorkoutPlayManual extends Fragment {
         workoutsPlayItemsRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         achExReps = new ArrayList<Integer>();
+        actualExReps = new ArrayList<Integer>();
         achExTime = new ArrayList<Long>();
+        exRepsCounterArr = new ArrayList<>();
 
         for (int i = 0; i < workoutItem.exercisesList.size(); i++){
             achExReps.add(workoutItem.exercisesList.get(i).reps);
-            achExTime.add(workoutItem.exercisesList.get(i).exTime);
+            actualExReps.add(0);
+            achExTime.add(0L);
+            exRepsCounterArr.add(workoutItem.exercisesList.get(i).exReps);
 
+            Log.d("repsTimeBoolwpm", String.valueOf(workoutItem.exercisesList.get(i).repsTimeBool));
             Log.d("RepsObjAch", String.valueOf(achExReps.get(i)) + " - " + String.valueOf(workoutItem.exercisesList.get(i).reps));
         }
 
@@ -187,7 +209,7 @@ public class WorkoutPlayManual extends Fragment {
         };
         snapHelper.attachToRecyclerView(workoutsPlayItemsRV);
         workoutsPlayItemsRV.setOnFlingListener(snapHelper);
-        workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
+        workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 2);
 
 
         loadGIF(workoutItem.exercisesList.get(0).name);
@@ -203,39 +225,149 @@ public class WorkoutPlayManual extends Fragment {
 
         exerciseName.setText(workoutItem.exercisesList.get(0).name);
         counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(0).name + " exercise");
+
         speak("Press START to begin " + workoutItem.exercisesList.get(0).name + " exercise");
 
         processActionCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Log.d("setReps", String.valueOf(workoutItem.exercisesList.get(focusedItem).exReps));
+
                 if (processActionTV.getText().toString().equals("START")){
 
-                    exTime = 0L;
-                    focusedItem++;
-                    workoutsPlayItemsRV.scrollToPosition(focusedItem + 1);
-                    exerciseName.setText(workoutItem.exercisesList.get(focusedItem).name);
-                    workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
-                    processActionPB.setMax(workoutItem.exercisesList.get(focusedItem).restTime);
-                    processActionPB.setProgress(workoutItem.exercisesList.get(focusedItem).restTime);
-                    workoutPlayExItemsAdapter.setItemAction(0);
-                    processActionTV.setText("REST");
-                    counterHintTV.setText("Press REST to begin rest time");
-                    speak("Press REST to begin rest time");
+                    isExPlaying = true;
+
+                    if(workoutItem.exercisesList.get(focusedItem).exReps > 0){
+                        sameEx = true;
+                    }
+                    else {
+                        focusedItem++;
+                        sameEx = false;
+                    }
+
+                    Log.d("repsTimeBoolean", String.valueOf(workoutItem.exercisesList.get(focusedItem).repsTimeBool));
+
+                    if (workoutItem.exercisesList.get(focusedItem).repsTimeBool){
+
+
+                        Log.d("repsTimeBoolwpm", "Time Ex");
+                        processActionPB.setMax((int) workoutItem.exercisesList.get(focusedItem).exTime);
+                        processActionPB.getProgressDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.MiBodyOrange), PorterDuff.Mode.SRC_IN);
+
+                        workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
+
+                        new CountDownTimer(workoutItem.exercisesList.get(focusedItem).exTime * 1000, 1000){
+
+                            @Override
+                            public void onTick(long l) {
+                                processActionTV.setText(String.valueOf(l / 1000));
+                                processActionPB.setProgress((int) l / 1000);
+                                Log.d("exTimeProg", String.valueOf(processActionPB.getProgress()));
+
+                                mediaPlayer.start();
+                                if (((int) l / 1000) <= 5 && ((int) l / 1000) > 0){
+                                    speak(String.valueOf((int) l / 1000));
+                                }
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+
+                                isExPlaying = false;
+
+                                exTime = 0L;
+                                startExTime();
+
+                                workoutPlayExItemsAdapter.setItemAction(0);
+
+                                workoutItem.exercisesList.get(focusedItem).exReps--;
+                                exerciseName.setText(workoutItem.exercisesList.get(focusedItem).name);
+                                processActionPB.setMax(workoutItem.exercisesList.get(focusedItem).restTime);
+                                processActionPB.setProgress(workoutItem.exercisesList.get(focusedItem).restTime);
+
+                                workoutsPlayItemsRV.scrollToPosition(focusedItem + 1);
+                                workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
+
+                                processActionTV.setText("REST");
+
+                                processActionPB.setProgress((int) workoutItem.exercisesList.get(focusedItem).exTime);
+                                processActionPB.getProgressDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.MiBodyGrey3), PorterDuff.Mode.SRC_IN);
+
+                                counterHintTV.setText("Press REST to begin rest time");
+                                speak("Press REST to begin rest time");
+                            }
+                        }.start();
+
+                    }
+                    else {
+
+                        exTime = 0L;
+                        startExTime();
+
+                        workoutPlayExItemsAdapter.setItemAction(0);
+
+                        workoutItem.exercisesList.get(focusedItem).exReps--;
+                        exerciseName.setText(workoutItem.exercisesList.get(focusedItem).name);
+                        processActionPB.setMax(workoutItem.exercisesList.get(focusedItem).restTime);
+                        processActionPB.setProgress(workoutItem.exercisesList.get(focusedItem).restTime);
+
+                        processActionPB.getProgressDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.MiBodyGrey3), PorterDuff.Mode.SRC_IN);
+
+                        workoutsPlayItemsRV.scrollToPosition(focusedItem + 1);
+                        workoutPlayExItemsAdapter.setFocusedItem(focusedItem + 1);
+
+                        processActionTV.setText("REST");
+                        counterHintTV.setText("Press REST to begin rest time");
+                        speak("Press REST to begin rest time");
+                    }
 
                 }
                 else if (processActionTV.getText().toString().equals("REST")){
 
-                    achExTime.set(focusedItem, exTime);
+                    endExTime();
+                    isExPlaying = false;
+
+                    if (!workoutItem.exercisesList.get(focusedItem).repsTimeBool) {
+                        achExTime.set(focusedItem, achExTime.get(focusedItem) + exTime);
+                    }
+                    else {
+                        achExTime.set(focusedItem, achExTime.get(focusedItem) + workoutItem.exercisesList.get(focusedItem).exTime);
+                    }
+
+                    Log.d("exTime1", String.valueOf(exTime));
+
+                    Log.d("exTime2", String.valueOf(achExTime.get(focusedItem)));
+                    /*
+                    if(workoutItem.exercisesList.get(focusedItem).exReps > 0){
+
+                        Log.d("exTime1", String.valueOf(exTime));
+                        achExTime.set(focusedItem, achExTime.get(focusedItem) + exTime);
+                        sameEx = true;
+                    }
+                    else {
+                        Log.d("exTime2", String.valueOf(exTime));
+                        achExTime.set(focusedItem, exTime);
+                        sameEx = false;
+                    }
+                    */
+
+                    Log.d(workoutItem.exercisesList.get(focusedItem).name + " time", String.valueOf(achExTime.get(focusedItem)));
+
                     workoutPlayExItemsAdapter.setItemAction(1);
                     processActionPB.setMax(workoutItem.exercisesList.get(focusedItem).restTime);
-                    counterHintTV.setText("Modify exercise reps unless they matches the objective");
+                    processActionPB.getProgressDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.MiBodyGrey3), PorterDuff.Mode.SRC_IN);
+                    counterHintTV.setText("Modify exercise reps unless they match the objective");
                     speak("Modify exercise reps unless they matches the objective");
+
 
                     new CountDownTimer(workoutItem.exercisesList.get(focusedItem).restTime * 1000, 1000){
 
                         @Override
                         public void onTick(long l) {
+
+                            mediaPlayer.start();
                             processActionTV.setText(String.valueOf(l / 1000));
                             processActionPB.setProgress((int) l / 1000);
                             Log.d("prog", String.valueOf(processActionPB.getProgress()));
@@ -243,22 +375,43 @@ public class WorkoutPlayManual extends Fragment {
 
                         @Override
                         public void onFinish() {
+
+                            isExPlaying = false;
+
+                            actualExReps.set(focusedItem, actualExReps.get(focusedItem) + workoutPlayExItemsAdapter.achWorkoutExItemArrayList.get(focusedItem));
+
+                            Log.d("actualExRepsTotal", String.valueOf(actualExReps.get(focusedItem)));
+                            Log.d("actualExReps", String.valueOf(workoutPlayExItemsAdapter.achWorkoutExItemArrayList.get(focusedItem)));
+
                             workoutPlayExItemsAdapter.setItemAction(0);
                             processActionPB.setProgress(workoutItem.exercisesList.get(focusedItem).restTime);
+                            processActionPB.getProgressDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.MiBodyGrey3), PorterDuff.Mode.SRC_IN);
+
                             workoutPlayExItemsAdapter.setFocusedItem(-1);
 
-                            if (focusedItem == workoutItem.exercisesList.size() - 1){
+                            if (focusedItem == workoutItem.exercisesList.size() - 1 && workoutItem.exercisesList.get(focusedItem).exReps == 0){
                                 processActionTV.setText("DONE");
                                 counterHintTV.setText("Press DONE to finish workout and get statistics");
                                 speak("Press DONE to finish workout and get statistics");
                             }
                             else {
                                 processActionTV.setText("START");
-                                loadGIF(workoutItem.exercisesList.get(focusedItem + 1).name);
-                                workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
-                                exerciseName.setText(workoutItem.exercisesList.get(focusedItem + 1).name);
-                                counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
-                                speak("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
+
+
+                                if(workoutItem.exercisesList.get(focusedItem).exReps > 0){
+
+                                    counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(focusedItem).name + " exercise");
+                                    speak("Press START to begin " + workoutItem.exercisesList.get(focusedItem).name + " exercise");
+                                    sameEx = true;
+                                }
+                                else {
+                                    loadGIF(workoutItem.exercisesList.get(focusedItem + 1).name);
+                                    workoutsPlayItemsRV.smoothScrollToPosition(focusedItem + 3);
+                                    exerciseName.setText(workoutItem.exercisesList.get(focusedItem + 1).name);
+                                    counterHintTV.setText("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
+                                    speak("Press START to begin " + workoutItem.exercisesList.get(focusedItem + 1).name + " exercise");
+                                    sameEx = false;
+                                }
                             }
                         }
                     }.start();
@@ -267,32 +420,42 @@ public class WorkoutPlayManual extends Fragment {
 
                     addWorkoutToCalender();
                 }
+
+                if (focusedItem != -1)
+                    Log.d("setReps", String.valueOf(workoutItem.exercisesList.get(focusedItem).exReps));
+
             }
         });
 
+        resumeTimer();
 
         elapsedTimePlayStopIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (isPlaying){
-                    elapsedTimePlayStopIV.setImageResource(R.drawable.play_icon2);
-                    elapsedTimePlayStopTV.setText("PLAY");
-                    isPlaying = false;
+                    if (!isExPlaying){
+                        pauseTimer();
+                        workoutPauseTimeResumeLL.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "Please pause at your REST time", Toast.LENGTH_SHORT).show();
+                    }
 
-                    TimeBuff += MillisecondTime;
-
-                    handler.removeCallbacks(runnable);
                 }
                 else {
-                    elapsedTimePlayStopIV.setImageResource(R.drawable.pause_icon);
-                    elapsedTimePlayStopTV.setText("PAUSE");
-                    isPlaying = true;
-
-                    StartTime = SystemClock.uptimeMillis();
-                    handler.postDelayed(runnable, 0);
-
+                    resumeTimer();
+                    workoutPauseTimeResumeLL.setVisibility(View.GONE);
                 }
+            }
+        });
+
+
+        workoutPauseTimeResumeLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resumeTimer();
+                workoutPauseTimeResumeLL.setVisibility(View.GONE);
             }
         });
 
@@ -301,11 +464,15 @@ public class WorkoutPlayManual extends Fragment {
 
     private void addWorkoutToCalender(){
 
+        pauseTimer();
         achExReps = workoutPlayExItemsAdapter.achWorkoutExItemArrayList;
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < workoutItem.exercisesList.size(); i++) {
-            workoutItem.exercisesList.get(i).exReps = achExReps.get(i);
+            workoutItem.exercisesList.get(i).actualReps = actualExReps.get(i);
+            workoutItem.exercisesList.get(i).reps *= exRepsCounterArr.get(i);
+            workoutItem.exercisesList.get(i).exTime *= exRepsCounterArr.get(i);
+            workoutItem.exercisesList.get(i).actualExTime = achExTime.get(i);
             jsonArray.put(workoutItem.exercisesList.get(i).getJSONObject());
             Log.d("AddWJSONobject", workoutItem.exercisesList.get(i).getJSONObject().toString());
         }
@@ -340,6 +507,10 @@ public class WorkoutPlayManual extends Fragment {
 
         workoutItem.workoutID = String.valueOf(timeInMilliSeconds);
         workoutItem.exercisesJSON = jsonArray.toString();
+        workoutItem.wTime = wTime;
+
+
+        Log.d("wTime4", String.valueOf(wTime));
 
         databaseReference.child("/users/" + firebaseAuth.getCurrentUser().getUid() + "/statistics/"
                 + String.valueOf(monthInMilliseconds)
@@ -366,7 +537,8 @@ public class WorkoutPlayManual extends Fragment {
 
     }
 
-    private void initTxtToSpeech() {
+
+    private void initSounds() {
         textToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -383,14 +555,46 @@ public class WorkoutPlayManual extends Fragment {
                 }
             }
         });
+
+        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.beep);
+
     }
 
     private void speak(String text){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null, null);
         }else{
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null);
         }
+    }
+
+    private void resumeTimer(){
+        elapsedTimePlayStopIV.setImageResource(R.drawable.pause_icon);
+        elapsedTimePlayStopTV.setText("PAUSE");
+        isPlaying = true;
+
+        StartTime = SystemClock.uptimeMillis();
+        handler.postDelayed(runnable, 0);
+    }
+
+    private void pauseTimer(){
+        elapsedTimePlayStopIV.setImageResource(R.drawable.play_icon2);
+        elapsedTimePlayStopTV.setText("PLAY");
+        isPlaying = false;
+
+        TimeBuff += MillisecondTime;
+
+        handler.removeCallbacks(runnable);
+    }
+
+    private void startExTime(){
+        exStartTime = SystemClock.uptimeMillis();
+        exTimeHandler.postDelayed(exTimeRunnable, 0);
+    }
+
+    private void endExTime(){
+        exTimeBuff += exMilliSec;
+        exTimeHandler.removeCallbacks(exTimeRunnable);
     }
 
     public Runnable runnable = new Runnable() {
@@ -403,16 +607,33 @@ public class WorkoutPlayManual extends Fragment {
 
             Seconds = (int) (UpdateTime / 1000);
 
+            wTime = Seconds;
+
+            Log.d("wTime3", String.valueOf(wTime));
+
             Minutes = Seconds / 60;
 
             Seconds = Seconds % 60;
 
-            exTime = Seconds;
 
             MilliSeconds = (int) (UpdateTime % 1000);
 
             elapsedTimeTV.setText("" + Minutes + ":"
-                    + String.format("%02d", Seconds) + "mins");
+                    + String.format("%02d", Seconds) + " mins");
+
+            handler.postDelayed(this, 0);
+        }
+
+    };
+
+    public Runnable exTimeRunnable = new Runnable() {
+
+        public void run() {
+
+            exMilliSec = SystemClock.uptimeMillis() - exStartTime;
+
+            exTime = (int) (exMilliSec / 1000);
+
 
             handler.postDelayed(this, 0);
         }
@@ -432,14 +653,38 @@ public class WorkoutPlayManual extends Fragment {
 
     public WorkoutPlayManual(WorkoutItem workoutItem){
         this.workoutItem = workoutItem;
+
     }
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
+
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
-        super.onDestroy();
+
+        if (mediaPlayer != null)
+            mediaPlayer.stop();
+
+        pauseTimer();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+
+        if (mediaPlayer != null)
+            mediaPlayer.stop();
+
+        pauseTimer();
+
+    }
+
+
 }

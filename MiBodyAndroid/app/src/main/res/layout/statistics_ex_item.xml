@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:visibility="gone"
+    android:visibility="visible"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <TextView
         android:layout_width="60dp"
@@ -126,6 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:scaleType="fitXY"
+                    android:tint="@color/MiBodyGrey4"
                     android:id="@+id/triangle90grey"
                     android:layout_above="@id/FLgrey4"
                     android:adjustViewBounds="true"
@@ -135,5 +137,23 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/exTimeIV"
+        android:layout_alignParentBottom="true"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/circle_trans_stroke"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/exTimeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/exTimeIV"
+        android:layout_centerHorizontal="true"
+        android:text="50 Sec"
+        android:textColor="@color/black"
+        android:gravity="center"/>
 
 </RelativeLayout>

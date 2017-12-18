@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,7 +20,7 @@ import ch.philopateer.mibody.app.AppConfig;
 import ch.philopateer.mibody.app.AppController;
 import ch.philopateer.mibody.object.ExerciseItem;
 import ch.philopateer.mibody.helper.SQLiteHandler;
-import ch.philopateer.mibody.helper.ViewPagerAdapter;
+import ch.philopateer.mibody.adapter.ViewPagerAdapter;
 import me.relex.circleindicator.CircleIndicator;
 
 import org.json.JSONArray;
@@ -34,11 +35,12 @@ import java.util.Map;
  * Created by mamdouhelnakeeb on 12/2/16.
  */
 
+// Not used
 public class ExercisesFragment extends Fragment {
 
     private static final String TAG = ExercisesFragment.class.getSimpleName();
     private ProgressDialog pDialog;
-    SQLiteHandler sqLiteHandler;
+//    SQLiteHandler sqLiteHandler;
 
     ArrayList<ExerciseItem> exerciseItemArrayList;
     String exercisesCategory = "";
@@ -47,6 +49,7 @@ public class ExercisesFragment extends Fragment {
     CircleIndicator circleIndicator;
     PagerSnapHelper pagerSnapHelper;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -54,26 +57,25 @@ public class ExercisesFragment extends Fragment {
 
 
         circleIndicator = (CircleIndicator) view.findViewById(R.id.page_indicator);
-
         // Progress dialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
 
-        sqLiteHandler = new SQLiteHandler(getActivity());
-
-        try {
-            sqLiteHandler.open();
-
-        } catch (Exception e) {
-            Log.i("SQLexception", "can't open SQL");
-        }
+//        sqLiteHandler = new SQLiteHandler(getActivity());
+//
+//        try {
+//            sqLiteHandler.open();
+//
+//        } catch (Exception e) {
+//            Log.i("SQLexception", "can't open SQL");
+//        }
 
         exerciseViewPager = (ViewPager) view.findViewById(R.id.exercisesViewpager);
 
         exerciseItemArrayList = new ArrayList<ExerciseItem>();
 
-        loadExercises();
 
+        loadExercises();
         return view;
     }
 
@@ -159,13 +161,13 @@ public class ExercisesFragment extends Fragment {
                                     ExerciseItem exerciseItem = new ExerciseItem(id , ExerciseName, ExerciseIcon, ExerciseImage, ExerciseGIF, ExerciseDescription, ExerciseCategory);
 
                                     exerciseItemArrayList.add(exerciseItem);
-                                    sqLiteHandler.addExercise(exerciseItem);
+//                                    sqLiteHandler.addExercise(exerciseItem);
 
                                 }
                                 setupViewPager(exerciseViewPager);
                             }
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
+
                             e.printStackTrace();
                         }
                     }
@@ -176,7 +178,7 @@ public class ExercisesFragment extends Fragment {
                 Log.e(TAG, "Error: " + error.getMessage());
 
                 exerciseItemArrayList = new ArrayList<ExerciseItem>();
-                exerciseItemArrayList = sqLiteHandler.getExercises(null);
+//                exerciseItemArrayList = sqLiteHandler.getExercises(null);
 
                 if (exerciseItemArrayList.size() == 0) {
                     for (int i=0; i<AppConfig.exercises_names.length; i++){

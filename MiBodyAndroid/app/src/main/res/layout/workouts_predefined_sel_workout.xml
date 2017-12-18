@@ -82,7 +82,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:tint="@color/MiBodyWhite"
+                            android:tint="@color/MiBodyGrey2"
                             android:src="@drawable/pullup"/>
 
                         <ImageView
@@ -95,7 +95,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/pushup"/>
 
                         <ImageView
                             android:layout_width="40dp"
@@ -106,7 +106,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/squat"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -121,7 +121,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/inclinedpushup"/>
 
                         <ImageView
                             android:layout_width="40dp"
@@ -134,7 +134,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/legraise"/>
 
                         <ImageView
                             android:layout_width="40dp"
@@ -146,7 +146,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/lunge"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -161,7 +161,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/situp"/>
 
                         <ImageView
                             android:layout_width="40dp"
@@ -184,7 +184,7 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:tint="@color/MiBodyWhite"
-                            android:src="@drawable/pullup"/>
+                            android:src="@drawable/dip"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -237,20 +237,20 @@
                 android:src="@drawable/mibody_logo"
                 android:adjustViewBounds="true"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"/>
 
-            <fragment
-                android:id="@+id/exVideo"
-                android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone" />
+            <!--<fragment-->
+                <!--android:id="@+id/exVideo"-->
+                <!--android:name="com.google.android.youtube.player.YouTubePlayerFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="30dp"-->
+                <!--android:layout_marginRight="30dp"-->
+                <!--android:layout_marginLeft="30dp"-->
+                <!--android:layout_marginStart="30dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:visibility="gone" />-->
 
             <TextView
                 android:layout_width="wrap_content"
