@@ -18,10 +18,7 @@ class Login: UIViewController {
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var facebookBtn: UIButton!
     @IBOutlet weak var signupBtn: UIButton!
-    @IBAction func loginBtn(sender: AnyObject) {
-        
-        
-    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Register3: UIViewController {
+class Register3: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var no1Lbl: UILabel!
     @IBOutlet weak var no2Lbl: UILabel!
@@ -41,7 +41,7 @@ class Register3: UIViewController {
         no2Lbl.clipsToBounds = true
         no3Lbl.layer.cornerRadius = 25
         no3Lbl.clipsToBounds = true
-        no3Lbl.layer.borderColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00).cgColor
+        no3Lbl.layer.borderColor = UIColor.mibodyOrange.cgColor
         no3Lbl.layer.borderWidth = 3.0
         
         unitsView.layer.cornerRadius = 30
@@ -54,12 +54,12 @@ class Register3: UIViewController {
         
         
         weightTxtField.backgroundColor = UIColor.white
-        weightTxtField.layer.borderColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00).cgColor
+        weightTxtField.layer.borderColor = UIColor.mibodyOrange.cgColor
 
         weightTxtField.layer.borderWidth = 1.5
         
         heightTxtField.backgroundColor = UIColor.white
-        heightTxtField.layer.borderColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00).cgColor
+        heightTxtField.layer.borderColor = UIColor.mibodyOrange.cgColor
 
         heightTxtField.layer.borderWidth = 1.5
         
@@ -75,6 +75,40 @@ class Register3: UIViewController {
         inchBtn.addTarget(self, action: #selector(changeUnitsTO1), for: .touchUpInside)
         lbBtn.addTarget(self, action: #selector(changeUnitsTO1), for: .touchUpInside)
 
+        self.addBackBtn(selector: #selector(onBackClick))
+        
+    }
+    
+    func addBackBtn(selector: Selector) {
+        
+        let backBtnV = UIView(frame: CGRect(x: 10, y: 25, width: 80, height: 25))
+        
+        let backArrowIV = UIImageView(image: UIImage(named: "arrow"))
+        backArrowIV.frame = CGRect(x: 0, y: 0, width: 15, height: backBtnV.frame.height)
+        backArrowIV.contentMode = .scaleAspectFit
+        backArrowIV.tintColor(color: UIColor.mibodyOrange) // extension
+        
+        let backBtn = UIButton(frame: CGRect(x: backArrowIV.frame.maxX, y: 0, width: backBtnV.frame.width - backArrowIV.frame.width - 15, height: backBtnV.frame.height))
+        backBtn.setTitle("Back", for: .normal)
+        backBtn.setTitleColor(UIColor.mibodyOrange, for: .normal)
+        backBtn.titleLabel?.textAlignment = .left
+        backBtn.addTarget(self, action: selector, for: .touchUpInside)
+        
+        backBtnV.addSubview(backArrowIV)
+        backBtnV.addSubview(backBtn)
+        
+        let backTap = UITapGestureRecognizer(target: self, action: #selector(onBackClick))
+        backTap.delegate = self
+        backBtnV.addGestureRecognizer(backTap)
+        
+        self.view.addSubview(backBtnV)
+    }
+    
+    func onBackClick() {
+        
+        let pageViewController = self.parent as! Register
+        pageViewController.scrollToViewController(index: 1)
+        
     }
     
     @IBAction func reg3OnClick(_ sender: AnyObject) {
@@ -105,24 +139,26 @@ class Register3: UIViewController {
     }
     
     func changeUnitsTO0(){
-        cmBtn.titleLabel?.textColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00)
-        kgBtn.titleLabel?.textColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00)
-        inchBtn.titleLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.00)
-        lbBtn.titleLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.00)
+        cmBtn.setTitleColor(UIColor.mibodyOrange, for: .normal)
+        kgBtn.setTitleColor(UIColor.mibodyOrange, for: .normal)
+        inchBtn.setTitleColor(UIColor.black, for: .normal)
+        lbBtn.setTitleColor(UIColor.black, for: .normal)
         units = "0"
+        BMIeqn()
     }
     
     func changeUnitsTO1(){
-        inchBtn.titleLabel?.textColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00)
-        lbBtn.titleLabel?.textColor = UIColor(red: 252/255, green: 61/255, blue: 57/255, alpha: 1.00)
-        cmBtn.titleLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.00)
-        kgBtn.titleLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.00)
+        lbBtn.setTitleColor(UIColor.mibodyOrange, for: .normal)
+        inchBtn.setTitleColor(UIColor.mibodyOrange, for: .normal)
+        cmBtn.setTitleColor(UIColor.black, for: .normal)
+        kgBtn.setTitleColor(UIColor.black, for: .normal)
         units = "1"
+        BMIeqn()
     }
     
     func BMIeqn(){
     
-        if  (heightTxtField.text?.isEmpty)! || (weightTxtField.text?.isEmpty)! {
+        if (heightTxtField.text?.isEmpty)! || (weightTxtField.text?.isEmpty)! {
             BMILbl.isHidden = true
             BMITxt.isHidden = true
             return
@@ -138,7 +174,8 @@ class Register3: UIViewController {
             BMI = String(format:"%.2f", weight / (height * height / 10000))
         }
         else {
-            BMI = String(format:"%.2f", 703 * (weight / (height * height / 10000)))
+            // TODO modify calculation in English units
+            BMI = String(format:"%.2f", 703 * (weight / (height * height)))
         }
         
         BMITxt.text = BMI

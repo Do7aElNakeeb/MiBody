@@ -112,18 +112,50 @@ class Register: UIPageViewController {
 
     func handleFirebaseRegister() {
         
-        let name: String = UserDefaults.standard.object(forKey: "name") as! String
-        let email: String = UserDefaults.standard.object(forKey: "email") as! String
-        let password: String = UserDefaults.standard.object(forKey: "password") as! String
-        let gender: String = UserDefaults.standard.object(forKey: "gender") as! String
-        let dob: String = UserDefaults.standard.object(forKey: "dob") as! String
-        let weight: String = UserDefaults.standard.object(forKey: "weight") as! String
-        let height: String = UserDefaults.standard.object(forKey: "height") as! String
-        let BMI: String = UserDefaults.standard.object(forKey: "BMI") as! String
-        let units: String = UserDefaults.standard.object(forKey: "units") as! String
+        let userDefaults = UserDefaults()
+        let name: String = userDefaults.string(forKey: "name") ?? ""
+        let email: String = userDefaults.string(forKey: "email") ?? ""
+        let password: String = userDefaults.string(forKey: "password") ?? ""
+        let gender: String = userDefaults.string(forKey: "gender") ?? ""
+        let dob: String = userDefaults.string(forKey: "dob") ?? ""
+        let weight: String = userDefaults.string(forKey: "weight") ?? ""
+        let height: String = userDefaults.string(forKey: "height") ?? ""
+        let BMI: String = userDefaults.string(forKey: "BMI") ?? ""
+        let units: String = userDefaults.string(forKey: "units") ?? ""
         
-        if name.isEmpty || email.isEmpty || password.isEmpty || dob.isEmpty || weight.isEmpty || height.isEmpty {
+        if name.isEmpty || email.isEmpty || password.isEmpty {
             print("Missing Fields!")
+            
+            scrollToViewController(index: 0)
+            
+            let alert = UIAlertController(title: "Error", message: "Missing Fields!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+
+            return
+        }
+        
+        if dob.isEmpty {
+            print("Missing Fields!")
+            
+            scrollToViewController(index: 1)
+            
+            let alert = UIAlertController(title: "Error", message: "Missing Fields!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        if weight.isEmpty || height.isEmpty {
+            print("Missing Fields!")
+            
+            scrollToViewController(index: 2)
+            
+            let alert = UIAlertController(title: "Error", message: "Missing Fields!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
             return
         }
         

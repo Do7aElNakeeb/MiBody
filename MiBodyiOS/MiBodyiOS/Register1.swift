@@ -8,13 +8,14 @@
 
 import UIKit
 
-class Register1: UIViewController {
+class Register1: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var ppEditBtn: UIButton!
     @IBOutlet weak var nameTxtField: UITextField!
     @IBOutlet weak var emailTxtField: UITextField!
     @IBOutlet weak var passwordTxtField: UITextField!
     @IBOutlet weak var reg1Btn: UIButton!
+    
     
     var register: Register!
     
@@ -38,8 +39,39 @@ class Register1: UIViewController {
         
         reg1Btn.layer.cornerRadius = 25
         reg1Btn.clipsToBounds = true
+        
+        self.addBackBtn(selector: #selector(onBackClick))
+        
     }
 
+    func addBackBtn(selector: Selector) {
+        
+        let backBtnV = UIView(frame: CGRect(x: 10, y: 25, width: 80, height: 25))
+        
+        let backArrowIV = UIImageView(image: UIImage(named: "arrow"))
+        backArrowIV.frame = CGRect(x: 0, y: 0, width: 15, height: backBtnV.frame.height)
+        backArrowIV.contentMode = .scaleAspectFit
+        backArrowIV.tintColor(color: UIColor.white) // extension
+        
+        let backBtn = UIButton(frame: CGRect(x: backArrowIV.frame.maxX, y: 0, width: backBtnV.frame.width - backArrowIV.frame.width - 15, height: backBtnV.frame.height))
+        backBtn.setTitle("Back", for: .normal)
+        backBtn.titleLabel?.textAlignment = .left
+        backBtn.addTarget(self, action: selector, for: .touchUpInside)
+        
+        backBtnV.addSubview(backArrowIV)
+        backBtnV.addSubview(backBtn)
+        
+        let backTap = UITapGestureRecognizer(target: self, action: #selector(onBackClick))
+        backTap.delegate = self
+        backBtnV.addGestureRecognizer(backTap)
+        
+        self.view.addSubview(backBtnV)
+    }
+    
+    func onBackClick() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func reg1OnClick(_ sender: AnyObject) {
         if nameTxtField.text == ""{
             let alert = UIAlertController(title: "Alert", message: "Name is missing", preferredStyle: UIAlertControllerStyle.alert)
